@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.entities;
+package solutions.dmitrikonnov.etentities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;

@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.etverwaltung.construct;
 
 import lombok.Data;
-import solutions.dmitrikonnov.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
 
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;

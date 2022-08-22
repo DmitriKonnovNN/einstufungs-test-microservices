@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov;
+package solutions.dmitrikonnov.etenums;
 
 public enum ETAufgabenNiveau {
     A0,

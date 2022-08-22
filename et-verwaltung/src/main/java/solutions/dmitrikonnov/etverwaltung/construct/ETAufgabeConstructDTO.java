@@ -1,9 +1,9 @@
 package solutions.dmitrikonnov.etverwaltung.construct;
 
 import lombok.Data;
-import solutions.dmitrikonnov.ETAufgabenFrontEndType;
-import solutions.dmitrikonnov.ETAufgabenNiveau;
-import solutions.dmitrikonnov.ETAufgabenTyp;
+import solutions.dmitrikonnov.etenums.ETAufgabenFrontEndType;
+import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETAufgabenTyp;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

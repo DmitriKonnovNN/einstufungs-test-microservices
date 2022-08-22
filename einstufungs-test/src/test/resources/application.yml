@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: unit-test, integration-test
+
+---
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  datasource:
+    url: jdbc:h2://mem:db/;DB_CLOSE_DELAY=-1
+    username: os
+    password: os
+    driver-class-name: org.h2.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true
+  config:
+    activate:
+      on-profile: unit-test
+

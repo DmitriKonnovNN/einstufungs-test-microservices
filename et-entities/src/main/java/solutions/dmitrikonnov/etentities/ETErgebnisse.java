@@ -1,8 +1,8 @@
-package solutions.dmitrikonnov.entities;
+package solutions.dmitrikonnov.etentities;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import solutions.dmitrikonnov.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
 
 import javax.persistence.*;
 import java.util.Date;

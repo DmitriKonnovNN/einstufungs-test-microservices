@@ -1,7 +1,7 @@
-package solutions.dmitrikonnov.entities;
+package solutions.dmitrikonnov.etentities;
 
 import lombok.*;
-import solutions.dmitrikonnov.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
 
 import javax.persistence.*;
 

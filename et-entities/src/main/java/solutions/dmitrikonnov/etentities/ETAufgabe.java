@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.entities;
+package solutions.dmitrikonnov.etentities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
@@ -9,9 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import solutions.dmitrikonnov.ETAufgabenFrontEndType;
-import solutions.dmitrikonnov.ETAufgabenNiveau;
-import solutions.dmitrikonnov.ETAufgabenTyp;
+import solutions.dmitrikonnov.etenums.ETAufgabenFrontEndType;
+import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETAufgabenTyp;
 
 import javax.persistence.*;
 import java.util.Date;
