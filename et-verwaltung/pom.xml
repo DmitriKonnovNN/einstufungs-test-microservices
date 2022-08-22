@@ -31,7 +31,21 @@
             <artifactId>et-enums</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.github.bbottema</groupId>
+            <artifactId>emailaddress-rfc2822</artifactId>
+            <version>2.3.0</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.mailgun</groupId>
+            <artifactId>mailgun-java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
         <dependency>
             <groupId>solutions.dmitrikonnov</groupId>
             <artifactId>et-entities</artifactId>
