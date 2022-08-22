@@ -1,0 +1,5 @@
+package solutions.dmitrikonnov;
+
+public enum ETAufgabenTyp {
+    LESEN, HOEREN, SPRACHBAUSTEINE,SEHEN,SPRECHEN,SCHREIBEN,SPRACHMITTLUNG,FACHBEZOGEN
+}
