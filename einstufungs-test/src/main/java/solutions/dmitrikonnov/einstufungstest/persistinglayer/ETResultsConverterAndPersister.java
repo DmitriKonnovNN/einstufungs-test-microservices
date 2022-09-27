@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ETErgebnisseConverterAndPersister {
+public class ETResultsConverterAndPersister {
 
     private final ETResultsRepo repo;
 

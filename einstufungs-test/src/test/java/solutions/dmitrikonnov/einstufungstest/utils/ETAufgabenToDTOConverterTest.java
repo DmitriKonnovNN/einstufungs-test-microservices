@@ -68,8 +68,8 @@ class ETAufgabenToDTOConverterTest {
 
         ETExerciseDto expectedDto = ETExerciseDto.builder()
                 .execriseHash(4+ABH)
-                .taskDefinition("Ergänzen Sie den Satz!")
-                .niveau(A1)
+                .exerciseDefinition("Ergänzen Sie den Satz!")
+                .level(A1)
                 .items(Collections.singletonList(itemDto))
                 .build();
         expectedListOfDto.add(expectedDto);
@@ -162,8 +162,8 @@ class ETAufgabenToDTOConverterTest {
                 .build();
         ETExerciseDto expectedAufgabeDto2 = ETExerciseDto.builder()
                 .execriseHash(8+ABH)
-                .taskDefinition("Ergänzen Sie den Satz!")
-                .niveau(A1)
+                .exerciseDefinition("Ergänzen Sie den Satz!")
+                .level(A1)
                 .items(Collections.singletonList(expectedItem2))
                 .build();
 
@@ -193,9 +193,9 @@ class ETAufgabenToDTOConverterTest {
                         "\n" +
                         "Katharina\n" +
                         "Guten Tag! Ich heiße Katharina Berger. Ich wohne in Linz, aber ich komme aus Graz. Ich bin Krankenschwester von Beruf und arbeite im Spital. Meine Hobbys sind kochen und Filme sehen. Ich mag auch Sport: Schwimmen tut gut! Ich schwimme zweimal pro Woche.\n")
-                .taskDefinition("Aufgaben 1-5\n" +
+                .exerciseDefinition("Aufgaben 1-5\n" +
                         "Kreuzen Sie an. Was passt zu Maximilian, Anna, Katharina?\n")
-                .niveau(A1)
+                .level(A1)
                 .items(Arrays.asList(expectedItem5,expectedItem6,expectedItem7,expectedItem8,expectedItem9))
                 .build();
 

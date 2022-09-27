@@ -6,8 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.ETAufgabenNiveau;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.entities.ETSchwelle;
+
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 

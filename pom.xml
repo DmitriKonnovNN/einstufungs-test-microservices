@@ -20,6 +20,7 @@
     <module>et-management</module>
     <module>einstufungs-test</module>
     <module>et-dto</module>
+    <module>et-utils</module>
   </modules>
   
   <properties>

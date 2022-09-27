@@ -28,7 +28,7 @@ class ETResultsConverterAndPersisterTest {
 
     @Mock
     private ETResultsRepo repoMock;
-    private ETErgebnisseConverterAndPersister underTest;
+    private ETResultsConverterAndPersister underTest;
     private final Faker faker = new Faker();
     private ETResultsDto dtoGiven;
     private ETResults entityExpected;
@@ -88,7 +88,7 @@ class ETResultsConverterAndPersisterTest {
                 .idToCorrectnessMap(IDZUR)
                 .levelToNumberOfCorrect(NZZR)
                 .build();
-        underTest = new ETErgebnisseConverterAndPersister(repoMock);
+        underTest = new ETResultsConverterAndPersister(repoMock);
 
         entityExpected = ETResults.builder()
                 .aufgabenBogenHash(ABH)

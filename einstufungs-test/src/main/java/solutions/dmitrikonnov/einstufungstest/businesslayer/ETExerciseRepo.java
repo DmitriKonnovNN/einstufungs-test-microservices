@@ -6,22 +6,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.ETAufgabenNiveau;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.entities.ETAufgabe;
+import solutions.dmitrikonnov.etentities.ETExercise;
+import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 
 import java.util.List;
 import java.util.Set;
 
 
-public interface ETAufgabenRepo extends JpaRepository<ETAufgabe, Integer> {
+public interface ETExerciseRepo extends JpaRepository<ETExercise, Integer> {
 
-    @Cacheable (value = "aufgaben",  unless = "#a0=='zero-arg-not-cached'")
-    Set<ETAufgabe> findAllByOrderByAufgabenNiveauAsc();
-    List<ETAufgabe> findAllByAufgabenNiveau(ETAufgabenNiveau niveau);
-    List<ETAufgabe> findAll();
+    @Cacheable (value = "exercises",  unless = "#a0=='zero-arg-not-cached'")
+    Set<ETExercise> findAllByOrderByExerciseLevelAsc();
+    List<ETExercise> findAllByExerciseLevel(ETExerciseLevel level);
+    List<ETExercise> findAll();
     @Modifying
     @Transactional ()
-    @Query ("update ETExercise a set a.exerciseContent = :data where a.exerciseId = :id")
+    @Query ("update ETExercise e set e.exerciseContent = :data where e.exerciseId = :id")
     void updateImageDataById(@Param("id")int id,
                              @Param("data") String imageData );
 }

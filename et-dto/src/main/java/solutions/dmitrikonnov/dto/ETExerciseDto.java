@@ -18,9 +18,10 @@ public class ETExerciseDto implements Serializable {
     private static final long serialVersionUID = -1798070786993154676L;
     // private final Integer exerciseSetHash;
     private Integer execriseHash; // AufgabeId AufgabenBogenId
-    private String taskDefinition;
+    private String exerciseDefinition;
     private String exerciseContent;
-    private ETExerciseLevel niveau;
+    private ETExerciseLevel level;
     private List<ETItemDto> items;
     private ETExerciseFrontEndType frontEndType;
+
 }

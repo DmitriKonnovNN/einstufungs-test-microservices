@@ -3,8 +3,8 @@ package solutions.dmitrikonnov.einstufungstest.businesslayer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.entities.ETAufgabe;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
+import solutions.dmitrikonnov.etentities.ETExercise;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,30 +19,30 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ETAufgabenAufsetzer {
+public class ETExerciseSetter {
 
-    private final ETAufgabenRepo ETAufgabenRepo;
-    private final ETAufgabenRestricter aufgabenRestricter;
+    private final ETExerciseRepo ETExerciseRepo;
+    private final ETExerciseRestricter aufgabenRestricter;
     private final LimitsRepo limitsRepo;
 
     //TODO: try out parallstream() instead of just stream()
-    public List<ETAufgabe> listeAufsetzen() {
-        var maxSchwellenMap = limitsRepo.findMaximumLimitByLevels();
-        if(maxSchwellenMap.isEmpty()){
+    public List<ETExercise> setList() {
+        var maxLimitMap = limitsRepo.findMaximumLimitByLevels();
+        if(maxLimitMap.isEmpty()){
             log.warn("LimitsRepo is empty!");
         return Collections.emptyList();}
-        var allAufgaben = ETAufgabenRepo.findAllByOrderByAufgabenNiveauAsc();
+        var allAufgaben = ETExerciseRepo.findAllByOrderByExerciseLevelAsc();
         if(allAufgaben.isEmpty()){
             log.error("No Aufgaben found!");
             return Collections.emptyList();
         }
         return allAufgaben
                 .stream()
-                .collect(Collectors.groupingBy(ETAufgabe::getAufgabenNiveau, TreeMap::new, Collectors.toList()))
+                .collect(Collectors.groupingBy(ETExercise::getExerciseLevel, TreeMap::new, Collectors.toList()))
                 .values()
                 .parallelStream()
                 .peek(Collections::shuffle)
-                .map(aufgaben->aufgabenRestricter.restrict(aufgaben,maxSchwellenMap))
+                .map(exercises->aufgabenRestricter.restrict(exercises,maxLimitMap))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 

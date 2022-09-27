@@ -1,7 +1,6 @@
 package solutions.dmitrikonnov.einstufungstest.persistinglayer;
 
 import lombok.extern.slf4j.Slf4j;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.ETAufgabenNiveau;
 import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 
 import javax.persistence.EntityManager;

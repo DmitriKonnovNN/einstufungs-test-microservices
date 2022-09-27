@@ -29,7 +29,7 @@ class ETResultsEvaluatorTest {
     private LimitsRepo mindSchwRepoMock;
     private static List<ETLimit> mindestschwellen2;
     private static List<ETLimit> mindestschwellen3;
-    private ETErgebnisseEvaluator underTest;
+    private ETResultsEvaluator underTest;
     private ETResultsDto passedDto;
     private ETResultsDto expectedDto;
 
@@ -71,7 +71,7 @@ class ETResultsEvaluatorTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new ETErgebnisseEvaluator(mindSchwRepoMock);
+        underTest = new ETResultsEvaluator(mindSchwRepoMock);
 
         Faker faker = new Faker();
         ABH = faker.number().numberBetween(1,10000);

@@ -14,10 +14,10 @@ import java.util.Map;
 public class ETAnswerSheetDto implements Serializable {
 
     private static final long serialVersionUID = -1798070786993154676L;
-    @JsonProperty("antwortBogenId")
-    private final Integer antwortBogenId;
-    @JsonProperty("itemHashZuAntwortMap")
-    private final Map<Integer, List<String>> itemHashZuAntwortMap;
+    @JsonProperty("answerSheetId")
+    private final Integer answerSheetId;
+    @JsonProperty("itemHashToAnswerMap")
+    private final Map<Integer, List<String>> itemHashToAnswerMap;
     @JsonProperty ("createdAt")
     private final long createdAt;
 

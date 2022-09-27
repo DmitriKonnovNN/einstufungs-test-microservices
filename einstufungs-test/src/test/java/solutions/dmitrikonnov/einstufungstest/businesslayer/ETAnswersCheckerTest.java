@@ -30,7 +30,7 @@ import static solutions.dmitrikonnov.etenums.ETExerciseLevel.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
-class ETAntwortenPrueferTest {
+class ETAnswersCheckerTest {
 
     @Mock
     private LimitsRepo mindSchwRepoMock;
@@ -38,7 +38,7 @@ class ETAntwortenPrueferTest {
     private ApplicationEventPublisher publisherMock;
     private AntwortBogenCheckedEvent expectedEvent;
     private final Faker faker = new Faker();
-    private ETAntwortenPruefer underTest;
+    private ETAnswersChecker underTest;
     private ETAnswerSheetDto givenAntwortBogen;
     private ETAnswerSheet givenCachedAufgabenBogen;
     private Map<Integer, List<String>> givenItemHashZuAMap;
@@ -53,7 +53,7 @@ class ETAntwortenPrueferTest {
     void setUp() {
 
         int ABH = faker.number().numberBetween(1,10000);
-        underTest = new ETAntwortenPruefer(publisherMock,mindSchwRepoMock);
+        underTest = new ETAnswersChecker(publisherMock,mindSchwRepoMock);
 
 
         ETLimit schwelleA1 = ETLimit.builder().id((short)1).niveau(A1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
@@ -324,7 +324,7 @@ class ETAntwortenPrueferTest {
 
         given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen);
         //when
-        var actualResult = underTest.checkBogen(givenAntwortBogen, givenCachedAufgabenBogen);
+        var actualResult = underTest.checkSheet(givenAntwortBogen, givenCachedAufgabenBogen);
         //then
         then(publisherMock)
                 .should()
