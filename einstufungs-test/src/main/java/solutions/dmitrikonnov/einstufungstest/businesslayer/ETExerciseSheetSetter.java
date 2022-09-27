@@ -3,11 +3,11 @@ package solutions.dmitrikonnov.einstufungstest.businesslayer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.dto.ETExerciseDto;
-import solutions.dmitrikonnov.dto.ETExerciseSet;
-import solutions.dmitrikonnov.etentities.ETExercise;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
-import solutions.dmitrikonnov.etutils.ETExercisesToDTOConverter;
+import solutions.dmitrikonnov.dto.ETTaskDto;
+import solutions.dmitrikonnov.dto.ETTaskSheet;
+import solutions.dmitrikonnov.etentities.ETTask;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
+import solutions.dmitrikonnov.etutils.ETTasksToDTOConverter;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,26 +15,26 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ETExerciseSetSetter {
-    private final ETExercisesToDTOConverter converter;
+public class ETExerciseSheetSetter {
+    private final ETTasksToDTOConverter converter;
 
-    public ETExerciseSet set(List<ETExercise> exercises) {
+    public ETTaskSheet set(List<ETTask> exercises) {
         final Integer exerciseSetHash = exercises.hashCode();
         final var dtos = converter.convert(exercises,exerciseSetHash);
         final var shuffeled = shuffleItems(dtos);
 
-        return ETExerciseSet.builder()
-                .exerciseSetHash(exerciseSetHash)
+        return ETTaskSheet.builder()
+                .taskSheetHash(exerciseSetHash)
                 .itemToSolutions(extractItems(exercises))
                 .itemToLevel(extractNiveaus(exercises))
-                .exerciseList(shuffeled)
+                .taskList(shuffeled)
                 .build();
     }
 
-    private Map<Integer, List<String>> extractItems (List<ETExercise> aufgaben) {
+    private Map<Integer, List<String>> extractItems (List<ETTask> aufgaben) {
         Map<Integer, List<String>> itemIdZuLoesungen = new HashMap<>();
 
-        for (ETExercise aufgabe: aufgaben) {
+        for (ETTask aufgabe: aufgaben) {
             aufgabe.getItems().forEach(item -> {
                 itemIdZuLoesungen.put(item.getItemId(), item.getSolutions());
 
@@ -43,11 +43,11 @@ public class ETExerciseSetSetter {
         return itemIdZuLoesungen;
     }
 
-    private Map<Integer, ETExerciseLevel> extractNiveaus (List<ETExercise> aufgaben){
+    private Map<Integer, ETTaskLevel> extractNiveaus (List<ETTask> aufgaben){
 
-        Map<Integer,ETExerciseLevel> itemIdZuNiveau = new HashMap<>();
-        for (ETExercise aufgabe: aufgaben) {
-            ETExerciseLevel niveau = aufgabe.getExerciseLevel();
+        Map<Integer, ETTaskLevel> itemIdZuNiveau = new HashMap<>();
+        for (ETTask aufgabe: aufgaben) {
+            ETTaskLevel niveau = aufgabe.getTaskLevel();
             aufgabe.getItems().forEach(item -> {
                 itemIdZuNiveau.put(item.getItemId(), niveau);
             });
@@ -55,10 +55,10 @@ public class ETExerciseSetSetter {
         return itemIdZuNiveau;
     }
 
-    private List<ETExerciseDto> shuffleItems(List<ETExerciseDto> dtos) {
+    private List<ETTaskDto> shuffleItems(List<ETTaskDto> dtos) {
         return dtos.stream()
                 .peek(aufgdto -> Collections.shuffle(aufgdto.getItems()))
-                .collect(Collectors.groupingBy(ETExerciseDto::getLevel, TreeMap::new, Collectors.toList()))
+                .collect(Collectors.groupingBy(ETTaskDto::getLevel, TreeMap::new, Collectors.toList()))
                 .values()
                 .stream()
                 .peek(Collections::shuffle)

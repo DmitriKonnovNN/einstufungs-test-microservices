@@ -16,7 +16,7 @@ public class ETItemDto implements Serializable {
 
     private static final long serialVersionUID = -1798070786993154676L;
     private Integer itemId;
-    private String itemExerciseContent;
+    private String itemTaskContent;
     private Set<String> possibleAnswers;
 
 }

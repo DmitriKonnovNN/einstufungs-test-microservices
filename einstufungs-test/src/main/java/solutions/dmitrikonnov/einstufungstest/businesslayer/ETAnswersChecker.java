@@ -5,14 +5,14 @@ import lombok.AllArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.dto.ETAnswerSheetDto;
-import solutions.dmitrikonnov.dto.ETExerciseSet;
+import solutions.dmitrikonnov.dto.ETTaskSheet;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 
-import solutions.dmitrikonnov.einstufungstest.AntwortBogenCheckedEvent;
+import solutions.dmitrikonnov.einstufungstest.ETAnswerSheetCheckedEvent;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 
 import solutions.dmitrikonnov.etentities.ETLimit;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,41 +30,41 @@ public class ETAnswersChecker {
     private final ApplicationEventPublisher publisher;
     private final LimitsRepo limitsRepo;
 
-    public ETResultsDto checkSheet(ETAnswerSheetDto antwortBogen, ETExerciseSet cachedAufgabenBogen) {
+    public ETResultsDto checkSheet(ETAnswerSheetDto answersSheet, ETTaskSheet cachedExerciseSet) {
 
 
-        final Map<Integer,List<String>> cachedItemZuloesungen = cachedAufgabenBogen.getItemToSolutions();
-        final ETResultsDto ergebnisseDto = new ETResultsDto();
-        final Map<Integer, ETExerciseLevel> itemIdZuNiveau = cachedAufgabenBogen.getItemToLevel();
-        final Integer cachedBogenHash = cachedAufgabenBogen.getExerciseSetHash();
-        final Map<Integer, List<String>> itemHashZuAntwortMap = antwortBogen.getItemHashToAnswerMap();
-        final List<ETLimit> mindestSchwellen = limitsRepo.findAllByOrderByLevel() ;
-        final List<ETExerciseLevel> richtigeLoesungenNachNiveauTemp = new ArrayList<>();
+        final Map<Integer,List<String>> cachedItemToSolutions = cachedExerciseSet.getItemToSolutions();
+        final ETResultsDto resultsDto = new ETResultsDto();
+        final Map<Integer, ETTaskLevel> itemIdToLevel = cachedExerciseSet.getItemToLevel();
+        final Integer cachedSetHash = cachedExerciseSet.getTaskSheetHash();
+        final Map<Integer, List<String>> itemHashToAnswersMap = answersSheet.getItemHashToAnswerMap();
+        final List<ETLimit> minLimits = limitsRepo.findAllByOrderByLevel() ;
+        final List<ETTaskLevel> correctAnswersPerLevelTemp = new ArrayList<>();
 
-        mindestSchwellen.forEach(schwelle -> ergebnisseDto
+        minLimits.forEach(schwelle -> resultsDto
                 .getLevelToNumberOfCorrect()
                 .put(schwelle.getLevel(),(short)0));
 
-        ergebnisseDto.setExerciseSetHash(cachedAufgabenBogen.getExerciseSetHash());
+        resultsDto.setExerciseSetHash(cachedExerciseSet.getTaskSheetHash());
 
-        itemHashZuAntwortMap.forEach((hashedId, list) -> {
-            var itemId = hashedId - cachedBogenHash;
-            var cLoesungen = cachedItemZuloesungen.get(itemId);
+        itemHashToAnswersMap.forEach((hashedId, list) -> {
+            var itemId = hashedId - cachedSetHash;
+            var cLoesungen = cachedItemToSolutions.get(itemId);
             Boolean correct = list.equals(cLoesungen);
-            ergebnisseDto.getIdToCorrectnessMap().put(itemId, correct);
+            resultsDto.getIdToCorrectnessMap().put(itemId, correct);
             if(correct){
-                richtigeLoesungenNachNiveauTemp.add(itemIdZuNiveau.get(itemId));
+                correctAnswersPerLevelTemp.add(itemIdToLevel.get(itemId));
             }
             });
 
-        ergebnisseDto.setNumberCorrectAnswers((short)richtigeLoesungenNachNiveauTemp.size());
-        ergebnisseDto.getCorrectAnswersPerLevel().addAll(
-                richtigeLoesungenNachNiveauTemp
+        resultsDto.setNumberCorrectAnswers((short)correctAnswersPerLevelTemp.size());
+        resultsDto.getCorrectAnswersPerLevel().addAll(
+                correctAnswersPerLevelTemp
                         .stream()
                         .sorted()
                         .collect(Collectors.toList()));
-        publisher.publishEvent(new AntwortBogenCheckedEvent(this, cachedBogenHash,ergebnisseDto.toString()));
-        return new ETResultsDto(ergebnisseDto);
+        publisher.publishEvent(new ETAnswerSheetCheckedEvent(this, cachedSetHash,resultsDto.toString()));
+        return new ETResultsDto(resultsDto);
     }
 
 }

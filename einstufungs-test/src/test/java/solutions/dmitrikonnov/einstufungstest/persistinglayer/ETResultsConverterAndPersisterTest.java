@@ -12,7 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.etentities.ETResults;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 
 import java.util.*;
@@ -20,7 +20,7 @@ import java.util.*;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
-import static solutions.dmitrikonnov.etenums.ETExerciseLevel.*;
+import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
@@ -47,9 +47,9 @@ class ETResultsConverterAndPersisterTest {
                 .toString();
         //String ID = UUID.randomUUID().toString();
         Integer ABH = faker.number().numberBetween(1,10000);
-        ETExerciseLevel MEN = A2;
+        ETTaskLevel MEN = A2;
         Short ZR = 5;
-        List<ETExerciseLevel> RLNN = new ArrayList<>(List.of(A1, A1, A2, A2, B1));
+        List<ETTaskLevel> RLNN = new ArrayList<>(List.of(A1, A1, A2, A2, B1));
         Map<Integer, Boolean> IDZUR = new HashMap<>(){{
             put(faker.random().nextInt(1,10000),true);
             put(faker.random().nextInt(1,10000),true);
@@ -62,7 +62,7 @@ class ETResultsConverterAndPersisterTest {
             put(faker.random().nextInt(1,10000),false);
 
         }};
-        Map<ETExerciseLevel, Short> NZZR = new HashMap<>(){{
+        Map<ETTaskLevel, Short> NZZR = new HashMap<>(){{
             put(A1,(short)2);
             put(A2,(short)2);
             put(B1,(short)1);

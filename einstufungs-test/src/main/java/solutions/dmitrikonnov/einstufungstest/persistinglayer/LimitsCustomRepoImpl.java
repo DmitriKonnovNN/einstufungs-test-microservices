@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.einstufungstest.persistinglayer;
 
 import lombok.extern.slf4j.Slf4j;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,14 +17,14 @@ public class LimitsCustomRepoImpl implements LimitsCustomRepo {
     private EntityManager entityManager;
 
     @Override
-    public Map<ETExerciseLevel, Short> findMaximumLimitByLevels() {
+    public Map<ETTaskLevel, Short> findMaximumLimitByLevels() {
         return  entityManager
                 .createQuery("select e.level AS level," +
                         " e.maxLimit as maxlevel " +
                         " from ETLimit e", Tuple.class)
                 .getResultStream()
                 .collect(Collectors.toMap(
-                        tuple -> (ETExerciseLevel) tuple.get("level"),
+                        tuple -> (ETTaskLevel) tuple.get("level"),
                         tuple -> (Short) tuple.get("maxLimit")
                 ));
     }

@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.etentities;
 
 import lombok.*;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import javax.persistence.*;
 
@@ -21,7 +21,7 @@ public class ETLimit {
     private short id;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false,unique = true)
-    private ETExerciseLevel level;
+    private ETTaskLevel level;
     @Column (nullable = false)
     private Short minLimit;
     @Column (nullable = false)

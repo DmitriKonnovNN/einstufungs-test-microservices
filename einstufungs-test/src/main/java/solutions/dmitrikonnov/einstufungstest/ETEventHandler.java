@@ -6,27 +6,27 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.einstufungstest.domainlayer.buffer.ETBuffer;
-import solutions.dmitrikonnov.einstufungstest.exceptions.NoTaskSetToServeException;
+import solutions.dmitrikonnov.einstufungstest.cache.buffer.ETBuffer;
+import solutions.dmitrikonnov.exceptions.NoTaskSetToServeException;
 
 @Service
 @Slf4j
 @AllArgsConstructor
-public class EventHandler {
+public class ETEventHandler {
 
     private final ETBuffer buffer;
 
     @Async
-    @EventListener (AntwortBogenCheckedEvent.class)
-    public void onApplicationEvent(AntwortBogenCheckedEvent event){
+    @EventListener (ETAnswerSheetCheckedEvent.class)
+    public void onApplicationEvent(ETAnswerSheetCheckedEvent event){
         log.info("Event {} --- time {} .", event.getCHECKED_MSG(),event.getTimestamp());
         log.debug("Temporary result of check {}", event.getTempResult());
-       // cache.evict(event.getBogenId()); // TODO: no explicit eviction any longer needed: replace by redis with TTL!
+       // cache.evict(event.getSheetId()); // TODO: no explicit eviction any longer needed: replace by redis with TTL!
 
     }
     @Async
-    @EventListener(AufgabenBogenFetchedFromCache.class)
-    public void onApplicationEvent(AufgabenBogenFetchedFromCache event){
+    @EventListener(ETExerciseSetFetchedFromCache.class)
+    public void onApplicationEvent(ETExerciseSetFetchedFromCache event){
         buffer.fillUpIfAlmostEmpty();
     }
 

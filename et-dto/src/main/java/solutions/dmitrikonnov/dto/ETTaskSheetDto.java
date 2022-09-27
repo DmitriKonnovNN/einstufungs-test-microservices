@@ -6,10 +6,10 @@ import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class ETExerciseSetDto implements Serializable {
+public class ETTaskSheetDto implements Serializable {
 
     private static final long serialVersionUID = -1798070786993154676L;
-    private final Integer exerciseSetId;
-    private final List<ETExerciseDto> exerciseList;
+    private final Integer taskSheetId;
+    private final List<ETTaskDto> taskList;
     private final long createdAt;
 }

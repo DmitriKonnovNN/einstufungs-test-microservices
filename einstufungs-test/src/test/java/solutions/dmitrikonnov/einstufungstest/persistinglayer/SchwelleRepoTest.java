@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.etentities.ETLimit;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 
 @DataJpaTest
@@ -31,7 +31,7 @@ class SchwelleRepoTest {
         //given
         ETLimit mindestschwelle = ETLimit.builder()
                 .id((short)1)
-                .niveau(ETExerciseLevel.A1)
+                .niveau(ETTaskLevel.A1)
                 .maximumSchwelle((short)5)
                 .mindestSchwelle((short)2)
                 .build();

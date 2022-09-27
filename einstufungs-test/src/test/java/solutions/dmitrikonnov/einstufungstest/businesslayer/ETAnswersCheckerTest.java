@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.ETAnswerSheetDto;
-import solutions.dmitrikonnov.dto.ETExerciseDto;
+import solutions.dmitrikonnov.dto.ETTaskDto;
 import solutions.dmitrikonnov.dto.ETAnswerSheet;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.etentities.*;
@@ -18,7 +18,7 @@ import solutions.dmitrikonnov.etentities.*;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.einstufungstest.utils.AntwortBogenCheckedEvent;
 import solutions.dmitrikonnov.einstufungstest.utils.ETAufgabenToDTOConverter;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import java.util.*;
 
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static solutions.dmitrikonnov.etenums.ETExerciseLevel.*;
+import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
@@ -42,11 +42,11 @@ class ETAnswersCheckerTest {
     private ETAnswerSheetDto givenAntwortBogen;
     private ETAnswerSheet givenCachedAufgabenBogen;
     private Map<Integer, List<String>> givenItemHashZuAMap;
-    private List<ETExercise> givenAufgabenListe = new ArrayList<>();
+    private List<ETTask> givenAufgabenListe = new ArrayList<>();
     private List<ETLimit> mindestschwellen;
     private ETResultsDto expectedDto;
     private ETAufgabenToDTOConverter converter = new ETAufgabenToDTOConverter();
-    private List<ETExerciseDto> givenAufgabenDTOListe = new ArrayList<>();
+    private List<ETTaskDto> givenAufgabenDTOListe = new ArrayList<>();
 
 
     @BeforeEach
@@ -129,28 +129,28 @@ class ETAnswersCheckerTest {
                 .build();
 
 
-        ETExercise aufgabe1 = ETExercise.builder()
+        ETTask aufgabe1 = ETTask.builder()
                 .aufgabeId(4)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A1)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item1)))
                 .build();
-        ETExercise aufgabe2 = ETExercise.builder()
+        ETTask aufgabe2 = ETTask.builder()
                 .aufgabeId(8)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A1)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item2)))
                 .build();
-        ETExercise aufgabe3 = ETExercise.builder()
+        ETTask aufgabe3 = ETTask.builder()
                 .aufgabeId(9)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A2)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item3)))
                 .build();
-        ETExercise aufgabe4 = ETExercise.builder()
+        ETTask aufgabe4 = ETTask.builder()
                 .aufgabeId(2)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A2)
@@ -158,7 +158,7 @@ class ETAnswersCheckerTest {
                 .items(new HashSet<>(Collections.singleton(item4)))
                 .build();
 
-        ETExercise aufgabe5 = ETExercise.builder()
+        ETTask aufgabe5 = ETTask.builder()
                 .aufgabeId(1)
                 .aufgabenInhalt("Maximilian\n" +
                         "Servus! Mein Name ist Maximilian Gruber. Ich komme aus Österreich und wohne in Wien. Ich habe eine Ausbildung zum Mechatroniker gemacht und arbeite jetzt in einer Autowerkstatt. Ich mag Autos! In der Freizeit spiele ich Fußball, fahre Rad und höre Musik. Ein Tag ohne Musik ist kein guter Tag!\n" +
@@ -194,7 +194,7 @@ class ETAnswersCheckerTest {
                 .moeglicheAntworten(new HashSet<>(Arrays.asList("komme", "wohne", "lebe")))
                 .loesungen(Collections.singletonList("komme"))
                 .build();
-        ETExercise aufgabe6 = ETExercise.builder()
+        ETTask aufgabe6 = ETTask.builder()
                 .aufgabeId(3)
                 .aufgabenStellung("Wählen Sie das richrige Wort")
                 .aufgabenNiveau(A2)
@@ -220,7 +220,7 @@ class ETAnswersCheckerTest {
             put(item12.getItemId(), item12.getLoesungen());
         }};
 
-        Map<Integer, ETExerciseLevel> itemZuNiveau = new HashMap<>(){{
+        Map<Integer, ETTaskLevel> itemZuNiveau = new HashMap<>(){{
             put(item1.getItemId(),aufgabe1.getAufgabenNiveau());
             put(item2.getItemId(),aufgabe2.getAufgabenNiveau());
             put(item3.getItemId(),aufgabe3.getAufgabenNiveau());

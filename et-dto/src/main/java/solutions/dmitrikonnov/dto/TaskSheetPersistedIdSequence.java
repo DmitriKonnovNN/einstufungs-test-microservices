@@ -16,13 +16,13 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class ExerciseSetPersistedIdSequence {
+public class TaskSheetPersistedIdSequence {
     @Id
-    @SequenceGenerator(name = "et_exerciseset_seq",
-            sequenceName = "et_exerciseset_seq",
+    @SequenceGenerator(name = "et_taskset_seq",
+            sequenceName = "et_taskset_seq",
             initialValue = 1,
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "et_exerciseset_seq")
-    private Long exerciseSetId;
+            generator = "et_taskset_seq")
+    private Long taskSheetId;
 }

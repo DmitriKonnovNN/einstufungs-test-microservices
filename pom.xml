@@ -21,6 +21,7 @@
     <module>einstufungs-test</module>
     <module>et-dto</module>
     <module>et-utils</module>
+    <module>et-exceptions-handlers</module>
   </modules>
   
   <properties>

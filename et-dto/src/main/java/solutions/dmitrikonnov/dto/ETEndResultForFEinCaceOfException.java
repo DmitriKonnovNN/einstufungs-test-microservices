@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.dto;
 
 import lombok.Getter;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 @Getter
 public class ETEndResultForFEinCaceOfException extends ETEndResultForFE {
@@ -11,7 +11,7 @@ public class ETEndResultForFEinCaceOfException extends ETEndResultForFE {
             "\n Bitte, behalten Sie den ganzen Ergebnisbericht";
 
     public ETEndResultForFEinCaceOfException(String id,
-                                      ETExerciseLevel reachedLevel,
+                                      ETTaskLevel reachedLevel,
                                       String numberCorrectAnswers,
                                       ETResultsDto resultsDto) {
         super(id, reachedLevel, numberCorrectAnswers);

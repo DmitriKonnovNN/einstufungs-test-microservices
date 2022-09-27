@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
-import solutions.dmitrikonnov.etentities.ETExercise;
+import solutions.dmitrikonnov.etentities.ETTask;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -19,30 +19,30 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ETExerciseSetter {
+public class ETTaskSetter {
 
-    private final ETExerciseRepo ETExerciseRepo;
-    private final ETExerciseRestricter aufgabenRestricter;
+    private final ETTaskRepo ETTaskRepo;
+    private final ETTaskRestricter aufgabenRestricter;
     private final LimitsRepo limitsRepo;
 
     //TODO: try out parallstream() instead of just stream()
-    public List<ETExercise> setList() {
+    public List<ETTask> setList() {
         var maxLimitMap = limitsRepo.findMaximumLimitByLevels();
         if(maxLimitMap.isEmpty()){
             log.warn("LimitsRepo is empty!");
         return Collections.emptyList();}
-        var allAufgaben = ETExerciseRepo.findAllByOrderByExerciseLevelAsc();
+        var allAufgaben = ETTaskRepo.findAllByOrderByTaskLevelAsc();
         if(allAufgaben.isEmpty()){
             log.error("No Aufgaben found!");
             return Collections.emptyList();
         }
         return allAufgaben
                 .stream()
-                .collect(Collectors.groupingBy(ETExercise::getExerciseLevel, TreeMap::new, Collectors.toList()))
+                .collect(Collectors.groupingBy(ETTask::getTaskLevel, TreeMap::new, Collectors.toList()))
                 .values()
                 .parallelStream()
                 .peek(Collections::shuffle)
-                .map(exercises->aufgabenRestricter.restrict(exercises,maxLimitMap))
+                .map(tasks->aufgabenRestricter.restrict(tasks,maxLimitMap))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 

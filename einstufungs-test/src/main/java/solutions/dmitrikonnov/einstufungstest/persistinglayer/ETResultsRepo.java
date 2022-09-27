@@ -18,7 +18,7 @@ public interface ETResultsRepo extends JpaRepository<ETResults, UUID>, ETResults
 
     @Query(value = "SELECT eem.et_aufg_id AS id FROM et_results_mapping AS eem " +
             "INNER JOIN et_results AS ee ON ee.id = eem.et_results_id " +
-            "WHERE eem.et_exercise_correctness = true AND ee.created_on < : createdOn ", nativeQuery = true)
+            "WHERE eem.et_task_correctness = true AND ee.created_on < : createdOn ", nativeQuery = true)
     List<Integer> findAllIdsOfCorrectAnsweredItems(Date createdOn);
 
 }

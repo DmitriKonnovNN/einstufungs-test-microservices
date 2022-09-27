@@ -2,8 +2,8 @@ package solutions.dmitrikonnov.einstufungstest;
 
 import org.springframework.context.ApplicationEvent;
 
-public class AufgabenBogenFetchedFromCache extends ApplicationEvent {
-    public AufgabenBogenFetchedFromCache(Object source) {
+public class ETExerciseSetFetchedFromCache extends ApplicationEvent {
+    public ETExerciseSetFetchedFromCache(Object source) {
         super(source);
     }
 }

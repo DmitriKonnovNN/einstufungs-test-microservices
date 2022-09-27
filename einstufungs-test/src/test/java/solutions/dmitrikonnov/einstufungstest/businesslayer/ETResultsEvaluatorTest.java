@@ -18,7 +18,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
-import static solutions.dmitrikonnov.etenums.ETExerciseLevel.*;
+import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
 
 @Slf4j
 @ExtendWith(MockitoExtension.class)

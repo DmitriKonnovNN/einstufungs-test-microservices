@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.dto;
 
 import lombok.*;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import java.util.List;
 import java.util.Map;
@@ -20,9 +20,9 @@ import java.util.Map;
 public class ETAnswerSheet {
 
     private final Integer exerciseSetHash;
-    private final List<ETExerciseDto> exerciseList;
+    private final List<ETTaskDto> exerciseList;
     private long cachedAt;
     private final Map<Integer, List<String>> itemToAnswers;
-    private final Map<Integer, ETExerciseLevel> itemToLevel;
+    private final Map<Integer, ETTaskLevel> itemToLevel;
 
 }

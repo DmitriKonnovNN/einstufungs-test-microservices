@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,10 +32,10 @@ public class ETResultsDto implements Serializable {
 
     private  String id;
     private  Integer exerciseSetHash;
-    private  ETExerciseLevel maxReachedLevel;
+    private ETTaskLevel maxReachedLevel;
     private  Short numberCorrectAnswers;
-    private  List<ETExerciseLevel> correctAnswersPerLevel = new ArrayList<>();
+    private  List<ETTaskLevel> correctAnswersPerLevel = new ArrayList<>();
     private  Map<Integer, Boolean> idToCorrectnessMap = new HashMap<>();
-    private  Map<ETExerciseLevel, Short> levelToNumberOfCorrect = new HashMap<>();
+    private  Map<ETTaskLevel, Short> levelToNumberOfCorrect = new HashMap<>();
 
 }

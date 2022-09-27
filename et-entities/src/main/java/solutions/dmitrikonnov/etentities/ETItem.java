@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table (name = "ET_ITEM", indexes = @Index(columnList = "ET_EXERCISE_ID", name = "ET_ITEM_EXERCISE_IDX"))
+@Table (name = "ET_ITEM", indexes = @Index(columnList = "ET_TASK_ID", name = "ET_ITEM_TASK_IDX"))
 public class ETItem {
 
     @Id
@@ -49,10 +49,10 @@ public class ETItem {
 
     @JsonIgnoreProperties("items")
     @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name ="ET_EXERCISE_ID")
-    private ETExercise exercise;
+    @JoinColumn(name ="ET_TASK_ID")
+    private ETTask task;
 
-    private String itemExerciseContent;
+    private String itemTaskContent;
 
     //@Fetch(FetchMode.SUBSELECT)
     @ElementCollection(fetch = FetchType.EAGER)

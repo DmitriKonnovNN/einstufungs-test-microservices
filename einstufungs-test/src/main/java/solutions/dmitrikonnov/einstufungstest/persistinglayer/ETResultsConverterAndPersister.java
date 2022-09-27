@@ -26,7 +26,7 @@ public class ETResultsConverterAndPersister {
 
         System.out.println("convert and persist THREAD: "+ Thread.currentThread().getName());
         ETResults results = ETResults.builder()
-                .exerciseSetHash(resultsDto.getExerciseSetHash())
+                .taskSheetHash(resultsDto.getExerciseSetHash())
                 .numberCorrectAnswers(resultsDto.getNumberCorrectAnswers())
                 .maxReachedLevel(resultsDto.getMaxReachedLevel())
                 .levelToNumberCorrect(resultsDto.getLevelToNumberOfCorrect().entrySet()

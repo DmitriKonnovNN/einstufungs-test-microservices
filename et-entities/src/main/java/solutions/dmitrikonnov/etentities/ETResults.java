@@ -2,7 +2,7 @@ package solutions.dmitrikonnov.etentities;
 
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -26,11 +26,11 @@ public class ETResults {
             strategy = "org.hibernate.id.UUIDGenerator")
     private  String id;
 
-    private Integer exerciseSetHash;
+    private Integer taskSheetHash;
 
     @Column (updatable = false)
     @Enumerated(EnumType.STRING)
-    private ETExerciseLevel maxReachedLevel = ETExerciseLevel.A0;
+    private ETTaskLevel maxReachedLevel = ETTaskLevel.A0;
 
     @Column(updatable = false)
     private Short numberCorrectAnswers;

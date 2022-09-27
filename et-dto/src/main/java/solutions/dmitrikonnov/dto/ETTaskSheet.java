@@ -1,7 +1,7 @@
 package solutions.dmitrikonnov.dto;
 
 import lombok.*;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 import java.util.List;
 import java.util.Map;
@@ -17,12 +17,12 @@ import java.util.Map;
 @Getter
 @Builder
 @ToString
-public class ETExerciseSet {
+public class ETTaskSheet {
 
-    private final Integer exerciseSetHash;
-    private final List<ETExerciseDto> exerciseList;
+    private final Integer taskSheetHash;
+    private final List<ETTaskDto> taskList;
     private long cachedAt;
     private final Map<Integer, List<String>> itemToSolutions;
-    private final Map<Integer, ETExerciseLevel> itemToLevel;
+    private final Map<Integer, ETTaskLevel> itemToLevel;
 
 }

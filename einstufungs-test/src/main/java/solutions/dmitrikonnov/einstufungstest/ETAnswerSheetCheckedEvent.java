@@ -5,15 +5,15 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class AntwortBogenCheckedEvent extends ApplicationEvent {
+public class ETAnswerSheetCheckedEvent extends ApplicationEvent {
 
     private final String CHECKED_MSG = "Antwortbogen has been checked. Cache is ready to get evicted";
     private final String tempResult;
-    private final Integer bogenId;
+    private final Integer sheetId;
 
-    public AntwortBogenCheckedEvent(Object source, Integer bogenId ,String msg) {
+    public ETAnswerSheetCheckedEvent(Object source, Integer sheetId, String msg) {
         super(source);
-        this.bogenId = bogenId;
+        this.sheetId = sheetId;
         this.tempResult = msg;
     }
 }

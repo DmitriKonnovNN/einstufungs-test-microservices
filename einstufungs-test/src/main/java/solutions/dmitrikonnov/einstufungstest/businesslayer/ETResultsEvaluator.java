@@ -6,7 +6,7 @@ import solutions.dmitrikonnov.dto.ETResultsDto;
 
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.etentities.ETLimit;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etenums.ETLimitResult;
 
 import java.util.Collections;
@@ -25,37 +25,37 @@ public class ETResultsEvaluator {
     private final LimitsRepo limitsRepo;
 
 
-    public ETResultsDto evaluate(ETResultsDto ergebnisse) {
-        List<ETLimit> mindestSchwellen = limitsRepo.findAllByOrderByLevel() ;
-        if (noneCorrect(ergebnisse)){
-            mindestSchwellen.forEach(record -> setNachNiveauAlleFalsch(record.getLevel(),ergebnisse.getLevelToNumberOfCorrect()));
-            ergebnisse.setMaxReachedLevel(ETExerciseLevel.A0);
-            return ergebnisse;
+    public ETResultsDto evaluate(ETResultsDto results) {
+        List<ETLimit> minLimits = limitsRepo.findAllByOrderByLevel() ;
+        if (noneCorrect(results)){
+            minLimits.forEach(record -> setPerLevelAllWrong(record.getLevel(),results.getLevelToNumberOfCorrect()));
+            results.setMaxReachedLevel(ETTaskLevel.A0);
+            return results;
         }
-        List<ETExerciseLevel> sortedCorrectAnswers = ergebnisse.getCorrectAnswersPerLevel();
+        List<ETTaskLevel> sortedCorrectAnswers = results.getCorrectAnswersPerLevel();
 
-        mindestSchwellen.forEach(record ->
-                countRichtigeJeNiveau(record.getLevel(),sortedCorrectAnswers,ergebnisse.getLevelToNumberOfCorrect()));
+        minLimits.forEach(record ->
+                countCorrectPerLevel(record.getLevel(),sortedCorrectAnswers,results.getLevelToNumberOfCorrect()));
 
-        var endGueltigesErgenis = evaluate2(ergebnisse,mindestSchwellen);
+        var endGueltigesErgenis = evaluate2(results,minLimits);
 
         return endGueltigesErgenis;
     }
 
 
-    protected ETResultsDto evaluate2 (ETResultsDto ergebnisseDto, List<ETLimit> mindestSchwellen){
+    protected ETResultsDto evaluate2 (ETResultsDto resultsDto, List<ETLimit> minLimits){
 
-        var entrySetErgebnisse = ergebnisseDto.getLevelToNumberOfCorrect().entrySet();
+        var entrySetResults = resultsDto.getLevelToNumberOfCorrect().entrySet();
 
         // TODO: Check the performance of both implementations down below with respect to concurrent call;
 
-        Map <ETExerciseLevel, ETLimitResult> ergebnisMap = Collections.synchronizedMap(new HashMap<>());
-        //Map <ETExerciseLevel,ETSchwellenErgebnis> ergebnisMap = new ConcurrentHashMap<>();
+        Map <ETTaskLevel, ETLimitResult> ergebnisMap = Collections.synchronizedMap(new HashMap<>());
+        //Map <ETTaskLevel,ETSchwellenErgebnis> ergebnisMap = new ConcurrentHashMap<>();
 
 
-        mindestSchwellen.forEach(schwelle -> {
-            ETExerciseLevel niveau = schwelle.getLevel();
-            List <ETLimitResult> list = entrySetErgebnisse.stream().filter(naSet -> naSet.getKey().equals(niveau))
+        minLimits.forEach(schwelle -> {
+            ETTaskLevel niveau = schwelle.getLevel();
+            List <ETLimitResult> list = entrySetResults.stream().filter(naSet -> naSet.getKey().equals(niveau))
                     .map(naSet->
                             isAllCorrect()
                             .or(isReached())
@@ -67,116 +67,92 @@ public class ETResultsEvaluator {
             ergebnisMap.put(niveau,list.get(0));
 
         } );
-        defineMaxLevel(ergebnisseDto,ergebnisMap);
-        return ergebnisseDto;
+        defineMaxLevel(resultsDto,ergebnisMap);
+        return resultsDto;
     }
 
 
-    private void defineMaxLevel (ETResultsDto ergebnisseDto, Map<ETExerciseLevel, ETLimitResult> erreichteNiveausMap) {
-        List <ETExerciseLevel> sortedNiveaus = erreichteNiveausMap.keySet().stream().sorted().collect(Collectors.toList());
-        boolean keineRichtig = false;
-        boolean nichtErreicht = false;
-        ETExerciseLevel vorangehendesNiveau = ETExerciseLevel.A0;
-        ETExerciseLevel aktuellErreicht = ETExerciseLevel.A0;
-        for (ETExerciseLevel sortedNiveau : sortedNiveaus) {
-            if (!keineRichtig && !nichtErreicht) {
-                if (erreichteNiveausMap.get(sortedNiveau).equals(NONE_CORRECT)) {
-                    keineRichtig = true;
-                    nichtErreicht = true;
-                    vorangehendesNiveau = sortedNiveau;
+    private void defineMaxLevel (ETResultsDto ergebnisseDto, Map<ETTaskLevel, ETLimitResult> reachedLevelsMap) {
+        List <ETTaskLevel> sortedNiveaus = reachedLevelsMap.keySet().stream().sorted().collect(Collectors.toList());
+        boolean noneCorrect = false;
+        boolean notEnough = false;
+        ETTaskLevel previousLevel = ETTaskLevel.A0;
+        ETTaskLevel currentReached = ETTaskLevel.A0;
+        for (ETTaskLevel sortedNiveau : sortedNiveaus) {
+            if (!noneCorrect && !notEnough) {
+                if (reachedLevelsMap.get(sortedNiveau).equals(NONE_CORRECT)) {
+                    noneCorrect = true;
+                    notEnough = true;
+                    previousLevel = sortedNiveau;
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(NOT_ENOUGH)) {
-                    nichtErreicht = true;
-                    vorangehendesNiveau = sortedNiveau;
+                if (reachedLevelsMap.get(sortedNiveau).equals(NOT_ENOUGH)) {
+                    notEnough = true;
+                    previousLevel = sortedNiveau;
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(JUST_ENOUGH)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix1(sortedNiveau); // STRICT MODE
+                if (reachedLevelsMap.get(sortedNiveau).equals(JUST_ENOUGH)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix1(sortedNiveau); // STRICT MODE
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ENOUGH)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix2(sortedNiveau);
+                if (reachedLevelsMap.get(sortedNiveau).equals(ENOUGH)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix2(sortedNiveau);
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ALL_CORRECT)) {
-                    aktuellErreicht = sortedNiveau;
+                if (reachedLevelsMap.get(sortedNiveau).equals(ALL_CORRECT)) {
+                    currentReached = sortedNiveau;
                     continue;
                 }
             }
-            if (keineRichtig) {
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ALL_CORRECT)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix2(vorangehendesNiveau);
-                    keineRichtig = false;
+            if (noneCorrect) {
+                if (reachedLevelsMap.get(sortedNiveau).equals(ALL_CORRECT)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix2(previousLevel);
+                    noneCorrect = false;
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ENOUGH)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix1(vorangehendesNiveau);
-                    keineRichtig = false;
+                if (reachedLevelsMap.get(sortedNiveau).equals(ENOUGH)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix1(previousLevel);
+                    noneCorrect = false;
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(JUST_ENOUGH)){
-                    keineRichtig = false;
+                if (reachedLevelsMap.get(sortedNiveau).equals(JUST_ENOUGH)){
+                    noneCorrect = false;
                     continue;
                 }
                 else break;
             }
-            if (nichtErreicht) {
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ALL_CORRECT)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix1(sortedNiveau);
-                    nichtErreicht = false;
+            if (notEnough) {
+                if (reachedLevelsMap.get(sortedNiveau).equals(ALL_CORRECT)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix1(sortedNiveau);
+                    notEnough = false;
                     continue;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(JUST_ENOUGH)) {
-                    aktuellErreicht = ETExerciseLevel.getNiveauMitPostfix1(vorangehendesNiveau);
-                    nichtErreicht = false;
+                if (reachedLevelsMap.get(sortedNiveau).equals(JUST_ENOUGH)) {
+                    currentReached = ETTaskLevel.getNiveauMitPostfix1(previousLevel);
+                    notEnough = false;
                     break;
                 }
-                if (erreichteNiveausMap.get(sortedNiveau).equals(ENOUGH)) {
-                    aktuellErreicht = vorangehendesNiveau;
-                    nichtErreicht = false;
+                if (reachedLevelsMap.get(sortedNiveau).equals(ENOUGH)) {
+                    currentReached = previousLevel;
+                    notEnough = false;
                 } else break;
             }
         }
-        ergebnisseDto.setMaxReachedLevel(aktuellErreicht);
+        ergebnisseDto.setMaxReachedLevel(currentReached);
     }
 
     private boolean noneCorrect(ETResultsDto ergebnisse){
         return ergebnisse.getNumberCorrectAnswers().equals((short)0);
     }
 
-    private void setNachNiveauAlleFalsch (ETExerciseLevel niveau, Map <ETExerciseLevel,Short> map) {
-        map.put(niveau,(short)0);
+    private void setPerLevelAllWrong(ETTaskLevel level, Map <ETTaskLevel,Short> map) {
+        map.put(level,(short)0);
     }
 
-    private void countRichtigeJeNiveau(ETExerciseLevel niveau, List<ETExerciseLevel> answers, Map <ETExerciseLevel,Short> map) {
-        Short richtige = (short)answers.stream().filter(niveau::equals).mapToInt(value -> 1).sum();
+    private void countCorrectPerLevel(ETTaskLevel level, List<ETTaskLevel> answers, Map <ETTaskLevel,Short> map) {
+        Short richtige = (short)answers.stream().filter(level::equals).mapToInt(value -> 1).sum();
 
-        map.put(niveau,richtige);
+        map.put(level,richtige);
     }
-
-    //.map(naSet -> evaluateLevel.apply(naSet.getValue(),schwelle))
-     /*private final BiPredicate <ETSchwelle,Short> alleRichtig = (schwelle, richtig) -> richtig.equals(schwelle.getMaximumSchwelle());
-    private final BiPredicate<ETSchwelle,Short> erreicht = (schwelle, richtig) -> richtig > schwelle.getMindestSchwelle();
-    private final BiPredicate<ETSchwelle,Short> knappErreicht = (schwelle,richtig) -> richtig.equals(schwelle.getMindestSchwelle());
-    private final BiPredicate<ETSchwelle,Short> nichtErreicht = (schwelle,richtig) -> richtig < schwelle.getMindestSchwelle() && richtig > 0;
-    private final BiPredicate<ETSchwelle,Short> keineRichtig = (schwelle,richtig) -> richtig == 0;*/
-
-    /*
-    private final BiFunction<Short, ETSchwelle, ETSchwellenErgebnis> evaluateLevel = (richtig, schwelle) -> {
-
-        return allright
-                .or(reached)
-                .or(allmostReached)
-                .or(notReached)
-                .test(schwelle,richtig);
-
-//        if(alleRichtig.test(schwelle,richtig)) return ALLE_RICHTIG;
-//        if(erreicht.test(schwelle,richtig)) return ERREICHT;
-//        if(knappErreicht.test(schwelle,richtig)) return KNAPP_ERREICHT;
-//        if(nichtErreicht.test(schwelle,richtig)) return NICHT_ERREICHT;
-//        return KEINE_RICHTIG;
-    };
-*/
 
 }

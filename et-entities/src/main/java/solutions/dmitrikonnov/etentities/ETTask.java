@@ -9,9 +9,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-import solutions.dmitrikonnov.etenums.ETExerciseFrontEndType;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
-import solutions.dmitrikonnov.etenums.ETExerciseTyp;
+import solutions.dmitrikonnov.etenums.ETTaskFrontEndType;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
+import solutions.dmitrikonnov.etenums.ETTaskTyp;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,18 +29,18 @@ import java.util.Set;
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table (name = "ET_EXERCISE", indexes = @Index(columnList = "EXERCISE_LEVEL", name = "ET_EXERCISE_LEVEL_IDX"))
-public class ETExercise {
+@Table (name = "ET_TASK", indexes = @Index(columnList = "TASK_LEVEL", name = "ET_TASK_LEVEL_IDX"))
+public class ETTask {
 
     @Id
-    @SequenceGenerator(name = "et_exercise_seq",
-            sequenceName = "et_exercise_seq",
+    @SequenceGenerator(name = "et_task_seq",
+            sequenceName = "et_task_seq",
             allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE,
-            generator = "et_exercise_seq")
-    private Integer exerciseId;
+            generator = "et_task_seq")
+    private Integer taskId;
 
-    private String exerciseDefinition;
+    private String taskDefinition;
 
     /*
     * mappedBy attribute which indicates that the @ManyToOne side is responsible for handling this bidirectional association
@@ -48,8 +48,8 @@ public class ETExercise {
     *Vergiss nicht: mappedBy bekommt den Namen, wie das Element im Kind genannt wird, also ggf. im ETItem: "aufgabe"
     *
     * */
-    @JsonIgnoreProperties ("exercise")
-    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "exercise")
+    @JsonIgnoreProperties ("task")
+    @OneToMany (cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "task")
     @Fetch(FetchMode.JOIN)
     private Set<ETItem> items; // Set or List?
 
@@ -59,12 +59,12 @@ public class ETExercise {
 
     public void addItem(ETItem item) {
         items.add(item);
-        item.setExercise(this);
+        item.setTask(this);
         numberItems++;
     }
     public void removeItem(ETItem item) {
         items.remove(item);
-        item.setExercise(null);
+        item.setTask(null);
         numberItems--;
     }
     /**
@@ -72,17 +72,17 @@ public class ETExercise {
      * */
 
     private short numberItems;
-    private String exerciseContent;
+    private String taskContent;
 
     @Enumerated(EnumType.STRING)
-    private ETExerciseTyp exerciseType;
+    private ETTaskTyp exerciseType;
 
-    @Column (name = "EXERCISE_LEVEL")
+    @Column (name = "TASK_LEVEL")
     @Enumerated(EnumType.STRING)
-    private ETExerciseLevel exerciseLevel;
+    private ETTaskLevel taskLevel;
 
     @Enumerated(EnumType.STRING)
-    private ETExerciseFrontEndType frontEndType;
+    private ETTaskFrontEndType frontEndType;
 
     private Integer weigh;
     private Long counter;

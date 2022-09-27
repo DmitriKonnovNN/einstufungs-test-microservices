@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import solutions.dmitrikonnov.dto.ETAnswerSheetDto;
 import solutions.dmitrikonnov.dto.ETEndResultForFE;
 import solutions.dmitrikonnov.dto.ETEndResultForFEinCaceOfException;
-import solutions.dmitrikonnov.dto.ETExerciseSet;
+import solutions.dmitrikonnov.dto.ETTaskSheet;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.ETResultsConverterAndPersister;
-import solutions.dmitrikonnov.etentities.ETExercise;
+import solutions.dmitrikonnov.etentities.ETTask;
 
 import java.util.Arrays;
 import java.util.List;
@@ -21,34 +21,34 @@ import java.util.concurrent.TimeoutException;
 @Service
 @AllArgsConstructor
 @Slf4j
-public class ETAufgabenService {
+public class ETTaskService {
 
-    private final ETExerciseSetter exSetter;
+    private final ETTaskSetter exSetter;
     private final ETAnswersChecker pruefer;
     private final ETResultsEvaluator evaluator;
     private final ETResultsConverterAndPersister converterAndPersister;
-    private final ETExerciseSetSetter setSetter;
+    private final ETExerciseSheetSetter setSetter;
 
 
     @Transactional(readOnly = true)
-    public ETExerciseSet getAufgabenListe (){
-        List<ETExercise> aufgesetzteListe = exSetter.setList();
+    public ETTaskSheet getTaskSet(){
+        List<ETTask> aufgesetzteListe = exSetter.setList();
         if(aufgesetzteListe.isEmpty()) return null;
-        ETExerciseSet set = setSetter.set(aufgesetzteListe);
+        ETTaskSheet set = setSetter.set(aufgesetzteListe);
         return set;
     }
 
 
     @Transactional
-    public ETEndResultForFE checkAntwortBogenAndGetTestErgebnisse (ETAnswerSheetDto answerSheet, ETExerciseSet chachedAufgabenBogen) {
+    public ETEndResultForFE checkAnswerSheetAndGetTestResults(ETAnswerSheetDto answerSheet, ETTaskSheet chachedAufgabenBogen) {
         var ergebnisseDto = pruefer.checkSheet(answerSheet, chachedAufgabenBogen);
         var ergebnisseDto1 = evaluator.evaluate(ergebnisseDto);
         Future<String> ergebnisseUUID = converterAndPersister.convertAndPersist(ergebnisseDto1);
 
         try {
             return ETEndResultForFE.builder()
-                    .reachedLevel(ergebnisseDto1.getMaxErreichtesNiveau())
-                    .zahlRichtigerAntworten(ergebnisseDto1.getZahlRichtigerAntworten().toString())
+                    .reachedLevel(ergebnisseDto1.getMaxReachedLevel())
+                    .numberCorrectAnswers(ergebnisseDto1.getNumberCorrectAnswers().toString())
                     .id(ergebnisseUUID.get(5, TimeUnit.SECONDS))
                     .build();
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -56,8 +56,8 @@ public class ETAufgabenService {
             ergebnisseUUID.cancel(true);
             return new ETEndResultForFEinCaceOfException(
                     ergebnisseDto1.getId(),
-                    ergebnisseDto1.getMaxErreichtesNiveau(),
-                    ergebnisseDto1.getZahlRichtigerAntworten().toString(),
+                    ergebnisseDto1.getMaxReachedLevel(),
+                    ergebnisseDto1.getNumberCorrectAnswers().toString(),
                     ergebnisseDto1);
         }
     }
