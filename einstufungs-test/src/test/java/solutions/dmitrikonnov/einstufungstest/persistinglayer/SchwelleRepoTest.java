@@ -7,8 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.ActiveProfiles;
-import solutions.dmitrikonnov.etentities.ETSchwelle;
-import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etentities.ETLimit;
+import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 
 
 @DataJpaTest
@@ -16,7 +16,7 @@ import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
 class SchwelleRepoTest {
 
     @Autowired
-    private SchwellenRepo underTest;
+    private LimitsRepo underTest;
 
     @BeforeEach
     void setUp() {
@@ -29,9 +29,9 @@ class SchwelleRepoTest {
     @Test
     void itShouldCheckIf_AllSchwellenFoundOrderByNiveauAscended() {
         //given
-        ETSchwelle mindestschwelle = ETSchwelle.builder()
+        ETLimit mindestschwelle = ETLimit.builder()
                 .id((short)1)
-                .niveau(ETAufgabenNiveau.A1)
+                .niveau(ETExerciseLevel.A1)
                 .maximumSchwelle((short)5)
                 .mindestSchwelle((short)2)
                 .build();

@@ -9,16 +9,16 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.test.context.ActiveProfiles;
-import solutions.dmitrikonnov.dto.ETAntwortBogenDto;
-import solutions.dmitrikonnov.dto.ETAufgabeDto;
-import solutions.dmitrikonnov.dto.ETAufgabenBogen;
-import solutions.dmitrikonnov.dto.ETErgebnisseDto;
+import solutions.dmitrikonnov.dto.ETAnswerSheetDto;
+import solutions.dmitrikonnov.dto.ETExerciseDto;
+import solutions.dmitrikonnov.dto.ETAnswerSheet;
+import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.etentities.*;
 
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.SchwellenRepo;
+import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.einstufungstest.utils.AntwortBogenCheckedEvent;
 import solutions.dmitrikonnov.einstufungstest.utils.ETAufgabenToDTOConverter;
-import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 
 import java.util.*;
 
@@ -26,27 +26,27 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-import static solutions.dmitrikonnov.etenums.ETAufgabenNiveau.*;
+import static solutions.dmitrikonnov.etenums.ETExerciseLevel.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
 class ETAntwortenPrueferTest {
 
     @Mock
-    private SchwellenRepo mindSchwRepoMock;
+    private LimitsRepo mindSchwRepoMock;
     @Mock
     private ApplicationEventPublisher publisherMock;
     private AntwortBogenCheckedEvent expectedEvent;
     private final Faker faker = new Faker();
     private ETAntwortenPruefer underTest;
-    private ETAntwortBogenDto givenAntwortBogen;
-    private ETAufgabenBogen givenCachedAufgabenBogen;
+    private ETAnswerSheetDto givenAntwortBogen;
+    private ETAnswerSheet givenCachedAufgabenBogen;
     private Map<Integer, List<String>> givenItemHashZuAMap;
-    private List<ETAufgabe> givenAufgabenListe = new ArrayList<>();
-    private List<ETSchwelle> mindestschwellen;
-    private ETErgebnisseDto expectedDto;
+    private List<ETExercise> givenAufgabenListe = new ArrayList<>();
+    private List<ETLimit> mindestschwellen;
+    private ETResultsDto expectedDto;
     private ETAufgabenToDTOConverter converter = new ETAufgabenToDTOConverter();
-    private List<ETAufgabeDto> givenAufgabenDTOListe = new ArrayList<>();
+    private List<ETExerciseDto> givenAufgabenDTOListe = new ArrayList<>();
 
 
     @BeforeEach
@@ -56,12 +56,12 @@ class ETAntwortenPrueferTest {
         underTest = new ETAntwortenPruefer(publisherMock,mindSchwRepoMock);
 
 
-        ETSchwelle schwelleA1 = ETSchwelle.builder().id((short)1).niveau(A1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
-        ETSchwelle schwelleA2 = ETSchwelle.builder().id((short)2).niveau(A2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
-        ETSchwelle schwelleB1 = ETSchwelle.builder().id((short)3).niveau(B1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
-        ETSchwelle schwelleB2 = ETSchwelle.builder().id((short)4).niveau(B2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
-        ETSchwelle schwelleC1 = ETSchwelle.builder().id((short)5).niveau(C1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
-        ETSchwelle schwelleC2 = ETSchwelle.builder().id((short)6).niveau(C2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleA1 = ETLimit.builder().id((short)1).niveau(A1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleA2 = ETLimit.builder().id((short)2).niveau(A2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleB1 = ETLimit.builder().id((short)3).niveau(B1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleB2 = ETLimit.builder().id((short)4).niveau(B2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleC1 = ETLimit.builder().id((short)5).niveau(C1).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
+        ETLimit schwelleC2 = ETLimit.builder().id((short)6).niveau(C2).mindestSchwelle((short)2).maximumSchwelle((short)5).build();
         mindestschwellen = new ArrayList<>();
         mindestschwellen.add(schwelleA1);
         mindestschwellen.add(schwelleA2);
@@ -129,28 +129,28 @@ class ETAntwortenPrueferTest {
                 .build();
 
 
-        ETAufgabe aufgabe1 = ETAufgabe.builder()
+        ETExercise aufgabe1 = ETExercise.builder()
                 .aufgabeId(4)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A1)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item1)))
                 .build();
-        ETAufgabe aufgabe2 = ETAufgabe.builder()
+        ETExercise aufgabe2 = ETExercise.builder()
                 .aufgabeId(8)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A1)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item2)))
                 .build();
-        ETAufgabe aufgabe3 = ETAufgabe.builder()
+        ETExercise aufgabe3 = ETExercise.builder()
                 .aufgabeId(9)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A2)
                 .aufgabenStellung("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item3)))
                 .build();
-        ETAufgabe aufgabe4 = ETAufgabe.builder()
+        ETExercise aufgabe4 = ETExercise.builder()
                 .aufgabeId(2)
                 .aufgabenTyp(ETAufgabenTyp.SPRACHBAUSTEINE)
                 .aufgabenNiveau(A2)
@@ -158,7 +158,7 @@ class ETAntwortenPrueferTest {
                 .items(new HashSet<>(Collections.singleton(item4)))
                 .build();
 
-        ETAufgabe aufgabe5 = ETAufgabe.builder()
+        ETExercise aufgabe5 = ETExercise.builder()
                 .aufgabeId(1)
                 .aufgabenInhalt("Maximilian\n" +
                         "Servus! Mein Name ist Maximilian Gruber. Ich komme aus Österreich und wohne in Wien. Ich habe eine Ausbildung zum Mechatroniker gemacht und arbeite jetzt in einer Autowerkstatt. Ich mag Autos! In der Freizeit spiele ich Fußball, fahre Rad und höre Musik. Ein Tag ohne Musik ist kein guter Tag!\n" +
@@ -194,7 +194,7 @@ class ETAntwortenPrueferTest {
                 .moeglicheAntworten(new HashSet<>(Arrays.asList("komme", "wohne", "lebe")))
                 .loesungen(Collections.singletonList("komme"))
                 .build();
-        ETAufgabe aufgabe6 = ETAufgabe.builder()
+        ETExercise aufgabe6 = ETExercise.builder()
                 .aufgabeId(3)
                 .aufgabenStellung("Wählen Sie das richrige Wort")
                 .aufgabenNiveau(A2)
@@ -220,7 +220,7 @@ class ETAntwortenPrueferTest {
             put(item12.getItemId(), item12.getLoesungen());
         }};
 
-        Map<Integer, ETAufgabenNiveau> itemZuNiveau = new HashMap<>(){{
+        Map<Integer, ETExerciseLevel> itemZuNiveau = new HashMap<>(){{
             put(item1.getItemId(),aufgabe1.getAufgabenNiveau());
             put(item2.getItemId(),aufgabe2.getAufgabenNiveau());
             put(item3.getItemId(),aufgabe3.getAufgabenNiveau());
@@ -254,7 +254,7 @@ class ETAntwortenPrueferTest {
             //givenAufgabenListe.a
         }
 */
-        givenCachedAufgabenBogen = new ETAufgabenBogen(
+        givenCachedAufgabenBogen = new ETAnswerSheet(
                 ABH,
                 givenAufgabenDTOListe,
                 System.currentTimeMillis(),
@@ -280,11 +280,11 @@ class ETAntwortenPrueferTest {
         }};
 
 
-        givenAntwortBogen = new ETAntwortBogenDto(ABH,givenItemHashZuAMap,1);
-        expectedDto = ETErgebnisseDto.builder()
-                .aufgabenBogenHash(ABH)
-                .zahlRichtigerAntworten((short)6)
-                .idZuRichtigkeitMap(new HashMap<>(){{
+        givenAntwortBogen = new ETAnswerSheetDto(ABH,givenItemHashZuAMap,1);
+        expectedDto = ETResultsDto.builder()
+                .exerciseSetHash(ABH)
+                .numberCorrectAnswers((short)6)
+                .idToCorrectnessMap(new HashMap<>(){{
                    put(item1.getItemId(),true);
                    put(item2.getItemId(),true);
                    put(item3.getItemId(),false);
@@ -298,8 +298,8 @@ class ETAntwortenPrueferTest {
                    put(item11.getItemId(),true);
                    put(item12.getItemId(),false);
                 }})
-                .RichtigeLoesungenNachNiveau(Arrays.asList(A1,A1,A1,A1,A2,A2))
-                .niveauZurZahlRichtiger(new HashMap<>(){{
+                .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,A2))
+                .levelToNumberOfCorrect(new HashMap<>(){{
                     put(A1,(short)0);
                     put(A2,(short)0);
                     put(B1,(short)0);
@@ -322,7 +322,7 @@ class ETAntwortenPrueferTest {
     void shouldcheckBogen() {
         //given
 
-        given(mindSchwRepoMock.findAllByOrderByNiveau()).willReturn(mindestschwellen);
+        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen);
         //when
         var actualResult = underTest.checkBogen(givenAntwortBogen, givenCachedAufgabenBogen);
         //then

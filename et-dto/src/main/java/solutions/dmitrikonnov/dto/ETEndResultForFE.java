@@ -2,14 +2,14 @@ package solutions.dmitrikonnov.dto;
 
 import lombok.Builder;
 import lombok.Getter;
-import solutions.dmitrikonnov.etenums.ETAufgabenNiveau;
+import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 
 @Builder
 @Getter
 public class ETEndResultForFE {
     private final String id;
 
-    private final ETAufgabenNiveau erreichtesNiveau;
+    private final ETExerciseLevel reachedLevel;
 
-    private final String zahlRichtigerAntworten;
+    private final String numberCorrectAnswers;
 }

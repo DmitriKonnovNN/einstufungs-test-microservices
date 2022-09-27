@@ -20,7 +20,7 @@ import java.util.Set;
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-@Table (name = "ET_ITEM", indexes = @Index(columnList = "ET_AUFGABE_ID", name = "ET_ITEM_AUFG_IDX"))
+@Table (name = "ET_ITEM", indexes = @Index(columnList = "ET_EXERCISE_ID", name = "ET_ITEM_EXERCISE_IDX"))
 public class ETItem {
 
     @Id
@@ -49,26 +49,26 @@ public class ETItem {
 
     @JsonIgnoreProperties("items")
     @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn(name ="ET_AUFGABE_ID")
-    private ETAufgabe aufgabe;
+    @JoinColumn(name ="ET_EXERCISE_ID")
+    private ETExercise exercise;
 
-    private String itemAufgabenInhalt;
+    private String itemExerciseContent;
 
     //@Fetch(FetchMode.SUBSELECT)
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "et_moegl_antw_set",
+            name = "et_possible_answer_set",
             joinColumns = @JoinColumn(name="ITEM_ID"))
-    private Set<String> moeglicheAntworten;
+    private Set<String> possibleAnswers;
 
 
 
     //@Fetch(FetchMode.SUBSELECT)
     @ElementCollection (fetch = FetchType.EAGER)
     @CollectionTable (
-            name = "et_loesungen_set",
+            name = "et_solutions_set",
             joinColumns = @JoinColumn(name="ITEM_ID"))
-    private List<String> loesungen;
+    private List<String> solutions;
 
     private Long counter;
     private Long counterCorrectAnswers;
