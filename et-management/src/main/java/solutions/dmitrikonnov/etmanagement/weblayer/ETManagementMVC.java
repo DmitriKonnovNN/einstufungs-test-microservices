@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Controller ("api/v2.0.0/verwaltung")
+@Controller ("api/v2.0.0/management")
 @AllArgsConstructor
 public class ETManagementMVC {
 

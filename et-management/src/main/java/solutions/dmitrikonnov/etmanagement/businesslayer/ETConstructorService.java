@@ -5,15 +5,17 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
-import solutions.dmitrikonnov.etentities.ETExercise;
+import solutions.dmitrikonnov.etentities.ETTask;
 import solutions.dmitrikonnov.etentities.ETItem;
 import solutions.dmitrikonnov.etentities.ETLimit;
-import solutions.dmitrikonnov.etmanagement.construct.ETAufgabeConstructDTO;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
+import solutions.dmitrikonnov.etmanagement.construct.ETTaskConstructDTO;
 import solutions.dmitrikonnov.etmanagement.construct.ETItemConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETSchwellenConstructDTO;
+import solutions.dmitrikonnov.etmanagement.construct.ETLimitConstructDTO;
 import solutions.dmitrikonnov.etmanagement.s3.BucketName;
 import solutions.dmitrikonnov.etmanagement.s3.S3FileStoreService;
+import solutions.dmitrikonnov.exceptions.TaskNotFoundException;
+import solutions.dmitrikonnov.exceptions.ThresholdNotFoundException;
 
 import javax.transaction.Transactional;
 import java.io.IOException;
@@ -80,22 +82,22 @@ public class ETConstructorService {
     }
 
 
-    public ETExercise addAufgabe(ETAufgabeConstructDTO aufgabe){
-        if(aufgabe.getItems().isEmpty()){
-            var aufgabeEntity = setUpLoneETAufgabeEntity(aufgabe);
+    public ETTask addTask(ETTaskConstructDTO task){
+        if(task.getItems().isEmpty()){
+            var aufgabeEntity = setUpLoneETAufgabeEntity(task);
             log.debug("Ready to save to DB: " + aufgabeEntity.toString());
             return aufgabenRepo.save(aufgabeEntity);
         }
-        var aufgabeEntity = setUpLoneETAufgabeEntity(aufgabe);
-        aufgabe.getItems().forEach(itemDto->
+        var aufgabeEntity = setUpLoneETAufgabeEntity(task);
+        task.getItems().forEach(itemDto->
             aufgabeEntity.addItem(setUpLoneETItem(itemDto)));
         log.debug("Ready to save to DB: " + aufgabeEntity.toString());
         return aufgabeEntity;
     }
 
-    public void addItemsToAufgabe (List<ETItemConstructDTO> items, Integer aufgabeId){
-        var aufgabe = aufgabenRepo.findById(aufgabeId)
-                .orElseThrow(()-> new TaskNotFoundException(aufgabeId));
+    public void addItemsToAufgabe (List<ETItemConstructDTO> items, Integer taskId){
+        var aufgabe = aufgabenRepo.findById(taskId)
+                .orElseThrow(()-> new TaskNotFoundException(taskId));
         items.forEach(item->aufgabe.addItem(setUpLoneETItem(item)));
         aufgabenRepo.save(aufgabe);
     }
@@ -106,13 +108,13 @@ public class ETConstructorService {
     public void deleteAufgabeSamtItems (Integer aufgabeId) {
 
     }
-    public List<ETExercise> findAllAufgaben(){
+    public List<ETTask> findAllTasks(){
         return aufgabenRepo.findAll();
     }
-    public List<ETExercise> findAllAufgabenByNiveau(ETExerciseLevel niveau){
-        return aufgabenRepo.findAllByAufgabenNiveau(niveau);
+    public List<ETTask> findAllAufgabenByNiveau(ETTaskLevel level){
+        return aufgabenRepo.findAllByAufgabenNiveau(level);
     }
-    public List<ETLimit> findAllSchwellen(){
+    public List<ETLimit> findAllLimits(){
         return schwellenRepo.findAll();
     }
 
@@ -122,53 +124,53 @@ public class ETConstructorService {
 
     }
 
-    public ETLimit addSchwelle(ETSchwellenConstructDTO schwelle) {
+    public ETLimit addSchwelle(ETLimitConstructDTO limit) {
 
         getMaxSchwellenByNiveaus();
         return schwellenRepo.save(ETLimit.builder()
-                .niveau(schwelle.getNiveau())
-                .mindestSchwelle(schwelle.getMindestSchwelle().shortValue())
-                .maximumSchwelle(schwelle.getMaximumSchwelle().shortValue())
+                .niveau(limit.getLevel())
+                .mindestSchwelle(limit.getMinLimit().shortValue())
+                .maximumSchwelle(limit.getMaxLimit().shortValue())
                 .build());
     }
 
-    public Map<ETExerciseLevel,Short> getMaxSchwellenByNiveaus (){
+    public Map<ETTaskLevel,Short> getMaxSchwellenByNiveaus (){
         return schwellenRepo.findMaximumSchwellenByNiveaus();
     }
 
-    public ETLimit updateSchwelle(ETSchwellenConstructDTO schwelle) {
-        var entity = findSchwelleByNiveau(schwelle.getNiveau());
-        entity.setMaximumSchwelle(schwelle.getMaximumSchwelle().shortValue());
-        entity.setMindestSchwelle(schwelle.getMindestSchwelle().shortValue());
+    public ETLimit updateSchwelle(ETLimitConstructDTO limit) {
+        var entity = findSchwelleByNiveau(limit.getLevel());
+        entity.setMaximumSchwelle(limit.getMaxLimit().shortValue());
+        entity.setMindestSchwelle(limit.getMinLimit().shortValue());
         return schwellenRepo.save(entity);
     }
 
-    public void patchSchwelle(ETSchwellenConstructDTO schwelle) {
-        if(schwellenRepo.existsByNiveau( schwelle.getNiveau())){
+    public void patchSchwelle(ETLimitConstructDTO limit) {
+        if(schwellenRepo.existsByNiveau( limit.getLevel())){
             schwellenRepo.updateByNiveau(
-                    schwelle.getNiveau(),
-                    schwelle.getMindestSchwelle().shortValue(),
-                    schwelle.getMaximumSchwelle().shortValue());
+                    limit.getLevel(),
+                    limit.getMinLimit().shortValue(),
+                    limit.getMaxLimit().shortValue());
         }
-        else throw new ThresholdNotFoundException(schwelle.getNiveau());
+        else throw new ThresholdNotFoundException(limit.getLevel());
     }
 
-    private ETExercise setUpLoneETAufgabeEntity(ETAufgabeConstructDTO dto) {
-        return ETExercise.builder()
-                .aufgabenInhalt(dto.getAufgabenInhalt())
-                .aufgabenNiveau(dto.getAufgabenNiveau())
-                .aufgabenStellung(dto.getAufgabenStellung())
-                .aufgabenTyp(dto.getAufgabenTyp())
+    private ETTask setUpLoneETAufgabeEntity(ETTaskConstructDTO dto) {
+        return ETTask.builder()
+                .taskContent(dto.getTaskContent())
+                .taskLevel(dto.getTaskLevel())
+                .taskDefinition(dto.getTaskDefinition())
+                .taskType(dto.getTaskType())
                 .frontEndType(dto.getFrontEndType())
-                .gewichtung(dto.getGewichtung())
+                .weigh(dto.getWeigh())
                 .build();
     }
 
     private ETItem setUpLoneETItem(ETItemConstructDTO dto) {
         return ETItem.builder()
-                .itemAufgabenInhalt(dto.getItemAufgabenInhalt())
-                .moeglicheAntworten(Set.copyOf(dto.getMoeglicheAntworten()))
-                .loesungen(dto.getLoesungen())
+                .itemTaskContent(dto.getItemTaskContent())
+                .possibleAnswers(Set.copyOf(dto.getPossibleSolutions()))
+                .solutions(dto.getSolutions())
                 .build();
     }
 }

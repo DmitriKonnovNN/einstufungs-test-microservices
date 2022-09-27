@@ -15,13 +15,13 @@ public class ETItemConstructDTO implements Serializable {
 
     private static final long serialVersionUID = -1798070786993154676L;
     @NotBlank
-    @JsonProperty("itemAufgabenInhalt")
-    private String itemAufgabenInhalt;
+    @JsonProperty("itemTaskContent")
+    private String itemTaskContent;
     @NotNull
-    @JsonProperty("moeglicheAntworten")
-    private List<String> moeglicheAntworten;
+    @JsonProperty("possibleSolutions")
+    private List<String> possibleSolutions;
     @NotNull
-    @JsonProperty ("loesungen")
-    private List<String> loesungen;
+    @JsonProperty ("solutions")
+    private List<String> solutions;
 
 }

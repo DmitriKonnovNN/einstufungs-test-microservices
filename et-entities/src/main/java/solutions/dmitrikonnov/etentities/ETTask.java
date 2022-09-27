@@ -11,7 +11,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import solutions.dmitrikonnov.etenums.ETTaskFrontEndType;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
-import solutions.dmitrikonnov.etenums.ETTaskTyp;
+import solutions.dmitrikonnov.etenums.ETTaskType;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -75,7 +75,7 @@ public class ETTask {
     private String taskContent;
 
     @Enumerated(EnumType.STRING)
-    private ETTaskTyp exerciseType;
+    private ETTaskType taskType;
 
     @Column (name = "TASK_LEVEL")
     @Enumerated(EnumType.STRING)

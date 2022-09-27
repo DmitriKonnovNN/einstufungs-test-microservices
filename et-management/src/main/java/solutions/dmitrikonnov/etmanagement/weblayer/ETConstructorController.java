@@ -6,13 +6,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import solutions.dmitrikonnov.etentities.ETTask;
 import solutions.dmitrikonnov.etenums.ETExerciseLevel;
 import solutions.dmitrikonnov.etentities.ETExercise;
 import solutions.dmitrikonnov.etentities.ETLimit;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etmanagement.businesslayer.ETConstructorService;
-import solutions.dmitrikonnov.etmanagement.construct.ETAufgabeConstructDTO;
+import solutions.dmitrikonnov.etmanagement.construct.ETTaskConstructDTO;
 import solutions.dmitrikonnov.etmanagement.construct.ETItemConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETSchwellenConstructDTO;
+import solutions.dmitrikonnov.etmanagement.construct.ETLimitConstructDTO;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -25,14 +27,14 @@ import java.util.Map;
 public class ETConstructorController {
     private final ETConstructorService service;
     @PostMapping("/tasks")
-    public ResponseEntity<ETExercise> addTask(@Valid @RequestBody ETAufgabeConstructDTO dto){
-        var result = service.addAufgabe(dto);
+    public ResponseEntity<ETTask> addTask(@Valid @RequestBody ETTaskConstructDTO dto){
+        var result = service.addTask(dto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(result);
     }
     @GetMapping("/tasks")
-    public ResponseEntity<List<ETExercise>> getAllAufgaben(){
-        return ResponseEntity.status(HttpStatus.OK).body(service.findAllAufgaben());
+    public ResponseEntity<List<ETTask>> getAllAufgaben(){
+        return ResponseEntity.status(HttpStatus.OK).body(service.findAllTasks());
     }
 
     @PutMapping(path = "/tasks/{id}/image",
@@ -58,23 +60,23 @@ public class ETConstructorController {
     }
 
     @PostMapping("/limits")
-    public ResponseEntity<ETLimit> addLimit(@Valid @RequestBody ETSchwellenConstructDTO schwelle){
+    public ResponseEntity<ETLimit> addLimit(@Valid @RequestBody ETLimitConstructDTO schwelle){
 
        return ResponseEntity.status(HttpStatus.CREATED).body(service.addSchwelle(schwelle));
     }
 
     @PutMapping("/limits")
-    public ResponseEntity<ETLimit> updateLimit (@Valid @RequestBody ETSchwellenConstructDTO schwelle){
+    public ResponseEntity<ETLimit> updateLimit (@Valid @RequestBody ETLimitConstructDTO schwelle){
         return ResponseEntity.status(HttpStatus.OK).body(service.updateSchwelle(schwelle));
     }
     @PatchMapping("/limits")
     @ResponseStatus(HttpStatus.OK)
-    public void patchLimit (@Valid @RequestBody ETSchwellenConstructDTO schwelle){
+    public void patchLimit (@Valid @RequestBody ETLimitConstructDTO schwelle){
         service.patchSchwelle(schwelle);
     }
 
     @GetMapping("/limits")
-    public Map<ETExerciseLevel,Short> getAllMaxLimits(){
+    public Map<ETTaskLevel,Short> getAllMaxLimits(){
         return service.getMaxSchwellenByNiveaus();
     }
 

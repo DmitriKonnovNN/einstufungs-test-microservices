@@ -37,12 +37,12 @@ class ETResultsEvaluatorTest {
 
     @BeforeAll
     static void setUpMindestSchwelle() {
-        ETLimit schwelleA1 = ETLimit.builder().id((short)1).niveau(A1).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
-        ETLimit schwelleA2 = ETLimit.builder().id((short)2).niveau(A2).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
-        ETLimit schwelleB1 = ETLimit.builder().id((short)3).niveau(B1).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
-        ETLimit schwelleB2 = ETLimit.builder().id((short)4).niveau(B2).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
-        ETLimit schwelleC1 = ETLimit.builder().id((short)5).niveau(C1).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
-        ETLimit schwelleC2 = ETLimit.builder().id((short)6).niveau(C2).mindestSchwelle((short)2).maximumSchwelle((short)4).build();
+        ETLimit schwelleA1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit schwelleA2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit schwelleB1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit schwelleB2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit schwelleC1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit schwelleC2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)2).maxLimit((short)4).build();
 
         mindestschwellen2 = new ArrayList<>();
         mindestschwellen2.add(schwelleA1);
@@ -52,12 +52,12 @@ class ETResultsEvaluatorTest {
         mindestschwellen2.add(schwelleC1);
         mindestschwellen2.add(schwelleC2);
 
-        ETLimit schwelle3A1 = ETLimit.builder().id((short)1).niveau(A1).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
-        ETLimit schwelle3A2 = ETLimit.builder().id((short)2).niveau(A2).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
-        ETLimit schwelle3B1 = ETLimit.builder().id((short)3).niveau(B1).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
-        ETLimit schwelle3B2 = ETLimit.builder().id((short)4).niveau(B2).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
-        ETLimit schwelle3C1 = ETLimit.builder().id((short)5).niveau(C1).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
-        ETLimit schwelle3C2 = ETLimit.builder().id((short)6).niveau(C2).mindestSchwelle((short)3).maximumSchwelle((short)5).build();
+        ETLimit schwelle3A1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit schwelle3A2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit schwelle3B1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit schwelle3B2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit schwelle3C1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit schwelle3C2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)3).maxLimit((short)5).build();
 
         mindestschwellen3 = new ArrayList<>();
         mindestschwellen3.add(schwelle3A1);
@@ -391,7 +391,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -429,7 +429,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -467,7 +467,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -504,7 +504,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -544,7 +544,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -582,7 +582,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -619,7 +619,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
 
@@ -657,7 +657,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -695,7 +695,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -733,7 +733,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -771,7 +771,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -808,7 +808,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -845,7 +845,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -883,7 +883,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -921,7 +921,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }
@@ -958,7 +958,7 @@ class ETResultsEvaluatorTest {
         var actualResult = underTest.evaluate(passedDto);
         //then
         assertThat(actualResult).isEqualTo(expectedDto);
-        log.info("Das erreichte Niveau: " + actualResult.getMaxErreichtesNiveau());
+        log.info("Das erreichte Niveau: " + actualResult.getMaxReachedLevel());
         log.debug(passedDto.toString());
 
     }

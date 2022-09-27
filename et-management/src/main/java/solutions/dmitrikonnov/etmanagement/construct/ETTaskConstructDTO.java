@@ -1,9 +1,9 @@
 package solutions.dmitrikonnov.etmanagement.construct;
 
 import lombok.Data;
-import solutions.dmitrikonnov.etenums.ETExerciseFrontEndType;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
-import solutions.dmitrikonnov.etenums.ETExerciseTyp;
+import solutions.dmitrikonnov.etenums.ETTaskFrontEndType;
+import solutions.dmitrikonnov.etenums.ETTaskLevel;
+import solutions.dmitrikonnov.etenums.ETTaskType;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -15,23 +15,23 @@ import java.util.List;
  * */
 
 @Data
-public class ETAufgabeConstructDTO implements Serializable {
+public class ETTaskConstructDTO implements Serializable {
     private static final long serialVersionUID = -1798070786993154676L;
 
 
     @NotBlank
-    private String aufgabenStellung;
+    private String taskDefinition;
     @NotNull
     private List<ETItemConstructDTO> items;
 
-    private String aufgabenInhalt;
+    private String taskContent;
 
-    private ETExerciseTyp aufgabenTyp;
+    private ETTaskType taskType;
     @NotNull
-    private ETExerciseLevel aufgabenNiveau;
+    private ETTaskLevel taskLevel;
 
-    private ETExerciseFrontEndType frontEndType;
+    private ETTaskFrontEndType frontEndType;
 
-    private Integer gewichtung;
+    private Integer weigh;
 
 }
