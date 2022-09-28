@@ -1,0 +1,29 @@
+server:
+  port: 8083
+
+
+spring:
+  application:
+    name: api-gateway
+  zipkin:
+    base-url: http://zipkin:9411
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: einstufungstest
+          uri: lb://einstufungstest
+          predicates:
+            - Path=/api/v1/customer/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka-server:8761/eureka
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    preferIpAddress: true
+    hostname: api-gateaway

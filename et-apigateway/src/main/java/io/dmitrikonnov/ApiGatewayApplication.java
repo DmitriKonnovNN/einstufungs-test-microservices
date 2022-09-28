@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest;
+package io.dmitrikonnov;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,11 +6,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 @SpringBootApplication
 @EnableEurekaClient
-
-public class EinstufungsTestApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(EinstufungsTestApplication.class, args);
-	}
-
+public class ApiGatewayApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(ApiGatewayApplication.class, args);
+    }
 }
