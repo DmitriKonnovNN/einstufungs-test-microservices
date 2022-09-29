@@ -83,7 +83,7 @@ class ETResultsEvaluatorTest {
     void evaluate2_reachedLevel_shouldBe_A0_if_noneCorrect() {
         //given
         passedDto = ETResultsDto.builder()
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)0)
                 .correctAnswersPerLevel(Collections.singletonList(null))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -111,7 +111,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-3")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)7)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A2,B1,B2,C1,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -147,7 +147,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-4")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)6)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,B1,B1,B2,C1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -183,7 +183,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-5")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)7)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A2,B1,B1,B2,C1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -219,7 +219,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-6")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)7)
                 .correctAnswersPerLevel(Collections.singletonList(A1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -255,7 +255,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-6")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)8)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,B1,B1,B1,B2,C1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -291,7 +291,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-7")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)8)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,B1,B1,B1,B2,C1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -327,7 +327,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-8")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)8)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A2,B1,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -363,7 +363,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-9")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)12)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,A2,B1,B1,B2,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -401,7 +401,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-10")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)16)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,A2,A2,B1,B1,B1,B2,B2,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -439,7 +439,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-11")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)16)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,A2,A2,B1,B1,B1,B2,B2,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -476,7 +476,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-12")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)16)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,A2,A2,B1,B2,B2,B2,C1,C1,C1,C2,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -516,7 +516,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-13")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)17)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,A2,A2,B1,B2,B2,C1,C1,C1,C2,C2,C2,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -554,7 +554,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-14")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)13)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,A2,A2,A2,B1,B1,B1,B2,C1))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -591,7 +591,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-15")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)12)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,A2,B1,B1,B1,B2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -629,7 +629,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-16")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)15)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,A2,A2,B1,B2,B2,C1,C1,C1,C2,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -667,7 +667,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-17")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)16)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A2,A2,A2,A2,A2,B1,B1,B2,B2,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -705,7 +705,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-18")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)13)
                 .correctAnswersPerLevel(Arrays.asList(A2,A2,A2,A2,A2,B1,B1,B2,B2,C1,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -743,7 +743,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-19")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)18)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A1,A2,A2,A2,A2,A2,B1,B1,B1,B2,B2,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -780,7 +780,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-20")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)19)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A1,A2,A2,A2,A2,A2,B1,B1,B1,B1,B2,B2,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -817,7 +817,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-21")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)18)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A1,A2,A2,A2,A2,B1,B1,B1,B1,B2,B2,C1,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -855,7 +855,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-22")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)18)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A1,A2,A2,A2,B1,B1,B1,B1,B2,B2,C1,C2,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -893,7 +893,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-23")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)17)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A1,A2,B1,B2,B2,B2,B2,B2,C1,C2,C2,C2,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{
@@ -930,7 +930,7 @@ class ETResultsEvaluatorTest {
         //given
         passedDto = ETResultsDto.builder()
                 .id("PASSED-DTO-ID-24")
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)15)
                 .correctAnswersPerLevel(Arrays.asList(A1,A1,A1,A1,A2,B1,B1,B1,B1,B1,B2,B2,B2,C1,C2))
                 .levelToNumberOfCorrect(new HashMap<>(){{

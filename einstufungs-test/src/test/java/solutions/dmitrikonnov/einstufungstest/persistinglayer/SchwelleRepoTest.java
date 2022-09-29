@@ -31,9 +31,9 @@ class SchwelleRepoTest {
         //given
         ETLimit mindestschwelle = ETLimit.builder()
                 .id((short)1)
-                .niveau(ETTaskLevel.A1)
-                .maximumSchwelle((short)5)
-                .mindestSchwelle((short)2)
+                .level(ETTaskLevel.A1)
+                .maxLimit((short)5)
+                .minLimit((short)2)
                 .build();
         underTest.save(mindestschwelle);
         //when

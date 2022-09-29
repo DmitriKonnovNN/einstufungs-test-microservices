@@ -16,7 +16,7 @@ public class ETTaskRestricterByLimit implements ETTaskRestricter {
 
     @Override
     public List<ETTask> restrict(List<ETTask> selectedAndReshuffeled, Map<ETTaskLevel,Short> levelToMax) {
-        var actualLevel = selectedAndReshuffeled.get(0).getExerciseLevel();
+        var actualLevel = selectedAndReshuffeled.get(0).getTaskLevel();
         var actualMaxSchwelle = levelToMax.get(actualLevel);
         int itemsCounter = 0;
         final List<ETTask>strictSelected = new ArrayList<>();

@@ -48,7 +48,7 @@ public class ETBuffer {
         }
         log.warn("ServeBuffer (allocated to {} ) has been filled up with {} elements", bufferAllocSize, toServeBuffer.size());
         toServeBuffer.forEach(b-> {
-            log.debug(b.orElseThrow(()->new NoTaskSetToServeException("No Bogen set up!")).getAufgabenBogenHash().toString());
+            log.debug(b.orElseThrow(()->new NoTaskSetToServeException("No Bogen set up!")).getTaskSheetHash().toString());
             b.get().getTaskList().stream()
                     .map(ETTaskDto::getTaskHash)
                     .map(Object::toString)

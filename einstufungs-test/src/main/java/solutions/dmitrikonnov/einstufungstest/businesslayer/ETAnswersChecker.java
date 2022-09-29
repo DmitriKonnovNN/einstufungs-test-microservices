@@ -41,11 +41,11 @@ public class ETAnswersChecker {
         final List<ETLimit> minLimits = limitsRepo.findAllByOrderByLevel() ;
         final List<ETTaskLevel> correctAnswersPerLevelTemp = new ArrayList<>();
 
-        minLimits.forEach(schwelle -> resultsDto
+        minLimits.forEach(limit -> resultsDto
                 .getLevelToNumberOfCorrect()
-                .put(schwelle.getLevel(),(short)0));
+                .put(limit.getLevel(),(short)0));
 
-        resultsDto.setExerciseSetHash(cachedExerciseSet.getTaskSheetHash());
+        resultsDto.setTaskSheetHash(cachedExerciseSet.getTaskSheetHash());
 
         itemHashToAnswersMap.forEach((hashedId, list) -> {
             var itemId = hashedId - cachedSetHash;

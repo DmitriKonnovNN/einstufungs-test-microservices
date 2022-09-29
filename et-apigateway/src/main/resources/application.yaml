@@ -1,5 +1,5 @@
 server:
-  port: 8083
+  port: 8080
 
 
 spring:
@@ -16,7 +16,11 @@ spring:
         - id: einstufungstest
           uri: lb://einstufungstest
           predicates:
-            - Path=/api/v1/customer/**
+            - Path=/api/v2.0.0/et_ufzgi
+        - id: et-management
+          uri: lb://et-management
+          predicates:
+            - Path=/api/v2.1.0/constructor
 
 eureka:
   client:

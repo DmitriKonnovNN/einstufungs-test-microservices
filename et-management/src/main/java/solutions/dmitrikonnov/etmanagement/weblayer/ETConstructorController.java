@@ -7,8 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import solutions.dmitrikonnov.etentities.ETTask;
-import solutions.dmitrikonnov.etenums.ETExerciseLevel;
-import solutions.dmitrikonnov.etentities.ETExercise;
+
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etmanagement.businesslayer.ETConstructorService;
@@ -40,7 +39,7 @@ public class ETConstructorController {
     @PutMapping(path = "/tasks/{id}/image",
             consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> addAufgabeImage(@RequestParam ("image") MultipartFile file, @PathVariable Integer id) throws IOException {
+    public ResponseEntity<String> addTaskImage(@RequestParam ("image") MultipartFile file, @PathVariable Integer id) throws IOException {
 
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.updateAufgabeImageById(id, file));
     }
@@ -60,19 +59,19 @@ public class ETConstructorController {
     }
 
     @PostMapping("/limits")
-    public ResponseEntity<ETLimit> addLimit(@Valid @RequestBody ETLimitConstructDTO schwelle){
+    public ResponseEntity<ETLimit> addLimit(@Valid @RequestBody ETLimitConstructDTO limit){
 
-       return ResponseEntity.status(HttpStatus.CREATED).body(service.addSchwelle(schwelle));
+       return ResponseEntity.status(HttpStatus.CREATED).body(service.addSchwelle(limit));
     }
 
     @PutMapping("/limits")
-    public ResponseEntity<ETLimit> updateLimit (@Valid @RequestBody ETLimitConstructDTO schwelle){
-        return ResponseEntity.status(HttpStatus.OK).body(service.updateSchwelle(schwelle));
+    public ResponseEntity<ETLimit> updateLimit (@Valid @RequestBody ETLimitConstructDTO limit){
+        return ResponseEntity.status(HttpStatus.OK).body(service.updateSchwelle(limit));
     }
     @PatchMapping("/limits")
     @ResponseStatus(HttpStatus.OK)
-    public void patchLimit (@Valid @RequestBody ETLimitConstructDTO schwelle){
-        service.patchSchwelle(schwelle);
+    public void patchLimit (@Valid @RequestBody ETLimitConstructDTO limit){
+        service.patchSchwelle(limit);
     }
 
     @GetMapping("/limits")

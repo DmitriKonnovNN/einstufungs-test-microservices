@@ -264,7 +264,7 @@ class ETAnswersCheckerTest {
 
         givenAnswerSheet = new ETAnswerSheetDto(ABH,givenItemHashZuAMap,1);
         expectedDto = ETResultsDto.builder()
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .numberCorrectAnswers((short)6)
                 .idToCorrectnessMap(new HashMap<>(){{
                    put(item1.getItemId(),true);

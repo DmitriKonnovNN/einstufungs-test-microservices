@@ -21,7 +21,7 @@ public class ETResultsDto implements Serializable {
 
     public ETResultsDto(ETResultsDto resultsDto) {
         this.id = resultsDto.getId();
-        this.exerciseSetHash = resultsDto.getExerciseSetHash();
+        this.taskSheetHash = resultsDto.getTaskSheetHash();
         this.maxReachedLevel = resultsDto.getMaxReachedLevel();
         this.numberCorrectAnswers = resultsDto.getNumberCorrectAnswers();
         this.correctAnswersPerLevel = resultsDto.getCorrectAnswersPerLevel();
@@ -31,7 +31,7 @@ public class ETResultsDto implements Serializable {
     }
 
     private  String id;
-    private  Integer exerciseSetHash;
+    private  Integer taskSheetHash;
     private ETTaskLevel maxReachedLevel;
     private  Short numberCorrectAnswers;
     private  List<ETTaskLevel> correctAnswersPerLevel = new ArrayList<>();

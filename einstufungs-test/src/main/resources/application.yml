@@ -216,7 +216,7 @@ server:
   error:
     include-message: always
     include-binding-errors: always
-  port: 8080
+  port: 8081
 spring:
   application:
     name: einstufungstest
@@ -227,9 +227,9 @@ spring:
     base-url: http://zipkin:9411
   datasource:
     password: P@ssw0rd
-    url: jdbc:postgresql://einstufungstest-db:5432/customer
+    url: jdbc:postgresql://einstufungstest-db:5432/einstufungstest
     username: root
-    driver-class-name: org.hibernate.dialect.PostgreSQLDialect
+    driver-class-name: org.postgresql.Driver
   #  second-datasource:
   #    password:
   #    url:
@@ -257,10 +257,10 @@ spring:
               LOG_QUERIES_SLOWER_THAN_MS: 3
         search:
           version: 5.11.7.Final
-
-sentry:
-  dsn: https://572fc37d0c98457293eedeabfceb7612@o1319089.ingest.sentry.io/6574242
-  in-app-includes: solutions.dmitrikonnov.einstufungstest
+#
+#sentry:
+#  dsn: https://572fc37d0c98457293eedeabfceb7612@o1319089.ingest.sentry.io/6574242
+#  in-app-includes: solutions.dmitrikonnov.einstufungstest
 eureka:
   client:
     service-url:

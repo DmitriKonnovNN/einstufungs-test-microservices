@@ -81,7 +81,7 @@ class ETResultsConverterAndPersisterTest {
 
         dtoGiven = ETResultsDto.builder()
                // .id(ID)
-                .exerciseSetHash(ABH)
+                .taskSheetHash(ABH)
                 .maxReachedLevel(MEN)
                 .numberCorrectAnswers(ZR)
                 .correctAnswersPerLevel(RLNN)
@@ -91,11 +91,11 @@ class ETResultsConverterAndPersisterTest {
         underTest = new ETResultsConverterAndPersister(repoMock);
 
         entityExpected = ETResults.builder()
-                .aufgabenBogenHash(ABH)
-                .maxErreichtesNiveau(MEN)
-                .zahlRichtigerAntworten(ZR)
-                .idZuRichtigkeitMap(IDZUR)
-                .niveauZurZahlRichtiger(NZZRSTRING)
+                .taskSheetHash(ABH)
+                .maxReachedLevel(MEN)
+                .numberCorrectAnswers(ZR)
+                .idToCorrectnessMap(IDZUR)
+                .levelToNumberCorrect(NZZRSTRING)
                 .build();
 
 
