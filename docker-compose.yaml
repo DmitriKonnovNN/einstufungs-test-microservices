@@ -1,0 +1,58 @@
+services:
+  et-db:
+    container_name: et-db
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: dmitri
+      POSTGRES_PASSWORD: P@ssw0rd
+      POSTGRES_MULTIPLE_DATABASES: einstufungstest, exams
+      PGDATA: /data/postgres
+      POSTGRES_INITDB_ARGS: "--auth-host=scram-sha-256 --auth-local=scram-sha-256"
+    volumes:
+      - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+      - postgres-et-db:/var/lib/data/postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - et-ntwk
+    restart: unless-stopped
+  zipkin:
+    image: openzipkin/zipkin
+    container_name: zipkin
+    networks:
+      - et-ntwk
+    ports:
+      - 9411:9411
+  api-gateway:
+    image: dmitriikonnovnn/et-apigateway:1.1-SNAPSHOT
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - exmmicros
+    depends_on:
+      - zipkin
+      - eureka-server
+  eureka-server:
+    container_name: eureka-server
+    image: dmitriikonnovnn/et-eureka-server:1.1-SNAPSHOT
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    networks:
+      - exmmicros
+    depends_on:
+      - zipkin
+
+
+networks:
+  et-ntwk:
+    driver: bridge
+  exmmicros:
+    driver: bridge
+
+volumes:
+  postgres-et-db:

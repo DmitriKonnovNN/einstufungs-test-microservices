@@ -228,7 +228,7 @@ spring:
   datasource:
     password: P@ssw0rd
     url: jdbc:postgresql://einstufungstest-db:5432/einstufungstest
-    username: root
+    username: dmitri
     driver-class-name: org.postgresql.Driver
   #  second-datasource:
   #    password:
