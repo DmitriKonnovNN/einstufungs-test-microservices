@@ -48,7 +48,7 @@
                         <version>3.2.0</version>
                         <configuration>
                             <container>
-                                <mainClass>io.dmitrikonnov.eurekaserver.EurekaServerApplication</mainClass>
+                                <mainClass>solutions.dmitrikonnov.eurekaserver.EurekaServerApplication</mainClass>
                             </container>
                         </configuration>
                     </plugin>

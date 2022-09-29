@@ -1,4 +1,4 @@
-package io.dmitrikonnov;
+package solutions.dmitrikonnov;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

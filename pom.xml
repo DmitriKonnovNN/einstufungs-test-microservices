@@ -29,6 +29,7 @@
 
   
   <properties>
+    <docker.jdk.image>eclipse-temurin:11-alpine@sha256:102d38b35b2404d379b1c2d36b4f2c6c8de7370faac2803044a9f3fd1fc5f875</docker.jdk.image>
     <java.version>11</java.version>
     <frontend-maven-plugin.version>1.11.2</frontend-maven-plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -114,15 +115,7 @@
           <version>3.2.0</version>
           <configuration>
             <from>
-              <image>openjdk:11-alpine</image>
-              <!--<platforms>
-                              <platforms>
-                                <architecture>
-                                  amd64
-                                </architecture>
-                                <os>windows</os>
-                              </platforms>
-                            </platforms>-->
+              <image>${docker.jdk.image}</image>
             </from>
             <to>
               <image>docker.io/dmitriikonnovnn/${project.artifactId}:${project.version}</image>

@@ -16,42 +16,62 @@ services:
     networks:
       - et-ntwk
     restart: unless-stopped
-  zipkin:
+
+  et-zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     networks:
       - et-ntwk
     ports:
       - 9411:9411
-  api-gateway:
+  et-api-gateway:
     image: dmitriikonnovnn/et-apigateway:1.1-SNAPSHOT
-    container_name: api-gateway
+    container_name: et-api-gateway
     ports:
       - "8080:8080"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker-eureka
     networks:
-      - exmmicros
+      - et-ntwk
     depends_on:
       - zipkin
       - eureka-server
-  eureka-server:
-    container_name: eureka-server
+  et-eureka-server:
+    container_name: et-eureka-server
     image: dmitriikonnovnn/et-eureka-server:1.1-SNAPSHOT
     ports:
       - "8761:8761"
     environment:
-      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_PROFILES_ACTIVE=docker-eureka
     networks:
-      - exmmicros
+      - et-ntwk
     depends_on:
       - zipkin
+  maildev:
+    image: maildev/maildev
+    container_name: maildev
+    ports:
+      - "1080:1080"
+      - "1025:1025"
 
+  einstufungstest:
+    image: dmitriikonnovnn/einstufungs-test:1.1-SNAPSHOT
+    container_name: einstufungstest
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker-eureka
+    networks:
+      - et-ntwk
+    depends_on:
+      - et-db
+      - et-zipkin
+      - et-eureka-server
+      - et-api-gateway
 
 networks:
   et-ntwk:
-    driver: bridge
-  exmmicros:
     driver: bridge
 
 volumes:
