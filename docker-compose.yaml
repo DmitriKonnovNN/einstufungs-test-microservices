@@ -1,3 +1,4 @@
+version: "3.9"
 services:
   et-db:
     container_name: et-db
@@ -17,13 +18,14 @@ services:
       - et-ntwk
     restart: unless-stopped
 
-  et-zipkin:
+  zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
     networks:
       - et-ntwk
     ports:
       - 9411:9411
+
   et-api-gateway:
     image: dmitriikonnovnn/et-apigateway:1.1-SNAPSHOT
     container_name: et-api-gateway
@@ -35,7 +37,7 @@ services:
       - et-ntwk
     depends_on:
       - zipkin
-      - eureka-server
+      - et-eureka-server
   et-eureka-server:
     container_name: et-eureka-server
     image: dmitriikonnovnn/et-eureka-server:1.1-SNAPSHOT
@@ -47,6 +49,7 @@ services:
       - et-ntwk
     depends_on:
       - zipkin
+
   maildev:
     image: maildev/maildev
     container_name: maildev
@@ -66,7 +69,7 @@ services:
       - et-ntwk
     depends_on:
       - et-db
-      - et-zipkin
+      - zipkin
       - et-eureka-server
       - et-api-gateway
 
