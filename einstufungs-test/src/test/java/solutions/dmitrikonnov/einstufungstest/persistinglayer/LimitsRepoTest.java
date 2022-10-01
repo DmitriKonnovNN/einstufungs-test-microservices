@@ -13,7 +13,7 @@ import solutions.dmitrikonnov.etenums.ETTaskLevel;
 
 @DataJpaTest
 @ActiveProfiles("unit-test")
-class SchwelleRepoTest {
+class LimitsRepoTest {
 
     @Autowired
     private LimitsRepo underTest;

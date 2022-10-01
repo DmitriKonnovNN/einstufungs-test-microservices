@@ -1,6 +1,5 @@
 package solutions.dmitrikonnov.einstufungstest.businesslayer;
 
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,12 +11,12 @@ import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.*;
 import solutions.dmitrikonnov.einstufungstest.ETAnswerSheetCheckedEvent;
 import solutions.dmitrikonnov.etentities.*;
-
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etenums.ETTaskType;
 import solutions.dmitrikonnov.etutils.ETTasksToDTOConverter;
+import solutions.dmitrikonnov.etutils.Randomizer;
 
 import java.util.*;
 
@@ -26,6 +25,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
+import static solutions.dmitrikonnov.etutils.Randomizer.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
@@ -36,7 +36,6 @@ class ETAnswersCheckerTest {
     @Mock
     private ApplicationEventPublisher publisherMock;
     private ETAnswerSheetCheckedEvent expectedEvent;
-    private final Faker faker = new Faker();
     private ETAnswersChecker underTest;
     private ETAnswerSheetDto givenAnswerSheet;
     private ETTaskSheet givenCachedTaskSheet;
@@ -51,7 +50,7 @@ class ETAnswersCheckerTest {
     @BeforeEach
     void setUp() {
 
-        int ABH = faker.number().numberBetween(1,10000);
+        int ABH = Randomizer.generate(1,1000);
         underTest = new ETAnswersChecker(publisherMock,mindSchwRepoMock);
 
 

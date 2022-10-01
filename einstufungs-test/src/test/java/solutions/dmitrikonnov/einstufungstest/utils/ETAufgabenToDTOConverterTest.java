@@ -1,6 +1,5 @@
 package solutions.dmitrikonnov.einstufungstest.utils;
 
-import com.github.javafaker.Faker;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,6 +13,7 @@ import solutions.dmitrikonnov.etentities.ETItem;
 import solutions.dmitrikonnov.etutils.ETTasksToDTOConverter;
 
 import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
+import solutions.dmitrikonnov.etutils.Randomizer;
 
 
 
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("unit-test")
 class ETAufgabenToDTOConverterTest {
 
-    private final Faker faker = new Faker();
+
     private ETTasksToDTOConverter underTest = new ETTasksToDTOConverter();
     private List<ETTask> givenAufgabenListe;
     private List<ETTaskDto> expectedListOfDto;
@@ -39,7 +39,7 @@ class ETAufgabenToDTOConverterTest {
         Random r = new Random();
         long range = 1234567L;
         ID = (long)(r.nextDouble()*range);
-        ABH = faker.number().numberBetween(1,10000);
+        ABH = Randomizer.generate(1,1000);
         givenAufgabenListe = new ArrayList<>();
         expectedListOfDto = new ArrayList<>();
     }

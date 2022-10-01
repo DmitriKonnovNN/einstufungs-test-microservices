@@ -1,6 +1,5 @@
 package solutions.dmitrikonnov.einstufungstest.businesslayer;
 
-import com.github.javafaker.Faker;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.etentities.ETLimit;
+import solutions.dmitrikonnov.etutils.Randomizer;
 
 import java.util.*;
 
@@ -73,9 +73,7 @@ class ETResultsEvaluatorTest {
     void setUp() {
         underTest = new ETResultsEvaluator(mindSchwRepoMock);
 
-        Faker faker = new Faker();
-        ABH = faker.number().numberBetween(1,10000);
-
+        ABH = Randomizer.generate(1,1000);
     }
 
 
