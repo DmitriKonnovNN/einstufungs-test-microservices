@@ -6,11 +6,9 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.EnableAspectJAutoProxy;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -29,6 +27,12 @@ import java.util.concurrent.Executor;
 @EnableConfigurationProperties
 @PropertySource(value = "classpath:etapplication.properties")
 @Slf4j
+@ComponentScan (basePackages = {"solutions.dmitrikonnov.etutils"})
+@EntityScan(basePackages = {
+        "solutions.dmitrikonnov.etentities",
+        "solutions.dmitrikonnov.einstufungtest",
+        "solutions.dmitrikonnov.etutils"
+})
 public class MainConfig {
 
     private final int avlblPrccrs = Runtime.getRuntime().availableProcessors();
@@ -59,7 +63,7 @@ public class MainConfig {
 
     @Bean
     public OpenAPI springShopOpenAPI() {
-        //fsdfsfsd
+
         return new OpenAPI()
                 .info(new Info().title("Einstungstest Application")
                         .description("Einstufungstest für ÖSD")

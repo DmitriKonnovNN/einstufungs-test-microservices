@@ -24,14 +24,14 @@ public class CaffeineCacheImpl {
 
     @Bean
     public CacheManager cacheManager(Ticker ticker) {
-        CacheSpec aufgaben = new CacheSpec("aufgaben",1440, 10_000);
-        CacheSpec schwelle = new CacheSpec("schwelle",10_080, 10_0000);
-        CacheSpec schwelleByNiveau = new CacheSpec("schwelle-by-niveau",10_080, 10_0000);
+        CacheSpec tasks = new CacheSpec("tasks",1440, 10_000);
+        CacheSpec limit = new CacheSpec("limit",10_080, 10_0000);
+        CacheSpec limitByLevel = new CacheSpec("limit-by-level",10_080, 10_0000);
         CacheSpec toCheckCache = new CacheSpec("to-check-cache",90,600);
         Map<String, CacheSpec> specs = new HashMap<>(){{
-            put(aufgaben.getName(),aufgaben);
-            put(schwelle.getName(),schwelle);
-            put(schwelleByNiveau.getName(),schwelleByNiveau);
+            put(tasks.getName(),tasks);
+            put(limit.getName(),limit);
+            put(limitByLevel.getName(),limitByLevel);
             put(toCheckCache.getName(),toCheckCache);
         }};
         SimpleCacheManager manager = new SimpleCacheManager();
@@ -48,7 +48,7 @@ public class CaffeineCacheImpl {
         final Caffeine<Object, Object> caffeineBuilder = Caffeine.newBuilder()
                 .expireAfterWrite(cacheSpec.getTimeout(), TimeUnit.MINUTES).maximumSize(cacheSpec.getMax())
                 .ticker(ticker);
-        if(name.equals("aufgaben"))caffeineBuilder.softValues();
+        if(name.equals("tasks"))caffeineBuilder.softValues();
         return new CaffeineCache(name, caffeineBuilder.build());
     }
 

@@ -21,7 +21,7 @@ public class ETResultsConverterAndPersister {
     private final ETResultsRepo repo;
 
     @Async
-    @Timed (value = "et.service.ergconverter-persister")
+    @Timed (value = "et.service.results-converter-persister")
     public Future<String> convertAndPersist(ETResultsDto resultsDto) {
 
         System.out.println("convert and persist THREAD: "+ Thread.currentThread().getName());
