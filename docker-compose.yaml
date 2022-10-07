@@ -58,7 +58,7 @@ services:
       - "1025:1025"
 
   einstufungstest:
-    image: dmitriikonnovnn/einstufungs-test:1.1-SNAPSHOT
+    image: dmitriikonnovnn/einstufungs-test:2.0-SNAPSHOT
     container_name: einstufungstest
     ports:
       - "8081:8081"

@@ -1,6 +1,4 @@
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: et-eureka-server
   zipkin:

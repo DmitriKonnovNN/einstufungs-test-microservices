@@ -15,14 +15,18 @@ spring:
         locator:
           enabled: true
       routes:
+#        - id: einstufungstest
+#          uri: http://localhost:8080
+#          predicates:
+#            - Path=/api/v2.0.0/et_ufzgi
         - id: einstufungstest
           uri: lb://einstufungstest
           predicates:
             - Path=/api/v2.0.0/et_ufzgi
-        - id: et-management
-          uri: lb://et-management
-          predicates:
-            - Path=/api/v2.1.0/constructor
+#        - id: et-management
+#          uri: lb://et-management
+#          predicates:
+#            - Path=/api/v2.1.0/constructor
 eureka:
   client:
     service-url:
@@ -30,5 +34,5 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
   instance:
-    preferIpAddress: true
+    preferIpAddress: false
     hostname: api-gateaway
