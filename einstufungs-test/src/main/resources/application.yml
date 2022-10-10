@@ -1,14 +1,14 @@
 spring:
   profiles:
-    active: local, localdocker, docker-eureka, local-k8s, aws-prod, aws-test, aws-k8s
+    active: local, local-docker, docker-eureka, local-k8s, aws-prod, aws-test, aws-k8s
 
 ---
 
 info:
   app:
-    name: Einstufungstest Application
-    description: none
-    version: snapshot 2.0
+    name: @project.name@
+    description: @project.description@
+    version: @project.name@
 
 server:
   error:
@@ -102,76 +102,21 @@ eureka:
   instance:
     hostname: einstufungstest
 
----
-
-
-info:
-  app:
-    name: Einstufungstest Application
-    description: none
-    version: snapshot 2.0
-
-server:
-  error:
-    include-message: always
-    include-binding-errors: always
-  port: 8080
-spring:
-  config:
-    activate:
-      on-profile: localdocker
-  datasource:
-    password: P@ssw0rd
-    url: jdbc:mysql://host.docker.internal:3306/einstufungs-test?createDatabaseIfNotExist=true&Unicode=true&serverTimezone=UTC
-    username: root
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  #  second-datasource:
-  #    password:
-  #    url:
-  #    username:
-  #    driver-class-name:
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        #        enable_lazy_load_no_trans: true
-        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-        jdbc:
-          lob:
-            non_contextual_creation: true
-        generate-statistics: true
-        format_sql: true
-        show-sql: true
-        use_sql_comments: true
-        query:
-          in_clause_parameter_padding: true
-        session:
-          events:
-            log:
-              LOG_QUERIES_SLOWER_THAN_MS: 3
-        search:
-          version: 5.11.7.Final
-
-sentry:
-  dsn: https://572fc37d0c98457293eedeabfceb7612@o1319089.ingest.sentry.io/6574242
-  in-app-includes: solutions.dmitrikonnov.einstufungstest
-
-
-#logging:
-#  level:
-#    org:
-#      hibernate:
-#        stat: debug
-#        SQL: TRACE
-#        type:
-#          descriptor:
-#            sql:
-#              BasicBinder: TRACE
-#  file:
-#    path: ./logs
-
-debug: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    jmx:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+      show-components: always
+      status:
+        order: out-of-service, down, up
 
 ---
 
