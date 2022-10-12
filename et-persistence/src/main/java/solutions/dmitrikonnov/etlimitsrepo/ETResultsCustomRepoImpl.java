@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Transactional(readOnly = true)
 public class ETResultsCustomRepoImpl implements ETResultsCustomRepo {
 

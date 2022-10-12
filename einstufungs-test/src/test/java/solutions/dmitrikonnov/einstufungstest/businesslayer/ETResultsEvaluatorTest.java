@@ -27,8 +27,8 @@ class ETResultsEvaluatorTest {
 
     @Mock
     private EtLimitsRepo minLimitRepoMock;
-    private static List<ETLimit> mindestschwellen2;
-    private static List<ETLimit> mindestschwellen3;
+    private static List<ETLimit> minLimits2;
+    private static List<ETLimit> minLimits3;
     private ETResultsEvaluator underTest;
     private ETResultsDto passedDto;
     private ETResultsDto expectedDto;
@@ -37,35 +37,35 @@ class ETResultsEvaluatorTest {
 
     @BeforeAll
     static void setUpMindestSchwelle() {
-        ETLimit schwelleA1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)2).maxLimit((short)4).build();
-        ETLimit schwelleA2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)2).maxLimit((short)4).build();
-        ETLimit schwelleB1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)2).maxLimit((short)4).build();
-        ETLimit schwelleB2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)2).maxLimit((short)4).build();
-        ETLimit schwelleC1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)2).maxLimit((short)4).build();
-        ETLimit schwelleC2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limA1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limA2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limB1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limB2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limC1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)2).maxLimit((short)4).build();
+        ETLimit limC2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)2).maxLimit((short)4).build();
 
-        mindestschwellen2 = new ArrayList<>();
-        mindestschwellen2.add(schwelleA1);
-        mindestschwellen2.add(schwelleA2);
-        mindestschwellen2.add(schwelleB1);
-        mindestschwellen2.add(schwelleB2);
-        mindestschwellen2.add(schwelleC1);
-        mindestschwellen2.add(schwelleC2);
+        minLimits2 = new ArrayList<>();
+        minLimits2.add(limA1);
+        minLimits2.add(limA2);
+        minLimits2.add(limB1);
+        minLimits2.add(limB2);
+        minLimits2.add(limC1);
+        minLimits2.add(limC2);
 
-        ETLimit schwelle3A1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)3).maxLimit((short)5).build();
-        ETLimit schwelle3A2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)3).maxLimit((short)5).build();
-        ETLimit schwelle3B1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)3).maxLimit((short)5).build();
-        ETLimit schwelle3B2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)3).maxLimit((short)5).build();
-        ETLimit schwelle3C1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)3).maxLimit((short)5).build();
-        ETLimit schwelle3C2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3A1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3A2 = ETLimit.builder().id((short)2).level(A2).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3B1 = ETLimit.builder().id((short)3).level(B1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3B2 = ETLimit.builder().id((short)4).level(B2).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3C1 = ETLimit.builder().id((short)5).level(C1).minLimit((short)3).maxLimit((short)5).build();
+        ETLimit lim3C2 = ETLimit.builder().id((short)6).level(C2).minLimit((short)3).maxLimit((short)5).build();
 
-        mindestschwellen3 = new ArrayList<>();
-        mindestschwellen3.add(schwelle3A1);
-        mindestschwellen3.add(schwelle3A2);
-        mindestschwellen3.add(schwelle3B1);
-        mindestschwellen3.add(schwelle3B2);
-        mindestschwellen3.add(schwelle3C1);
-        mindestschwellen3.add(schwelle3C2);
+        minLimits3 = new ArrayList<>();
+        minLimits3.add(lim3A1);
+        minLimits3.add(lim3A2);
+        minLimits3.add(lim3B1);
+        minLimits3.add(lim3B2);
+        minLimits3.add(lim3C1);
+        minLimits3.add(lim3C2);
 
     }
 
@@ -96,7 +96,7 @@ class ETResultsEvaluatorTest {
 
         expectedDto = new ETResultsDto(passedDto);
         expectedDto.setMaxReachedLevel(A0);
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -132,7 +132,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)1);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -168,7 +168,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -204,7 +204,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -240,7 +240,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)0);
             put(C2,(short)0);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -276,7 +276,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -312,7 +312,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -348,7 +348,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // ENDERGEBNIS: A1
             put(C2,(short)2);
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -384,7 +384,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // knapp erreicht = genau 50 %
             put(C2,(short)2); // // knapp erreicht = genau 50 %
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -422,7 +422,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (2/5)
             put(C2,(short)2); // nicht erreicht =       40 % (2/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -460,7 +460,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (2/5)
             put(C2,(short)2); // nicht erreicht =       40 % (2/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -497,7 +497,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)3); // knapp erreicht =       60 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -537,7 +537,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)5); // max erreicht aber egal = 100 % (5/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -575,7 +575,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)0); // nicht erreicht =       0 % (0/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -612,7 +612,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)0); // nicht erreicht =       0 % (0/5)
             put(C2,(short)0); // nicht erreicht =       0 % (0/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -650,7 +650,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)3); // knapp erreicht =       60 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -688,7 +688,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (3/5)
             put(C2,(short)2); // knicht erreicht =      40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -726,7 +726,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (3/5)
             put(C2,(short)2); // knicht erreicht =      40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -764,7 +764,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -801,7 +801,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -838,7 +838,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -876,7 +876,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)3); // nicht erreicht =       40 % (3/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -914,7 +914,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)4); // erreicht aber egal =      80 % (4/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -951,7 +951,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)1); // nciht erreicht =      20 % (1/5)
         }});
-        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(minLimits3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then

@@ -7,6 +7,7 @@ import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 @Entity
 @Setter
@@ -21,10 +22,8 @@ public class ETResults {
 
 
     @Id
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid",
-            strategy = "org.hibernate.id.UUIDGenerator")
-    private  String id;
+    @Column(insertable = true, updatable = false, unique = true)
+    private UUID id;
 
     private Integer taskSheetHash;
 

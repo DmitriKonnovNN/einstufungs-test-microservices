@@ -13,10 +13,12 @@ import solutions.dmitrikonnov.etentities.ETTask;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.stream.Stream;
 
 @Service
 @AllArgsConstructor
@@ -43,13 +45,12 @@ public class ETTaskService {
     public ETEndResultForFE checkAnswerSheetAndGetTestResults(ETAnswerSheetDto answerSheet, ETTaskSheet chachedAufgabenBogen) {
         var resultsDto = checker.checkSheet(answerSheet, chachedAufgabenBogen);
         var resultsDto1 = evaluator.evaluate(resultsDto);
-        Future<String> resultsUUID = converterAndPersister.convertAndPersist(resultsDto1);
-
+        Future<UUID> resultsUUID = converterAndPersister.convertAndPersist(resultsDto1);
         try {
             return ETEndResultForFE.builder()
                     .reachedLevel(resultsDto1.getMaxReachedLevel())
                     .numberCorrectAnswers(resultsDto1.getNumberCorrectAnswers().toString())
-                    .id(resultsUUID.get(5, TimeUnit.SECONDS))
+                    .id(resultsUUID.get(5, TimeUnit.SECONDS).toString())
                     .build();
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             log.error(Arrays.toString(e.getStackTrace()));//TODO: we need here some logic to notify person in charge about the fact of data base's gone.

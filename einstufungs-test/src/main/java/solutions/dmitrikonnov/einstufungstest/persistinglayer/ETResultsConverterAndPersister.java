@@ -11,6 +11,7 @@ import solutions.dmitrikonnov.etentities.ETResults;
 import solutions.dmitrikonnov.etlimitsrepo.ETResultsRepo;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.Future;
 import java.util.stream.Collectors;
 
@@ -23,10 +24,13 @@ public class ETResultsConverterAndPersister {
 
     @Async
     @Timed (value = "et.service.results-converter-persister")
-    public Future<String> convertAndPersist(ETResultsDto resultsDto) {
+    public Future<UUID> convertAndPersist(ETResultsDto resultsDto) {
+
+        var uuid = UUID.randomUUID();
 
         System.out.println("convert and persist THREAD: "+ Thread.currentThread().getName());
         ETResults results = ETResults.builder()
+                .id(uuid)
                 .taskSheetHash(resultsDto.getTaskSheetHash())
                 .numberCorrectAnswers(resultsDto.getNumberCorrectAnswers())
                 .maxReachedLevel(resultsDto.getMaxReachedLevel())
@@ -35,9 +39,9 @@ public class ETResultsConverterAndPersister {
                 .idToCorrectnessMap(resultsDto.getIdToCorrectnessMap())
                 .build();
         log.info("ErgebnisseDto {} converted to Entity {}", resultsDto,results);
-        String persistedUUID = repo.save(results).getId();
+
         log.info("ErgebnisseEntity {} persisted", results);
-        return new AsyncResult<>(persistedUUID);
+        return new AsyncResult<>(uuid);
     }
 
 }
