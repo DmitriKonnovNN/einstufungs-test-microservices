@@ -3,8 +3,8 @@ package solutions.dmitrikonnov.einstufungstest.weblayer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.Pingable;
 import solutions.dmitrikonnov.etentities.ETResults;
+import solutions.dmitrikonnov.etlimitsrepo.Pingable;
 
 @AllArgsConstructor
 @Service

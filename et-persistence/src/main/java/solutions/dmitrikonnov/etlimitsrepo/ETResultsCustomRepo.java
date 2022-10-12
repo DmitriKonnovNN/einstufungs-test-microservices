@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest.persistinglayer;
+package solutions.dmitrikonnov.etlimitsrepo;
 
 import java.util.Date;
 import java.util.Map;

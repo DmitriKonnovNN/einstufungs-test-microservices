@@ -9,10 +9,10 @@ import solutions.dmitrikonnov.dto.ETTaskSheet;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 
 import solutions.dmitrikonnov.einstufungstest.ETAnswerSheetCheckedEvent;
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class ETAnswersChecker {
 
     private final ApplicationEventPublisher publisher;
-    private final LimitsRepo limitsRepo;
+    private final EtLimitsRepo limitsRepo;
 
     public ETResultsDto checkSheet(ETAnswerSheetDto answersSheet, ETTaskSheet cachedExerciseSet) {
 

@@ -3,8 +3,9 @@ package solutions.dmitrikonnov.einstufungstest.businesslayer;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.etentities.ETTask;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
+import solutions.dmitrikonnov.ettaskrepo.ETTaskRepo;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -21,9 +22,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ETTaskSetter {
 
-    private final ETTaskRepo ETTaskRepo;
+    private final ETTaskRepo taskRepo;
     private final ETTaskRestricter aufgabenRestricter;
-    private final LimitsRepo limitsRepo;
+    private final EtLimitsRepo limitsRepo;
 
     //TODO: try out parallstream() instead of just stream()
     public List<ETTask> setList() {
@@ -31,7 +32,7 @@ public class ETTaskSetter {
         if(maxLimitMap.isEmpty()){
             log.warn("LimitsRepo is empty!");
         return Collections.emptyList();}
-        var allAufgaben = ETTaskRepo.findAllByOrderByTaskLevelAsc();
+        var allAufgaben = taskRepo.findAllByOrderByTaskLevelAsc();
         if(allAufgaben.isEmpty()){
             log.error("No Aufgaben found!");
             return Collections.emptyList();

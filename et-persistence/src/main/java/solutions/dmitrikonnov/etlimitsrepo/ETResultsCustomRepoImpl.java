@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest.persistinglayer;
+package solutions.dmitrikonnov.etlimitsrepo;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;

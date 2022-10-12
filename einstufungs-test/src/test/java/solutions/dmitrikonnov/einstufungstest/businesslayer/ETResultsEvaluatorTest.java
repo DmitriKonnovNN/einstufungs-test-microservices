@@ -10,8 +10,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ActiveProfiles;
 
 import solutions.dmitrikonnov.dto.ETResultsDto;
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.etentities.ETLimit;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
 import solutions.dmitrikonnov.etutils.Randomizer;
 
 import java.util.*;
@@ -26,7 +26,7 @@ import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
 class ETResultsEvaluatorTest {
 
     @Mock
-    private LimitsRepo mindSchwRepoMock;
+    private EtLimitsRepo minLimitRepoMock;
     private static List<ETLimit> mindestschwellen2;
     private static List<ETLimit> mindestschwellen3;
     private ETResultsEvaluator underTest;
@@ -71,7 +71,7 @@ class ETResultsEvaluatorTest {
 
     @BeforeEach
     void setUp() {
-        underTest = new ETResultsEvaluator(mindSchwRepoMock);
+        underTest = new ETResultsEvaluator(minLimitRepoMock);
 
         ABH = Randomizer.generate(1,1000);
     }
@@ -96,7 +96,7 @@ class ETResultsEvaluatorTest {
 
         expectedDto = new ETResultsDto(passedDto);
         expectedDto.setMaxReachedLevel(A0);
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -132,7 +132,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)1);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -168,7 +168,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -204,7 +204,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -240,7 +240,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)0);
             put(C2,(short)0);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -276,7 +276,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -312,7 +312,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1);
             put(C2,(short)0);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -348,7 +348,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // ENDERGEBNIS: A1
             put(C2,(short)2);
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -384,7 +384,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // knapp erreicht = genau 50 %
             put(C2,(short)2); // // knapp erreicht = genau 50 %
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen2);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -422,7 +422,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (2/5)
             put(C2,(short)2); // nicht erreicht =       40 % (2/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -460,7 +460,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (2/5)
             put(C2,(short)2); // nicht erreicht =       40 % (2/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -497,7 +497,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)3); // knapp erreicht =       60 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -537,7 +537,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)5); // max erreicht aber egal = 100 % (5/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -575,7 +575,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)0); // nicht erreicht =       0 % (0/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -612,7 +612,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)0); // nicht erreicht =       0 % (0/5)
             put(C2,(short)0); // nicht erreicht =       0 % (0/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -650,7 +650,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)3); // knapp erreicht =       60 % (3/5)
             put(C2,(short)3); // knapp erreicht =       60 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -688,7 +688,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (3/5)
             put(C2,(short)2); // knicht erreicht =      40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -726,7 +726,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)2); // nicht erreicht =       40 % (3/5)
             put(C2,(short)2); // knicht erreicht =      40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -764,7 +764,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -801,7 +801,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -838,7 +838,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)2); // nicht erreicht =       40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -876,7 +876,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)3); // nicht erreicht =       40 % (3/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -914,7 +914,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)4); // erreicht aber egal =      80 % (4/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then
@@ -951,7 +951,7 @@ class ETResultsEvaluatorTest {
             put(C1,(short)1); // nicht erreicht =       20 % (1/5)
             put(C2,(short)1); // nciht erreicht =      20 % (1/5)
         }});
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen3);
         //when
         var actualResult = underTest.evaluate(passedDto);
         //then

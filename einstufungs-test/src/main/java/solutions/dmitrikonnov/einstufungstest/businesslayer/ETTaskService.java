@@ -24,7 +24,7 @@ import java.util.concurrent.TimeoutException;
 public class ETTaskService {
 
     private final ETTaskSetter exSetter;
-    private final ETAnswersChecker pruefer;
+    private final ETAnswersChecker checker;
     private final ETResultsEvaluator evaluator;
     private final ETResultsConverterAndPersister converterAndPersister;
     private final ETExerciseSheetSetter setSetter;
@@ -41,7 +41,7 @@ public class ETTaskService {
 
     @Transactional
     public ETEndResultForFE checkAnswerSheetAndGetTestResults(ETAnswerSheetDto answerSheet, ETTaskSheet chachedAufgabenBogen) {
-        var ergebnisseDto = pruefer.checkSheet(answerSheet, chachedAufgabenBogen);
+        var ergebnisseDto = checker.checkSheet(answerSheet, chachedAufgabenBogen);
         var ergebnisseDto1 = evaluator.evaluate(ergebnisseDto);
         Future<String> ergebnisseUUID = converterAndPersister.convertAndPersist(ergebnisseDto1);
 

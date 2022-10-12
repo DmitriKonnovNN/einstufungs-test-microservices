@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.etentities.ETResults;
+import solutions.dmitrikonnov.etlimitsrepo.ETResultsRepo;
 
 import java.util.Map;
 import java.util.concurrent.Future;

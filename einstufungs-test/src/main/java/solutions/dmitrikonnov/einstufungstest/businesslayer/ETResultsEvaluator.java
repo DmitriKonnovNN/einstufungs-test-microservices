@@ -4,10 +4,10 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etenums.ETLimitResult;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ import static solutions.dmitrikonnov.etenums.ETLimitResult.*;
 @AllArgsConstructor
 public class ETResultsEvaluator {
 
-    private final LimitsRepo limitsRepo;
+    private final EtLimitsRepo limitsRepo;
 
 
     public ETResultsDto evaluate(ETResultsDto results) {

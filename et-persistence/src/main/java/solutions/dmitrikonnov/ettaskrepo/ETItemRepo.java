@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest.businesslayer;
+package solutions.dmitrikonnov.ettaskrepo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

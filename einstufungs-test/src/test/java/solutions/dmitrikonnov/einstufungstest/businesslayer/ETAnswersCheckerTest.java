@@ -11,10 +11,10 @@ import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.*;
 import solutions.dmitrikonnov.einstufungstest.ETAnswerSheetCheckedEvent;
 import solutions.dmitrikonnov.etentities.*;
-import solutions.dmitrikonnov.einstufungstest.persistinglayer.LimitsRepo;
 
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etenums.ETTaskType;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
 import solutions.dmitrikonnov.etutils.ETTasksToDTOConverter;
 import solutions.dmitrikonnov.etutils.Randomizer;
 
@@ -25,14 +25,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import static solutions.dmitrikonnov.etenums.ETTaskLevel.*;
-import static solutions.dmitrikonnov.etutils.Randomizer.*;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("unit-test")
 class ETAnswersCheckerTest {
 
     @Mock
-    private LimitsRepo mindSchwRepoMock;
+    private EtLimitsRepo minLimitRepoMock;
     @Mock
     private ApplicationEventPublisher publisherMock;
     private ETAnswerSheetCheckedEvent expectedEvent;
@@ -51,7 +50,7 @@ class ETAnswersCheckerTest {
     void setUp() {
 
         int ABH = Randomizer.generate(1,1000);
-        underTest = new ETAnswersChecker(publisherMock,mindSchwRepoMock);
+        underTest = new ETAnswersChecker(publisherMock, minLimitRepoMock);
 
 
         ETLimit schwelleA1 = ETLimit.builder().id((short)1).level(A1).minLimit((short)2).maxLimit((short)5).build();
@@ -303,7 +302,7 @@ class ETAnswersCheckerTest {
     void shouldcheckBogen() {
         //given
 
-        given(mindSchwRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen);
+        given(minLimitRepoMock.findAllByOrderByLevel()).willReturn(mindestschwellen);
         //when
         var actualResult = underTest.checkSheet(givenAnswerSheet, givenCachedTaskSheet);
         //then

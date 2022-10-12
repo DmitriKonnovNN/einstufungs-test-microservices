@@ -29,7 +29,7 @@ class ETAufgabenToDTOConverterTest {
 
 
     private ETTasksToDTOConverter underTest = new ETTasksToDTOConverter();
-    private List<ETTask> givenAufgabenListe;
+    private List<ETTask> givenTasksList;
     private List<ETTaskDto> expectedListOfDto;
     int ABH;
     long ID;
@@ -40,7 +40,7 @@ class ETAufgabenToDTOConverterTest {
         long range = 1234567L;
         ID = (long)(r.nextDouble()*range);
         ABH = Randomizer.generate(1,1000);
-        givenAufgabenListe = new ArrayList<>();
+        givenTasksList = new ArrayList<>();
         expectedListOfDto = new ArrayList<>();
     }
 
@@ -60,7 +60,7 @@ class ETAufgabenToDTOConverterTest {
                 .taskDefinition("Ergänzen Sie den Satz!")
                 .items(new HashSet<>(Collections.singleton(item1)))
                 .build();
-        givenAufgabenListe.add(aufgabe1);
+        givenTasksList.add(aufgabe1);
 
         ETItemDto itemDto = ETItemDto.builder()
                 .itemId(1+ABH)
@@ -77,7 +77,7 @@ class ETAufgabenToDTOConverterTest {
         expectedListOfDto.add(expectedDto);
 
         //when
-        var actualResult = underTest.convert(givenAufgabenListe,ABH);
+        var actualResult = underTest.convert(givenTasksList,ABH);
         //then
         assertThat(actualResult).isEqualTo(expectedListOfDto);
 
@@ -201,10 +201,10 @@ class ETAufgabenToDTOConverterTest {
                 .items(Arrays.asList(expectedItem5,expectedItem6,expectedItem7,expectedItem8,expectedItem9))
                 .build();
 
-        givenAufgabenListe.addAll(Arrays.asList(aufgabe2,aufgabe5));
+        givenTasksList.addAll(Arrays.asList(aufgabe2,aufgabe5));
         expectedListOfDto.addAll(Arrays.asList(expectedAufgabeDto2,expectedAufgabeDto5));
         //when
-        var actualResult = underTest.convert(givenAufgabenListe,ABH);
+        var actualResult = underTest.convert(givenTasksList,ABH);
         //then
         assertThat(actualResult).isEqualTo(expectedListOfDto);
 

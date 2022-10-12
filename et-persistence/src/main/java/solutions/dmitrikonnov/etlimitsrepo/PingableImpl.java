@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest.persistinglayer;
+package solutions.dmitrikonnov.etlimitsrepo;
 
 
 import org.springframework.transaction.annotation.Transactional;
@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Transactional(readOnly = true)
-public class PingableImpl implements Pingable{
+public class PingableImpl implements Pingable {
 
     @PersistenceContext
     private EntityManager entityManager;

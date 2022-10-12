@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.einstufungstest.persistinglayer;
+package solutions.dmitrikonnov.etlimitsrepo;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
