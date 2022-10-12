@@ -4,6 +4,7 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationToken;
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationTokenService;
@@ -22,7 +23,7 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
-    @Value("${app.userServiceImpl.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
+    @Value("${app.userService.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
     private final static String TOKEN_HAS_NOT_EXPIRED_MSG = "token hasn't expired yet";
     private final static String EMAIL_ALREADY_OCCUPIED_MSG = "email %s already occupied";
 

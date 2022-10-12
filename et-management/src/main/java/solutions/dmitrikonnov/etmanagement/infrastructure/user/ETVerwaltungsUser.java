@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import solutions.dmitrikonnov.einstufungstest.security.sUtils.UserRole;
-import solutions.dmitrikonnov.einstufungstest.verwaltung.user.userDto.UserDtoGetDetails;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
+import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
+
 
 import javax.persistence.*;
 import java.util.Collection;

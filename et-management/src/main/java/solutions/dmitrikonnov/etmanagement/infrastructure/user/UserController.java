@@ -7,8 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
-import solutions.dmitrikonnov.einstufungstest.verwaltung.user.userDto.UserDtoGetDetails;
-import solutions.dmitrikonnov.einstufungstest.verwaltung.user.userDto.UserDtoUpdateRole;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoUpdateRole;
 
 import javax.websocket.server.PathParam;
 import java.util.NoSuchElementException;

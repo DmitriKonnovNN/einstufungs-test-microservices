@@ -4,6 +4,9 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
@@ -19,8 +22,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     private final static String USER_ID_NOT_FOUND_MSG = "user with id %d not found";
 
 
-    @Value("${app.userServiceImpl.tokenExpirationTime}") public final int DEFAULT_TOKEN_EXPIRATION_MINUTES;
-    @Value("${app.userServiceImpl.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
+    @Value("${app.userService.tokenExpirationTime}") public final int DEFAULT_TOKEN_EXPIRATION_MINUTES;
+    @Value("${app.userService.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
 
     private final UserRepository userRepository;
     private final SignUpUserAndGetToken<String, ETVerwaltungsUser> signUpUserAndGetUUIDTokenImpl;

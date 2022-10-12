@@ -7,7 +7,8 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import solutions.dmitrikonnov.einstufungstest.exceptions.BadRequestParameterException;
+import solutions.dmitrikonnov.exceptions.BadRequestParameterException;
+
 
 import java.util.Optional;
 

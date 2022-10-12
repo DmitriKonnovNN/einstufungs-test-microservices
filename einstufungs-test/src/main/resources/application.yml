@@ -3,6 +3,13 @@ spring:
     active: local, local-docker, docker-eureka, local-k8s, aws-prod, aws-test, aws-k8s
 
 ---
+app:
+  cache:
+    toCheckCache:
+      config:
+        caffeine: eTBufferAndCaffeineCache
+  controller:
+    timeForTest: 3
 
 info:
   app:

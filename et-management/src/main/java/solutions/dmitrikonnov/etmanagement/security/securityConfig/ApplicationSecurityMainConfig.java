@@ -31,9 +31,9 @@ public class ApplicationSecurityMainConfig {
 
     /**
      * creates an instance of {@link WebSecurityConfigurerAdapter} by fetching the concerned bean name of its implementations
-     * with JWT-TOKEN {@link solutions.dmitrikonnov.einstufungstest.security.securityConfig.securityConfigImplementation.WebSecurityWithJwtConfig}
-     * or with LOGIN-FORM {@link solutions.dmitrikonnov.einstufungstest.security.securityConfig.securityConfigImplementation.WebSecurityWithLoginConfig }
-     * from the properties whose path is configured in {@link solutions.dmitrikonnov.einstufungstest.security.securityConfig.ApplicationSecurityMainConfig }.
+     * with JWT-TOKEN {@link solutions.dmitrikonnov.etmanagement.security.securityConfig.securityConfigImplementation.WebSecurityWithJwtConfig}
+     * or with LOGIN-FORM {@link solutions.dmitrikonnov.etmanagement.security.securityConfig.securityConfigImplementation.WebSecurityWithLoginConfig }
+     * from the properties whose path is configured in {@link solutions.dmitrikonnov.etmanagement.security.securityConfig.ApplicationSecurityMainConfig }.
      *
      * To start with a specific implementation interchange it in the properties with respect to bean's name to go for given as parameter in @Component.
      *

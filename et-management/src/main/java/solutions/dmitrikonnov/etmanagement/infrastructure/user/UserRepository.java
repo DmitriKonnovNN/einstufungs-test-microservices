@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import solutions.dmitrikonnov.einstufungstest.security.sUtils.UserRole;
-import solutions.dmitrikonnov.einstufungstest.verwaltung.user.userDto.UserDtoGetDetails;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
+import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import javax.validation.constraints.NotNull;
 import java.util.Optional;

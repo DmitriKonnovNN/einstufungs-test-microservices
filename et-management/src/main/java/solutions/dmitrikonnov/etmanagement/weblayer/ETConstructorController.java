@@ -61,7 +61,7 @@ public class ETConstructorController {
     @PostMapping("/limits")
     public ResponseEntity<ETLimit> addLimit(@Valid @RequestBody ETLimitConstructDTO limit){
 
-       return ResponseEntity.status(HttpStatus.CREATED).body(service.addSchwelle(limit));
+       return ResponseEntity.status(HttpStatus.CREATED).body(service.addLimit(limit));
     }
 
     @PutMapping("/limits")
@@ -71,12 +71,12 @@ public class ETConstructorController {
     @PatchMapping("/limits")
     @ResponseStatus(HttpStatus.OK)
     public void patchLimit (@Valid @RequestBody ETLimitConstructDTO limit){
-        service.patchSchwelle(limit);
+        service.patchLimit(limit);
     }
 
     @GetMapping("/limits")
     public Map<ETTaskLevel,Short> getAllMaxLimits(){
-        return service.getMaxSchwellenByNiveaus();
+        return service.getMaxLimitsByLevels();
     }
 
 

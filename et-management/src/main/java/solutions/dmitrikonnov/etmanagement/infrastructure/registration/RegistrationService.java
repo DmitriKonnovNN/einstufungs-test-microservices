@@ -9,6 +9,7 @@ import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.Con
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationTokenService;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETVerwaltungsUser;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.UserServiceImpl;
+import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import java.time.LocalDateTime;
 
@@ -31,7 +32,7 @@ public class RegistrationService {
                         request.getPassword(),
                         request.getEmail(),
                         UserRole.USER));
-        String link = "http://localhost:8080/api/v2.0.0/registration/confirm?token=" + token;
+        String link = "http://localhost:8087/api/v2.0.0/registration/confirm?token=" + token;
         mailgunService.send(request.getEmail()
                 ,buildEmail(request.getFirstName(), link));
         return  token;

@@ -2,7 +2,8 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import solutions.dmitrikonnov.einstufungstest.security.sUtils.UserRole;
+import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
+
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;

@@ -25,7 +25,6 @@ import java.util.concurrent.Executor;
 
 @EnableTransactionManagement
 @EnableConfigurationProperties
-@PropertySource(value = "classpath:etapplication.properties")
 @Slf4j
 @ComponentScan (basePackages = {"solutions.dmitrikonnov.etutils"})
 @EntityScan(basePackages = {

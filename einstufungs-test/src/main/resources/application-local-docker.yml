@@ -5,6 +5,13 @@ info:
     name: @project.name@
     description: @project.description@
     version: @project.name@
+app:
+  cache:
+    toCheckCache:
+      config:
+        caffeine: eTBufferAndCaffeineCache
+  controller:
+    timeForTest: 3
 
 server:
   error:

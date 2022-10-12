@@ -9,7 +9,23 @@ info:
     name: @project.name@
     description: @project.description@
     version: @project.name@
-
+app:
+  userService:
+    tokenExpirationTime: 5
+    maxTokenExpirationTime:
+      min: 60
+      hours: 24
+      days: 30
+  jwt:
+    token:
+      secretKey: P@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rd
+  security:
+    webSecurityAdapterQualifier: permitAll
+    daoAuthenticationProvider: inDataBase
+aws:
+  s3:
+    region:
+      name: us-east-1
 server:
   error:
     include-message: always
@@ -72,6 +88,9 @@ spring:
           connectiontimeout: 5000
           timeout: 3000
           writetimeout: 5000
+mailgun:
+  api:
+    privatekey:
 
 eureka:
   client:

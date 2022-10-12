@@ -5,6 +5,19 @@ info:
     name: @project.name@
     description: @project.description@
     version: @project.name@
+app:
+  userServiceImpl:
+    tokenExpirationTime: 5
+    maxTokenExpirationTime:
+      min: 60
+      hours: 24
+      days: 30
+  jwt:
+    token:
+      secretKey: P@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rd
+  security:
+    webSecurityAdapterQualifier: permitAll
+    daoAuthenticationProvider: inDataBase
 
 server:
   error:
@@ -58,3 +71,6 @@ eureka:
     fetch-registry: true
     register-with-eureka: true
     enabled: true
+mailgun:
+  api:
+    privatekey:

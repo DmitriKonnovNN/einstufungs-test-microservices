@@ -86,11 +86,11 @@ public class ETConstructorService {
 
     public ETTask addTask(ETTaskConstructDTO task){
         if(task.getItems().isEmpty()){
-            var aufgabeEntity = setUpLoneETAufgabeEntity(task);
+            var aufgabeEntity = setUpLoneETTaskEntity(task);
             log.debug("Ready to save to DB: " + aufgabeEntity.toString());
             return etTaskRepo.save(aufgabeEntity);
         }
-        var aufgabeEntity = setUpLoneETAufgabeEntity(task);
+        var aufgabeEntity = setUpLoneETTaskEntity(task);
         task.getItems().forEach(itemDto->
             aufgabeEntity.addItem(setUpLoneETItem(itemDto)));
         log.debug("Ready to save to DB: " + aufgabeEntity.toString());
@@ -126,17 +126,17 @@ public class ETConstructorService {
 
     }
 
-    public ETLimit addSchwelle(ETLimitConstructDTO limit) {
+    public ETLimit addLimit(ETLimitConstructDTO limit) {
 
-        getMaxSchwellenByNiveaus();
+        getMaxLimitsByLevels();
         return limitsRepo.save(ETLimit.builder()
-                .niveau(limit.getLevel())
-                .mindestSchwelle(limit.getMinLimit().shortValue())
-                .maximumSchwelle(limit.getMaxLimit().shortValue())
+                .level(limit.getLevel())
+                .minLimit(limit.getMinLimit().shortValue())
+                .maxLimit(limit.getMaxLimit().shortValue())
                 .build());
     }
 
-    public Map<ETTaskLevel,Short> getMaxSchwellenByNiveaus (){
+    public Map<ETTaskLevel,Short> getMaxLimitsByLevels(){
         return limitsRepo.findMaximumLimitByLevels();
     }
 
@@ -147,7 +147,7 @@ public class ETConstructorService {
         return limitsRepo.save(entity);
     }
 
-    public void patchSchwelle(ETLimitConstructDTO limit) {
+    public void patchLimit(ETLimitConstructDTO limit) {
         if(limitsRepo.existsByLevel( limit.getLevel())){
             limitsRepo.updateByLevel(
                     limit.getLevel(),
@@ -157,7 +157,7 @@ public class ETConstructorService {
         else throw new ThresholdNotFoundException(limit.getLevel());
     }
 
-    private ETTask setUpLoneETAufgabeEntity(ETTaskConstructDTO dto) {
+    private ETTask setUpLoneETTaskEntity(ETTaskConstructDTO dto) {
         return ETTask.builder()
                 .taskContent(dto.getTaskContent())
                 .taskLevel(dto.getTaskLevel())

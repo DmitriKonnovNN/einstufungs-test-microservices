@@ -9,13 +9,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EntityScan(basePackages = {
-        "solutions.dmitrikonnov.etentities",
-})
-@EnableAsync
-@EnableAspectJAutoProxy
-@EnableScheduling
-@OpenAPIDefinition
 public class EtManagementApplication {
     public static void main(String[] args) {
         SpringApplication.run(EtManagementApplication.class, args);
