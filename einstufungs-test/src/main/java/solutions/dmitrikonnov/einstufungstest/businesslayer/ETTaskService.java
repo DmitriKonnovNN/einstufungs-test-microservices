@@ -41,24 +41,24 @@ public class ETTaskService {
 
     @Transactional
     public ETEndResultForFE checkAnswerSheetAndGetTestResults(ETAnswerSheetDto answerSheet, ETTaskSheet chachedAufgabenBogen) {
-        var ergebnisseDto = checker.checkSheet(answerSheet, chachedAufgabenBogen);
-        var ergebnisseDto1 = evaluator.evaluate(ergebnisseDto);
-        Future<String> ergebnisseUUID = converterAndPersister.convertAndPersist(ergebnisseDto1);
+        var resultsDto = checker.checkSheet(answerSheet, chachedAufgabenBogen);
+        var resultsDto1 = evaluator.evaluate(resultsDto);
+        Future<String> resultsUUID = converterAndPersister.convertAndPersist(resultsDto1);
 
         try {
             return ETEndResultForFE.builder()
-                    .reachedLevel(ergebnisseDto1.getMaxReachedLevel())
-                    .numberCorrectAnswers(ergebnisseDto1.getNumberCorrectAnswers().toString())
-                    .id(ergebnisseUUID.get(5, TimeUnit.SECONDS))
+                    .reachedLevel(resultsDto1.getMaxReachedLevel())
+                    .numberCorrectAnswers(resultsDto1.getNumberCorrectAnswers().toString())
+                    .id(resultsUUID.get(5, TimeUnit.SECONDS))
                     .build();
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             log.error(Arrays.toString(e.getStackTrace()));//TODO: we need here some logic to notify person in charge about the fact of data base's gone.
-            ergebnisseUUID.cancel(true);
+            resultsUUID.cancel(true);
             return new ETEndResultForFEinCaceOfException(
-                    ergebnisseDto1.getId(),
-                    ergebnisseDto1.getMaxReachedLevel(),
-                    ergebnisseDto1.getNumberCorrectAnswers().toString(),
-                    ergebnisseDto1);
+                    resultsDto1.getId(),
+                    resultsDto1.getMaxReachedLevel(),
+                    resultsDto1.getNumberCorrectAnswers().toString(),
+                    resultsDto1);
         }
     }
 
