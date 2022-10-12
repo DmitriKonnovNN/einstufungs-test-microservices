@@ -10,6 +10,7 @@ import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGe
 import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Optional;
 
 @Transactional(readOnly = true)
@@ -17,6 +18,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository <ETManagementUser, Long> {
 
     Optional<ETManagementUser> findUserEntityByEmail (String email);
+
+    List<ETManagementUser>findAllByRoleAsc(UserRole role);
 
     boolean existsById (@NotNull Long id);
 

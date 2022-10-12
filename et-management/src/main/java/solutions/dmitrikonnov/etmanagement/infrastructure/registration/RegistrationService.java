@@ -2,6 +2,7 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.registration;
 
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import solutions.dmitrikonnov.etmanagement.email.EmailSender;
@@ -21,6 +22,7 @@ public class RegistrationService {
     private final ConfirmationTokenService confirmationTokenService;
     @Qualifier ("mailgunService")
     private final EmailSender mailgunService;
+    private final static String REQ_PROCCESSED_MSG = "Your request has been sent to administrator. Once he/she confirms your identity, you'll be notified over email.";
 
     protected String registerWithRole (RegistrationRequestWithRole request){
         String token =  userServiceImpl.signUpUserAndGetToken(new ETManagementUser(
@@ -35,17 +37,12 @@ public class RegistrationService {
     }
 
 
-    public String register (RegistrationRequest request){
-        String token =  userServiceImpl.signUpUserAndGetToken(new ETManagementUser(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getPassword(),
-                        request.getEmail(),
-                        UserRole.USER));
-        String link = "http://localhost:8087/api/v2.0.0/registration/confirm?token=" + token;
-        mailgunService.send(request.getEmail()
-                ,buildEmail(request.getFirstName(), link));
-        return  token;
+    @Async
+    public String registerSelf(RegistrationRequest request){
+
+        userServiceImpl.notifyAdminAboutNewUserRequest(request);
+
+        return REQ_PROCCESSED_MSG;
     }
 
     @Transactional

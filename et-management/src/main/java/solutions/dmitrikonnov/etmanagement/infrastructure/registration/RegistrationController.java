@@ -18,11 +18,16 @@ public class RegistrationController {
 
     RegistrationService registrationService;
 
-    @PostMapping
+    @PostMapping("/withRole")
     @PreAuthorize("hasAuthority('management:register')")
-    public String registerWithRole(@Valid @RequestBody RegistrationRequestWithRole registrationRequest){
+    public String registerWithRole(@Valid @RequestBody RegistrationRequestWithRole request){
 
-        return registrationService.registerWithRole(registrationRequest);
+        return registrationService.registerWithRole(request);
+    }
+
+    public String register(@Valid @RequestBody RegistrationRequest request){
+        registrationService.registerSelf(request);
+        return "";
     }
     @GetMapping (path = "confirm")
     public String confirm (@RequestParam ("token") String token) {

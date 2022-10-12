@@ -2,6 +2,7 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,14 +10,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import solutions.dmitrikonnov.etmanagement.infrastructure.registration.RegistrationRequest;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoUpdateRole;
+import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service ("userServiceImpl")
 @Transactional
 @AllArgsConstructor (onConstructor_ ={@Autowired})
+@Slf4j
 public class UserServiceImpl implements UserDetailsService, UserService {
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
     private final static String USER_ID_NOT_FOUND_MSG = "user with id %d not found";
@@ -83,4 +89,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return signUpUserAndGetUUIDTokenImpl.signUpUserAndGetToken(ETManagementUser);
     }
 
+    @Override
+    public void notifyAdminAboutNewUserRequest(RegistrationRequest request) {
+        Optional.ofNullable(userRepository.findAllByRoleAsc(UserRole.SUPERADMIN))
+                .orElseGet(()->userRepository.findAllByRoleAsc(UserRole.ROOT))
+                .stream()
+                .peek(u->log.info("{} was notified about request {}.",u.getFullnameAndRoles(),request))
+                .forEach(CustomNotification::notifyAdmin);
+
+    }
 }

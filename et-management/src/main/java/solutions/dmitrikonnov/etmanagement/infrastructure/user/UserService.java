@@ -1,6 +1,7 @@
 package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 
 
+import solutions.dmitrikonnov.etmanagement.infrastructure.registration.RegistrationRequest;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoUpdateRole;
 
@@ -17,5 +18,7 @@ public interface UserService {
     public UserDtoGetDetails getDetails (Long id);
     public void setExpirationTimeOfToken (int minutes);
     public int resetExpirationTimeOfToken ();
+    void notifyAdminAboutNewUserRequest(RegistrationRequest request);
+
 
 }
