@@ -11,9 +11,9 @@ import solutions.dmitrikonnov.etentities.ETTask;
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etmanagement.businesslayer.ETConstructorService;
-import solutions.dmitrikonnov.etmanagement.construct.ETTaskConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETItemConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETLimitConstructDTO;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETTaskConstructDTO;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETItemConstructDTO;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETLimitConstructDTO;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -32,7 +32,7 @@ public class ETConstructorController {
                 .body(result);
     }
     @GetMapping("/tasks")
-    public ResponseEntity<List<ETTask>> getAllAufgaben(){
+    public ResponseEntity<List<ETTask>> getAllTasks(){
         return ResponseEntity.status(HttpStatus.OK).body(service.findAllTasks());
     }
 
@@ -41,7 +41,7 @@ public class ETConstructorController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> addTaskImage(@RequestParam ("image") MultipartFile file, @PathVariable Integer id) throws IOException {
 
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.updateAufgabeImageById(id, file));
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.updateTaskImageByTaskId(id, file));
     }
     @GetMapping(value = "/tasks/{id}/image")
     public byte[] downloadTodoImage(@PathVariable("id") int id) {

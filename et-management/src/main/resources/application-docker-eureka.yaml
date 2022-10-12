@@ -1,0 +1,60 @@
+---
+
+info:
+  app:
+    name: @project.name@
+    description: @project.description@
+    version: @project.name@
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+  port: 8087
+spring:
+  config:
+    activate:
+      on-profile: docker-eureka
+  application:
+    name: et-management
+  datasource:
+    password: P@ssw0rd
+    url: jdbc:postgresql://einstufungstest-db:5432/einstufungstest
+    username: dmitri
+    driver-class-name: org.postgresql.Driver
+  #  second-datasource:
+  #    password:
+  #    url:
+  #    username:
+  #    driver-class-name:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        #        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          lob:
+            non_contextual_creation: true
+        generate-statistics: true
+        format_sql: true
+        show-sql: true
+        use_sql_comments: true
+        query:
+          in_clause_parameter_padding: true
+        session:
+          events:
+            log:
+              LOG_QUERIES_SLOWER_THAN_MS: 3
+        search:
+          version: 5.11.7.Final
+  zipkin:
+    base-url: http://zipkin:9411
+eureka:
+  client:
+    service-url:
+      defaultZone: http://et-eureka-server:8761/eureka/
+    fetch-registry: true
+    register-with-eureka: true
+    enabled: true

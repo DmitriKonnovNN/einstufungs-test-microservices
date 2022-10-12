@@ -24,6 +24,7 @@
     <module>et-utils</module>
     <module>et-eureka-server</module>
     <module>et-exceptions-handlers</module>
+      <module>et-persistence</module>
   </modules>
 
 

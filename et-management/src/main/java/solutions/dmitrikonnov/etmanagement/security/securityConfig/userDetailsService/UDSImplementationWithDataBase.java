@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import solutions.dmitrikonnov.etmanagement.verwaltung.user.UserServiceImpl;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.UserServiceImpl;
 
 
 @Component("inDataBase")

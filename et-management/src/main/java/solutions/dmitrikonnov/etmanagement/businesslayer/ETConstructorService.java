@@ -9,11 +9,13 @@ import solutions.dmitrikonnov.etentities.ETTask;
 import solutions.dmitrikonnov.etentities.ETItem;
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
-import solutions.dmitrikonnov.etmanagement.construct.ETTaskConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETItemConstructDTO;
-import solutions.dmitrikonnov.etmanagement.construct.ETLimitConstructDTO;
+import solutions.dmitrikonnov.etlimitsrepo.EtLimitsRepo;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETTaskConstructDTO;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETItemConstructDTO;
+import solutions.dmitrikonnov.etmanagement.constructDTO.ETLimitConstructDTO;
 import solutions.dmitrikonnov.etmanagement.s3.BucketName;
 import solutions.dmitrikonnov.etmanagement.s3.S3FileStoreService;
+import solutions.dmitrikonnov.ettaskrepo.ETTaskRepo;
 import solutions.dmitrikonnov.exceptions.TaskNotFoundException;
 import solutions.dmitrikonnov.exceptions.ThresholdNotFoundException;
 
@@ -29,12 +31,12 @@ import static org.apache.http.entity.ContentType.*;
 @Transactional
 public class ETConstructorService {
 
-    private final ETAufgabenRepo aufgabenRepo;
-    private final SchwellenRepo schwellenRepo;
+    private final ETTaskRepo etTaskRepo;
+    private final EtLimitsRepo limitsRepo;
     private final S3FileStoreService s3store;
 
-    public String updateAufgabeImageById (Integer id, MultipartFile file) {
-        if(!aufgabenRepo.existsById(id))
+    public String updateTaskImageByTaskId(Integer id, MultipartFile file) {
+        if(!etTaskRepo.existsById(id))
             throw new NotFoundException(String.format("Keine Aufgabe mit id %d gefunden! Die Datei wurde nicht gespeichert.", id));
         if (file==null || file.isEmpty()) {
             throw new IllegalStateException("File to be uploaded is empty or not found!");
@@ -56,7 +58,7 @@ public class ETConstructorService {
             s3store.upload(path, fileName, Optional.of(metadata), file.getInputStream());
             StringJoiner joiner = new StringJoiner(":");
             joiner.add(fileName).add(path);
-            aufgabenRepo.updateImageDataById(id,joiner.toString());
+            etTaskRepo.updateImageDataById(id,joiner.toString());
         } catch ( IOException e) {
             throw new IllegalStateException("Failed to upload file", e);
         }
@@ -65,19 +67,19 @@ public class ETConstructorService {
 
     public byte[] downloadTodoImage(int id) {
 
-        var aufgabe = aufgabenRepo.findById(id).orElseThrow(()-> {
+        var task = etTaskRepo.findById(id).orElseThrow(()-> {
             throw new NotFoundException("Keine Aufgabe mit id %d gefunden!");});
-        var fileAndPath = aufgabe.getAufgabenInhalt().split(":");
+        var fileAndPath = task.getTaskContent().split(":");
         return s3store.download(fileAndPath[1],fileAndPath[0]);
     }
 
     public String deleteImageByAufgabenId(int id) {
-        var a = aufgabenRepo.findById(id).orElseThrow(()-> {
+        var a = etTaskRepo.findById(id).orElseThrow(()-> {
             throw new NotFoundException("Keine Aufgabe mit id %d gefunden!");});
-        var fileAndPath = a.getAufgabenInhalt().split(":");
+        var fileAndPath = a.getTaskContent().split(":");
         s3store.delete(fileAndPath[0]);
-        a.setAufgabenInhalt("");
-        aufgabenRepo.save(a);
+        a.setTaskContent("");
+        etTaskRepo.save(a);
         return String.format("Image for task #%d has been deleted",id);
     }
 
@@ -86,7 +88,7 @@ public class ETConstructorService {
         if(task.getItems().isEmpty()){
             var aufgabeEntity = setUpLoneETAufgabeEntity(task);
             log.debug("Ready to save to DB: " + aufgabeEntity.toString());
-            return aufgabenRepo.save(aufgabeEntity);
+            return etTaskRepo.save(aufgabeEntity);
         }
         var aufgabeEntity = setUpLoneETAufgabeEntity(task);
         task.getItems().forEach(itemDto->
@@ -96,30 +98,30 @@ public class ETConstructorService {
     }
 
     public void addItemsToAufgabe (List<ETItemConstructDTO> items, Integer taskId){
-        var aufgabe = aufgabenRepo.findById(taskId)
+        var task = etTaskRepo.findById(taskId)
                 .orElseThrow(()-> new TaskNotFoundException(taskId));
-        items.forEach(item->aufgabe.addItem(setUpLoneETItem(item)));
-        aufgabenRepo.save(aufgabe);
+        items.forEach(item->task.addItem(setUpLoneETItem(item)));
+        etTaskRepo.save(task);
     }
 
-    public void deleteItemInAufgabe (Integer itemId, Integer aufgabeId) {
+    public void deleteItemWithingTask(Integer itemId, Integer taskId) {
 
     }
-    public void deleteAufgabeSamtItems (Integer aufgabeId) {
+    public void deleteTaskWithItems(Integer taskId) {
 
     }
     public List<ETTask> findAllTasks(){
-        return aufgabenRepo.findAll();
+        return etTaskRepo.findAll();
     }
-    public List<ETTask> findAllAufgabenByNiveau(ETTaskLevel level){
-        return aufgabenRepo.findAllByAufgabenNiveau(level);
+    public List<ETTask> findAllTasksByLevel(ETTaskLevel level){
+        return etTaskRepo.findAllByTaskLevel(level);
     }
     public List<ETLimit> findAllLimits(){
-        return schwellenRepo.findAll();
+        return limitsRepo.findAll();
     }
 
-    public ETLimit findSchwelleByNiveau(ETExerciseLevel niveau){
-        return  schwellenRepo.findByNiveau(niveau)
+    public ETLimit findLimitsByLevel(ETTaskLevel niveau){
+        return  limitsRepo.findByLevel(niveau)
                 .orElseThrow(()-> new ThresholdNotFoundException(niveau));
 
     }
@@ -127,7 +129,7 @@ public class ETConstructorService {
     public ETLimit addSchwelle(ETLimitConstructDTO limit) {
 
         getMaxSchwellenByNiveaus();
-        return schwellenRepo.save(ETLimit.builder()
+        return limitsRepo.save(ETLimit.builder()
                 .niveau(limit.getLevel())
                 .mindestSchwelle(limit.getMinLimit().shortValue())
                 .maximumSchwelle(limit.getMaxLimit().shortValue())
@@ -135,19 +137,19 @@ public class ETConstructorService {
     }
 
     public Map<ETTaskLevel,Short> getMaxSchwellenByNiveaus (){
-        return schwellenRepo.findMaximumSchwellenByNiveaus();
+        return limitsRepo.findMaximumLimitByLevels();
     }
 
     public ETLimit updateSchwelle(ETLimitConstructDTO limit) {
-        var entity = findSchwelleByNiveau(limit.getLevel());
-        entity.setMaximumSchwelle(limit.getMaxLimit().shortValue());
-        entity.setMindestSchwelle(limit.getMinLimit().shortValue());
-        return schwellenRepo.save(entity);
+        var entity = findLimitsByLevel(limit.getLevel());
+        entity.setMaxLimit(limit.getMaxLimit().shortValue());
+        entity.setMinLimit(limit.getMinLimit().shortValue());
+        return limitsRepo.save(entity);
     }
 
     public void patchSchwelle(ETLimitConstructDTO limit) {
-        if(schwellenRepo.existsByNiveau( limit.getLevel())){
-            schwellenRepo.updateByNiveau(
+        if(limitsRepo.existsByLevel( limit.getLevel())){
+            limitsRepo.updateByLevel(
                     limit.getLevel(),
                     limit.getMinLimit().shortValue(),
                     limit.getMaxLimit().shortValue());
