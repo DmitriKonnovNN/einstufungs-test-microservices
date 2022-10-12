@@ -12,10 +12,29 @@ import static solutions.dmitrikonnov.etmanagement.security.sUtils.UserPermission
 
 public enum UserRole {
 
-    USER(Sets.newHashSet(AUFGABE_READ,AUFGABE_WRITE,ITEM_READ,ITEM_WRITE,SCHWELLE_READ)),
-    ADMIN(Sets.newHashSet(AUFGABE_ALL,ITEM_ALL,SCHWELLE_ALL,VERWALTUNG_READ)),
-    SUPERADMIN (Sets.newHashSet(AUFGABE_ALL,ITEM_ALL,SCHWELLE_ALL,VERWALTUNG_ALL)),
-    ROOT(Sets.newHashSet(AUFGABE_ALL,ITEM_ALL,SCHWELLE_ALL,VERWALTUNG_ALL));
+    USER(Sets.newHashSet(
+            TASK_READ,
+            TASK_WRITE,
+            ITEM_READ,
+            ITEM_WRITE,
+            LIMIT_READ)),
+    ADMIN(Sets.newHashSet(
+            TASK_ALL,
+            ITEM_ALL,
+            LIMIT_ALL,
+            MANAGEMENT_READ)),
+    SUPERADMIN (Sets.newHashSet(
+            TASK_ALL,
+            ITEM_ALL,
+            LIMIT_ALL,
+            MANAGEMENT_READ,
+            MANAGEMENT_WRITE,
+            MANAGEMENT_REGISTER)),
+    ROOT(Sets.newHashSet(
+            TASK_ALL,
+            ITEM_ALL,
+            LIMIT_ALL,
+            MANAGEMENT_ALL));
 
 
     private final Set <UserPermission> permissions;

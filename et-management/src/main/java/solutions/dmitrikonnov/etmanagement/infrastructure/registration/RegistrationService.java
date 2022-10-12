@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import solutions.dmitrikonnov.etmanagement.email.EmailSender;
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationToken;
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationTokenService;
-import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETVerwaltungsUser;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETManagementUser;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.UserServiceImpl;
 import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
@@ -22,11 +22,21 @@ public class RegistrationService {
     @Qualifier ("mailgunService")
     private final EmailSender mailgunService;
 
+    protected String registerWithRole (RegistrationRequestWithRole request){
+        String token =  userServiceImpl.signUpUserAndGetToken(new ETManagementUser(
+                request.getFirstName(),
+                request.getLastName(),
+                request.getPassword(),
+                request.getEmail(),
+                request.getRole()));
+        String link = "http://localhost:8087/api/v2.0.0/registration/confirm?token=" + token;
+        mailgunService.send(request.getEmail(),buildEmail(request.getFirstName(), link));
+        return token;
+    }
 
 
     public String register (RegistrationRequest request){
-
-        String token =  userServiceImpl.signUpUserAndGetToken(new ETVerwaltungsUser(
+        String token =  userServiceImpl.signUpUserAndGetToken(new ETManagementUser(
                         request.getFirstName(),
                         request.getLastName(),
                         request.getPassword(),
@@ -54,7 +64,7 @@ public class RegistrationService {
         }
 
         confirmationTokenService.setConfirmedAt(token);
-        userServiceImpl.enableUser(confirmationToken.getEtVerwaltungsUser().getEmail());
+        userServiceImpl.enableUser(confirmationToken.getEtManagementUser().getEmail());
         return "comfirmed";
     }
 

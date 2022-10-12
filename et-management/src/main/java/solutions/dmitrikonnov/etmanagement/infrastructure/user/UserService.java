@@ -9,8 +9,8 @@ import java.util.List;
 public interface UserService {
     public void deleteById (Long id);
     public void enableUser (String email);
-    public String signUpUserAndGetToken(ETVerwaltungsUser ETVerwaltungsUser);
-    public List<ETVerwaltungsUser> findAll ();
+    public String signUpUserAndGetToken(ETManagementUser ETManagementUser);
+    public List<ETManagementUser> findAll ();
     public int getTokenExpiration();
     void updateUserRole(UserDtoUpdateRole dto);
     boolean checkIfExist(Long id);

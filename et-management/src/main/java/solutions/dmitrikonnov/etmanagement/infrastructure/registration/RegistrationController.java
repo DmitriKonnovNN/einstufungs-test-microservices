@@ -1,6 +1,7 @@
 package solutions.dmitrikonnov.etmanagement.infrastructure.registration;
 
 import lombok.AllArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,9 +19,10 @@ public class RegistrationController {
     RegistrationService registrationService;
 
     @PostMapping
-    public String register(@Valid @RequestBody RegistrationRequest registrationRequest){
+    @PreAuthorize("hasAuthority('management:register')")
+    public String registerWithRole(@Valid @RequestBody RegistrationRequestWithRole registrationRequest){
 
-        return registrationService.register(registrationRequest);
+        return registrationService.registerWithRole(registrationRequest);
     }
     @GetMapping (path = "confirm")
     public String confirm (@RequestParam ("token") String token) {

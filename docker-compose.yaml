@@ -18,6 +18,7 @@ services:
       - et-ntwk
     restart: unless-stopped
 
+
   zipkin:
     image: openzipkin/zipkin
     container_name: zipkin
@@ -73,8 +74,26 @@ services:
       - et-eureka-server
       - et-api-gateway
 
+  et-management:
+    image: dmitriikonnovnn/et-management:1.1-SNAPSHOT
+    container_name: et-management
+    ports:
+      - "8087:8087"
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: docker-eureka
+    networks:
+      - et-mamagement
+    depends_on:
+      - et-db
+      - zipkin
+      - et-eureka-server
+      - et-api-gateway
+
 networks:
   et-ntwk:
+    driver: bridge
+  et-mamagement:
     driver: bridge
 
 volumes:

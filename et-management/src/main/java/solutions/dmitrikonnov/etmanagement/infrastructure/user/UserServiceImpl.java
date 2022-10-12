@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Value("${app.userService.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
 
     private final UserRepository userRepository;
-    private final SignUpUserAndGetToken<String, ETVerwaltungsUser> signUpUserAndGetUUIDTokenImpl;
+    private final SignUpUserAndGetToken<String, ETManagementUser> signUpUserAndGetUUIDTokenImpl;
 
     @Override
     public boolean checkIfExist(Long id) {
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public List<ETVerwaltungsUser> findAll() {
+    public List<ETManagementUser> findAll() {
         return userRepository.findAll();
     }
 
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public String signUpUserAndGetToken(ETVerwaltungsUser ETVerwaltungsUser) {
-        return signUpUserAndGetUUIDTokenImpl.signUpUserAndGetToken(ETVerwaltungsUser);
+    public String signUpUserAndGetToken(ETManagementUser ETManagementUser) {
+        return signUpUserAndGetUUIDTokenImpl.signUpUserAndGetToken(ETManagementUser);
     }
 
 }

@@ -3,7 +3,7 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.registration.token;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETVerwaltungsUser;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETManagementUser;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,15 +31,15 @@ public class ConfirmationToken {
 
     @ManyToOne (fetch = FetchType.EAGER)
     @JoinColumn (nullable = false, name = "et_verwaltungs_user_id")
-    private ETVerwaltungsUser etVerwaltungsUser;
+    private ETManagementUser etManagementUser;
 
     public ConfirmationToken(String token,
                              LocalDateTime createdAt,
                              LocalDateTime expiredAt,
-                             ETVerwaltungsUser etVerwaltungsUser) {
+                             ETManagementUser etManagementUser) {
         this.token = token;
         this.createdAt = createdAt;
         this.expiresAt = expiredAt;
-        this.etVerwaltungsUser = etVerwaltungsUser;
+        this.etManagementUser = etManagementUser;
     }
 }

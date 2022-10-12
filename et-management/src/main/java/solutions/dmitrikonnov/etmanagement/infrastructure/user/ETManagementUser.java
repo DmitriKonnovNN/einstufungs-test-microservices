@@ -33,15 +33,15 @@ import java.util.Collection;
 @EqualsAndHashCode
 @NoArgsConstructor
 //@Table (name = "\"USER\"")
-public class ETVerwaltungsUser implements UserDetails {
+public class ETManagementUser implements UserDetails {
 
     @Id
     @Column (name = "id", unique = true, nullable = false, updatable = false)
-    @SequenceGenerator(name = "et_verwaltungsuser_seq",
-            sequenceName = "et_verwaltungsuser_seq",
+    @SequenceGenerator(name = "et_management_seq",
+            sequenceName = "et_management_seq",
             allocationSize = 1)
     @GeneratedValue (strategy = GenerationType.SEQUENCE,
-            generator = "et_verwaltungsuser_seq")
+            generator = "et_management_seq")
     private Long id;
 
     private String firstName;
@@ -54,11 +54,11 @@ public class ETVerwaltungsUser implements UserDetails {
     @Enumerated (EnumType.STRING)
     private UserRole role;
 
-    public ETVerwaltungsUser(String firstName,
-                             String lastName,
-                             String password,
-                             String email,
-                             UserRole role) {
+    public ETManagementUser(String firstName,
+                            String lastName,
+                            String password,
+                            String email,
+                            UserRole role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;

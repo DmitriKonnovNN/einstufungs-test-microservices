@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor(onConstructor_ ={@Autowired})
-public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <String, ETVerwaltungsUser>{
+public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <String, ETManagementUser>{
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -37,7 +37,7 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
      *
      * If email ain't occupied, persist it and generate a token for signing up.
      *
-     * @param ETVerwaltungsUser UserEntity to be persisted
+     * @param ETManagementUser UserEntity to be persisted
      * @return a UUID-token
      * @throws IllegalStateException if email is occupied, which means user is enabled, or if the previous token
      * hasn't expired yet
@@ -46,47 +46,47 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
      * */
 
     @Override
-    public String signUpUserAndGetToken(ETVerwaltungsUser ETVerwaltungsUser) {
+    public String signUpUserAndGetToken(ETManagementUser ETManagementUser) {
         Set<String> tokens = new HashSet<>();
 
-        userRepository.findUserEntityByEmail(ETVerwaltungsUser.getEmail())
+        userRepository.findUserEntityByEmail(ETManagementUser.getEmail())
                 .ifPresentOrElse((persistedUser)-> {
                     if(persistedUser.isEnabled()){
-                        throw new IllegalStateException(String.format(EMAIL_ALREADY_OCCUPIED_MSG, ETVerwaltungsUser.getEmail()));}
+                        throw new IllegalStateException(String.format(EMAIL_ALREADY_OCCUPIED_MSG, ETManagementUser.getEmail()));}
                     if(!persistedUser.isEnabled()){
-                        tokens.addAll(getNewTokenIfOlderExpired(ETVerwaltungsUser,persistedUser));}
+                        tokens.addAll(getNewTokenIfOlderExpired(ETManagementUser,persistedUser));}
 
-                },()-> tokens.addAll(getTokenForNotPersistedUser(ETVerwaltungsUser)));
+                },()-> tokens.addAll(getTokenForNotPersistedUser(ETManagementUser)));
         return tokens.iterator().next();
     }
 
-    private Set<String> getTokenForNotPersistedUser(ETVerwaltungsUser ETVerwaltungsUser){
-        ETVerwaltungsUser.setPassword(bCryptPasswordEncoder.encode(ETVerwaltungsUser.getPassword()));
-        userRepository.save(ETVerwaltungsUser);
-        return Collections.singleton(generateToken(ETVerwaltungsUser));
+    private Set<String> getTokenForNotPersistedUser(ETManagementUser ETManagementUser){
+        ETManagementUser.setPassword(bCryptPasswordEncoder.encode(ETManagementUser.getPassword()));
+        userRepository.save(ETManagementUser);
+        return Collections.singleton(generateToken(ETManagementUser));
     }
 
-    private Set<String> getNewTokenForPersistedUser (ETVerwaltungsUser ETVerwaltungsUser, ETVerwaltungsUser persistedUser) {
-        ETVerwaltungsUser.setPassword(bCryptPasswordEncoder.encode(ETVerwaltungsUser.getPassword()));
+    private Set<String> getNewTokenForPersistedUser (ETManagementUser ETManagementUser, ETManagementUser persistedUser) {
+        ETManagementUser.setPassword(bCryptPasswordEncoder.encode(ETManagementUser.getPassword()));
         userRepository.updateUserEntityByEmail(
-                ETVerwaltungsUser.getEmail(),
-                ETVerwaltungsUser.getFirstName(),
-                ETVerwaltungsUser.getLastName(),
-                ETVerwaltungsUser.getPassword());
+                ETManagementUser.getEmail(),
+                ETManagementUser.getFirstName(),
+                ETManagementUser.getLastName(),
+                ETManagementUser.getPassword());
         return Collections.singleton(generateToken(persistedUser));
 
     }
 
-    private Set<String> getNewTokenIfOlderExpired(ETVerwaltungsUser ETVerwaltungsUser, ETVerwaltungsUser persistedUser) {
+    private Set<String> getNewTokenIfOlderExpired(ETManagementUser ETManagementUser, ETManagementUser persistedUser) {
         if(confirmationTokenService.findTokenByUserId(persistedUser.getId()).isPresent()) {
             if (isTokenNotExpired(persistedUser)) throw new IllegalStateException(TOKEN_HAS_NOT_EXPIRED_MSG);
 
         }
-        return getNewTokenForPersistedUser(ETVerwaltungsUser,persistedUser);
+        return getNewTokenForPersistedUser(ETManagementUser,persistedUser);
 
     }
 
-    private boolean isTokenNotExpired(ETVerwaltungsUser persistedUser) {
+    private boolean isTokenNotExpired(ETManagementUser persistedUser) {
 
         if(confirmationTokenService
                 .findTokenByUserId(persistedUser.getId())
@@ -99,14 +99,14 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
 
 
 
-    private String generateToken(ETVerwaltungsUser ETVerwaltungsUser){
+    private String generateToken(ETManagementUser ETManagementUser){
 
         String token = UUID.randomUUID().toString();
         ConfirmationToken confirmationToken = new ConfirmationToken(
                 token,
                 LocalDateTime.now(),
                 LocalDateTime.now().plusMinutes(TOKEN_EXPIRATION_MINUTES),
-                ETVerwaltungsUser
+                ETManagementUser
         );
         confirmationTokenService.saveConfirmationToken(confirmationToken);
         return token;

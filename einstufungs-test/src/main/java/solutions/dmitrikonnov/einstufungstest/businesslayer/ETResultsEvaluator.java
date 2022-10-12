@@ -3,7 +3,6 @@ package solutions.dmitrikonnov.einstufungstest.businesslayer;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import solutions.dmitrikonnov.dto.ETResultsDto;
-
 import solutions.dmitrikonnov.etentities.ETLimit;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
 import solutions.dmitrikonnov.etenums.ETLimitResult;
@@ -37,9 +36,9 @@ public class ETResultsEvaluator {
         minLimits.forEach(record ->
                 countCorrectPerLevel(record.getLevel(),sortedCorrectAnswers,results.getLevelToNumberOfCorrect()));
 
-        var endGueltigesErgenis = evaluate2(results,minLimits);
+        var endResult = evaluate2(results,minLimits);
 
-        return endGueltigesErgenis;
+        return endResult;
     }
 
 
@@ -49,30 +48,30 @@ public class ETResultsEvaluator {
 
         // TODO: Check the performance of both implementations down below with respect to concurrent call;
 
-        Map <ETTaskLevel, ETLimitResult> ergebnisMap = Collections.synchronizedMap(new HashMap<>());
+        Map <ETTaskLevel, ETLimitResult> resultsMap = Collections.synchronizedMap(new HashMap<>());
         //Map <ETTaskLevel,ETSchwellenErgebnis> ergebnisMap = new ConcurrentHashMap<>();
 
 
-        minLimits.forEach(schwelle -> {
-            ETTaskLevel niveau = schwelle.getLevel();
-            List <ETLimitResult> list = entrySetResults.stream().filter(naSet -> naSet.getKey().equals(niveau))
+        minLimits.forEach(limit -> {
+            ETTaskLevel level = limit.getLevel();
+            List <ETLimitResult> list = entrySetResults.stream().filter(naSet -> naSet.getKey().equals(level))
                     .map(naSet->
                             isAllCorrect()
                             .or(isReached())
                             .or(isJustReached())
                             .or(isNotReached())
-                            .evaluate(schwelle, naSet.getValue())
+                            .evaluate(limit, naSet.getValue())
                     )
                     .collect(Collectors.toUnmodifiableList());
-            ergebnisMap.put(niveau,list.get(0));
+            resultsMap.put(level,list.get(0));
 
         } );
-        defineMaxLevel(resultsDto,ergebnisMap);
+        defineMaxLevel(resultsDto,resultsMap);
         return resultsDto;
     }
 
 
-    private void defineMaxLevel (ETResultsDto ergebnisseDto, Map<ETTaskLevel, ETLimitResult> reachedLevelsMap) {
+    private void defineMaxLevel (ETResultsDto resultsDto, Map<ETTaskLevel, ETLimitResult> reachedLevelsMap) {
         List <ETTaskLevel> sortedNiveaus = reachedLevelsMap.keySet().stream().sorted().collect(Collectors.toList());
         boolean noneCorrect = false;
         boolean notEnough = false;
@@ -138,11 +137,11 @@ public class ETResultsEvaluator {
                 } else break;
             }
         }
-        ergebnisseDto.setMaxReachedLevel(currentReached);
+        resultsDto.setMaxReachedLevel(currentReached);
     }
 
-    private boolean noneCorrect(ETResultsDto ergebnisse){
-        return ergebnisse.getNumberCorrectAnswers().equals((short)0);
+    private boolean noneCorrect(ETResultsDto results){
+        return results.getNumberCorrectAnswers().equals((short)0);
     }
 
     private void setPerLevelAllWrong(ETTaskLevel level, Map <ETTaskLevel,Short> map) {
@@ -150,9 +149,9 @@ public class ETResultsEvaluator {
     }
 
     private void countCorrectPerLevel(ETTaskLevel level, List<ETTaskLevel> answers, Map <ETTaskLevel,Short> map) {
-        Short richtige = (short)answers.stream().filter(level::equals).mapToInt(value -> 1).sum();
+        Short correctAnswrs = (short)answers.stream().filter(level::equals).mapToInt(value -> 1).sum();
 
-        map.put(level,richtige);
+        map.put(level,correctAnswrs);
     }
 
 }

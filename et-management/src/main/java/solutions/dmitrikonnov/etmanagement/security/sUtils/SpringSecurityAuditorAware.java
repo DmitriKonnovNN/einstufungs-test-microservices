@@ -6,7 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETVerwaltungsUser;
+import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETManagementUser;
 
 import java.util.Optional;
 
@@ -20,21 +20,21 @@ public class SpringSecurityAuditorAware implements AuditorAware<String>{
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
-                .map(ETVerwaltungsUser.class::cast)
-                .map(ETVerwaltungsUser::getFullnameAndRoles);
+                .map(ETManagementUser.class::cast)
+                .map(ETManagementUser::getFullnameAndRoles);
     }
 
-   /* private ETVerwaltungsUser systemUser;
+   /* private ETManagementUser systemUser;
 
 
     @Override
-    public Optional<ETVerwaltungsUser> getCurrentAuditor() {
+    public Optional<ETManagementUser> getCurrentAuditor() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        ETVerwaltungsUser principal;
+        ETManagementUser principal;
         if (authentication == null || !authentication.isAuthenticated()) {
             principal = systemUser;
         } else {
-            principal = (ETVerwaltungsUser) authentication.getPrincipal();
+            principal = (ETManagementUser) authentication.getPrincipal();
         }
         log.info(String.format("Current auditor is >>> %s", principal));
         return Optional.of(principal);

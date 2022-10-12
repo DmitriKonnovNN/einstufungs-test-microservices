@@ -2,22 +2,23 @@ package solutions.dmitrikonnov.etmanagement.security.sUtils;
 
 public enum UserPermission {
 
-    AUFGABE_READ("aufgabe:read"),
-    AUFGABE_WRITE("aufgabe:write"),
-    AUFGABE_DELETE("aufgabe:delete"),
-    AUFGABE_ALL("aufgabe:all"),
+    TASK_READ("task:read"),
+    TASK_WRITE("task:write"),
+    TASK_DELETE("task:delete"),
+    TASK_ALL("task:all"),
     ITEM_READ("item:read"),
     ITEM_WRITE("item:write"),
     ITEM_DELETE("item:delete"),
     ITEM_ALL("item:all"),
-    SCHWELLE_READ("schwelle:read"),
-    SCHWELLE_WRITE("schwelle:wirte"),
-    SCHWELLE_DELETE("schwelle:delete"),
-    SCHWELLE_ALL("schwelle:all"),
-    VERWALTUNG_READ("verwaltung:read"),
-    VERWALTUNG_WRITE("verwaltung:write"),
-    VERWALTUNG_DELETE("verwaltung:delete"),
-    VERWALTUNG_ALL("verwaltung:all");
+    LIMIT_READ("limit:read"),
+    LIMIT_WRITE("limit:wirte"),
+    LIMIT_DELETE("limit:delete"),
+    LIMIT_ALL("limit:all"),
+    MANAGEMENT_READ("management:read"),
+    MANAGEMENT_WRITE("management:write"),
+    MANAGEMENT_DELETE("management:delete"),
+    MANAGEMENT_REGISTER("management:register"),
+    MANAGEMENT_ALL("management:all");
 
 
 

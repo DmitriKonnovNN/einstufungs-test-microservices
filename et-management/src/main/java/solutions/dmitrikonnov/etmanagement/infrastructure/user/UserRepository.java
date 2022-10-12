@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Transactional(readOnly = true)
 @Repository
-public interface UserRepository extends JpaRepository <ETVerwaltungsUser, Long> {
+public interface UserRepository extends JpaRepository <ETManagementUser, Long> {
 
-    Optional<ETVerwaltungsUser> findUserEntityByEmail (String email);
+    Optional<ETManagementUser> findUserEntityByEmail (String email);
 
     boolean existsById (@NotNull Long id);
 
@@ -25,21 +25,21 @@ public interface UserRepository extends JpaRepository <ETVerwaltungsUser, Long> 
 
     @Transactional
     @Modifying
-    @Query ("update ETVerwaltungsUser u set u.role = ?2 where u.id =?1")
+    @Query ("update ETManagementUser u set u.role = ?2 where u.id =?1")
     void updateUserRole (Long userId, UserRole role);
 
 
     @Transactional
     @Modifying
-    @Query ("update ETVerwaltungsUser u" +
+    @Query ("update ETManagementUser u" +
             " set u.firstName = ?2, u.lastName = ?3, u.password = ?4"
             +" where u.email = ?1" )
     void updateUserEntityByEmail (String email, String firstname, String lastname, String password);
 
     @Transactional
     @Modifying
-    @Query ( "update ETVerwaltungsUser u " +
-            "set u.enabled = true where u.email = ?1"
+    @Query ( "update ETManagementUser u" +
+            " set u.enabled = true where u.email = ?1"
     )
     void enableUserEntityByEmail(String email);
 
@@ -47,7 +47,7 @@ public interface UserRepository extends JpaRepository <ETVerwaltungsUser, Long> 
 
     @Transactional
     @Modifying
-    @Query ("delete from ETVerwaltungsUser u where u.enabled = false")
+    @Query ("delete from ETManagementUser u where u.enabled = false")
     void deleteUserEntities ();
 
 }
