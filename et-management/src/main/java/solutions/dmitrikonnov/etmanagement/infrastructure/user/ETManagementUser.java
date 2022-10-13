@@ -1,14 +1,12 @@
 package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
 import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
+import solutions.dmitrikonnov.etutils.Obfuscator;
 
 
 import javax.persistence.*;
@@ -32,6 +30,7 @@ import java.util.Collection;
 @Setter
 @EqualsAndHashCode
 @NoArgsConstructor
+@ToString
 //@Table (name = "\"USER\"")
 public class ETManagementUser implements UserDetails {
 
@@ -45,7 +44,8 @@ public class ETManagementUser implements UserDetails {
     private Long id;
 
     private String firstName;
-    private String lastName; 
+    private String lastName;
+    @ToString.Exclude
     private String password;
     private String email;
     private Boolean active;
@@ -64,6 +64,11 @@ public class ETManagementUser implements UserDetails {
         this.password = password;
         this.email = email;
         this.role = role;
+    }
+
+    @ToString.Include
+    private String email(){
+        return Obfuscator.obfuscate(email);
     }
 
     private boolean isActive() {
@@ -108,4 +113,6 @@ public class ETManagementUser implements UserDetails {
     public boolean isEnabled() {
         return enabled;
     }
+
+
 }
