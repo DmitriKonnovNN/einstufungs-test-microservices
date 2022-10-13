@@ -1,16 +1,17 @@
-package solutions.dmitrikonnov.etlimitsrepo;
+package solutions.dmitrikonnov.etresultsrepo;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import solutions.dmitrikonnov.etentities.ETResults;
+import solutions.dmitrikonnov.etlimitsrepo.Pingable;
 
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Primary
-public interface ETResultsRepo extends JpaRepository<ETResults, UUID>, ETResultsCustomRepo,Pingable {
+public interface ETResultsRepo extends JpaRepository<ETResults, UUID>, ETResultsCustomRepo, Pingable {
 
 
     List<ETResults> findAllByCreatedOnBefore(Date createdOn);

@@ -1,6 +1,5 @@
-package solutions.dmitrikonnov.etlimitsrepo;
+package solutions.dmitrikonnov.etresultsrepo;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 

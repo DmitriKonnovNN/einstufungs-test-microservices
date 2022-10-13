@@ -20,7 +20,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableJpaRepositories(basePackages = {
         "solutions.dmitrikonnov.etmanagement",
         "solutions.dmitrikonnov.etlimitsrepo",
-        "solutions.dmitrikonnov.ettaskrepo"})
+        "solutions.dmitrikonnov.ettaskrepo",
+        "solutions.dmitrikonnov.etresultsrepo"})
 @ComponentScan(basePackages = {
         "solutions.dmitrikonnov.etlimitsrepo",
         "solutions.dmitrikonnov.ettaskrepo"})

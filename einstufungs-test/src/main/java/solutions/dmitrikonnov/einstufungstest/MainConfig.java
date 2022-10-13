@@ -24,7 +24,8 @@ import java.util.concurrent.Executor;
 @OpenAPIDefinition
 @EnableJpaRepositories(basePackages = {
         "solutions.dmitrikonnov.etlimitsrepo",
-        "solutions.dmitrikonnov.ettaskrepo"
+        "solutions.dmitrikonnov.ettaskrepo",
+        "solutions.dmitrikonnov.etresultsrepo"
 })
 @EnableTransactionManagement
 @EnableConfigurationProperties

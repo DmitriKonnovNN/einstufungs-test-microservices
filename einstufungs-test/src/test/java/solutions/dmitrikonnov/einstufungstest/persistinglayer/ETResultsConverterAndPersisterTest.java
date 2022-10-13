@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import solutions.dmitrikonnov.dto.ETResultsDto;
 import solutions.dmitrikonnov.etentities.ETResults;
 import solutions.dmitrikonnov.etenums.ETTaskLevel;
-import solutions.dmitrikonnov.etlimitsrepo.ETResultsRepo;
+import solutions.dmitrikonnov.etresultsrepo.ETResultsRepo;
 import solutions.dmitrikonnov.etutils.Randomizer;
 
 
@@ -45,7 +45,7 @@ class ETResultsConverterAndPersisterTest {
 //                .limit(targetStringLength)
 //                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
 //                .toString();
-        //String ID = UUID.randomUUID().toString();
+        UUID ID = UUID.randomUUID();
         Integer ABH = Randomizer.generate(1,1000);
         ETTaskLevel MEN = A2;
         Short ZR = 5;
@@ -80,7 +80,7 @@ class ETResultsConverterAndPersisterTest {
         }};
 
         dtoGiven = ETResultsDto.builder()
-               // .id(ID)
+                .id(ID.toString())
                 .taskSheetHash(ABH)
                 .maxReachedLevel(MEN)
                 .numberCorrectAnswers(ZR)
@@ -91,6 +91,7 @@ class ETResultsConverterAndPersisterTest {
         underTest = new ETResultsConverterAndPersister(repoMock);
 
         entityExpected = ETResults.builder()
+                .id(ID)
                 .taskSheetHash(ABH)
                 .maxReachedLevel(MEN)
                 .numberCorrectAnswers(ZR)
@@ -106,7 +107,7 @@ class ETResultsConverterAndPersisterTest {
 
     }
 
-    @RepeatedTest(2)
+    @RepeatedTest(1)
     void shouldConvertAndPersist() {
         //given see setUp();
         BDDMockito.given(repoMock.save(any())).willReturn(entityExpected);

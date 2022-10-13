@@ -95,7 +95,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
                 .orElseGet(()->userRepository.findAllByRoleAsc(UserRole.ROOT))
                 .stream()
                 .peek(u->log.info("{} was notified about request {}.",u.getFullnameAndRoles(),request))
-                .forEach(CustomNotification::notifyAdmin);
+                .forEach(System.out::println); // should be notify
 
     }
 }

@@ -1,4 +1,4 @@
-package solutions.dmitrikonnov.etlimitsrepo;
+package solutions.dmitrikonnov.etresultsrepo;
 
 import java.util.Date;
 import java.util.Map;
