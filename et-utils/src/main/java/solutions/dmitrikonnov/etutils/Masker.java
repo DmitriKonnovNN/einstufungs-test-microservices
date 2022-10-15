@@ -6,7 +6,6 @@ package solutions.dmitrikonnov.etutils;
 public class Masker {
 
     public static String maskEmail(String email) {
-
         return email.replaceAll("(?<=.{1}).(?=[^@]*?@)", "*");
     }
 }
