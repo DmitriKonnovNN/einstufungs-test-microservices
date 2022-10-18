@@ -71,7 +71,7 @@ public class UserController {
 
 
     @PostMapping("/lock")
-    @PreAuthorize("hasAuthority('management:register')")
+    @PreAuthorize("hasAnyAuthority('management:register','management:all')")
     public ResponseEntity<?> lockUser(@RequestParam(value="reason",required = false, defaultValue = "unknown") String reason,
                                       @RequestParam(value="email") String email){
         userService.lockUser(reason, email);
@@ -79,7 +79,7 @@ public class UserController {
     }
 
     @PostMapping("/unlock")
-    @PreAuthorize("hasAuthority('management:register')")
+    @PreAuthorize("hasAnyAuthority('management:register','management:all')")
     public ResponseEntity<?> unlockUser(@RequestParam(value="reason",required = false, defaultValue = "unknown") String reason,
                                         @RequestParam(value="email") String email){
         userService.unlockUser(reason, email);

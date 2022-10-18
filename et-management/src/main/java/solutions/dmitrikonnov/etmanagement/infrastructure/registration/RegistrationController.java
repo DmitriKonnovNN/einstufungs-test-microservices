@@ -17,12 +17,10 @@ import java.util.concurrent.TimeoutException;
 @AllArgsConstructor
 public class RegistrationController {
 
-    Map<Integer,String> map = Collections.synchronizedMap(new LinkedHashMap<>(12,0.75f,true));
-
-    RegistrationServiceImpl registrationServiceImpl;
+    private final RegistrationServiceImpl registrationServiceImpl;
 
     @PostMapping("/withRole")
-    @PreAuthorize("hasAuthority('management:register')")
+    @PreAuthorize("hasAnyAuthority('management:register','management:all')")
     public String registerWithRole(@Valid @RequestBody RegistrationRequestWithRole request){
 
         return registrationServiceImpl.registerWithRole(request);
