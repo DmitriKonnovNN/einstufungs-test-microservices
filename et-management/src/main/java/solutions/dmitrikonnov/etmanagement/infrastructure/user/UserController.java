@@ -4,6 +4,7 @@ package solutions.dmitrikonnov.etmanagement.infrastructure.user;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -26,6 +27,7 @@ public class UserController {
 
 
     @GetMapping("/{id}/details")
+    @PreAuthorize("hasAnyRole('SUPERADMIN','ADMIN')")
     public ResponseEntity<UserDtoGetDetails> getDetails (
 
             @PathVariable Long id){
@@ -36,9 +38,8 @@ public class UserController {
 
 
     @PutMapping("/{id}/update/role")
-
     public void updateRole (
-           @PathVariable Long id,
+            @PathVariable Long id,
             @RequestBody @Validated UserDtoUpdateRole userDto){
         if (!userService.checkIfExist(id)){
             throw new NoSuchElementException(String.format(ID_NF_UPDATE_FAIL_MSG, id));}
@@ -48,7 +49,6 @@ public class UserController {
 
 
     @PutMapping("/conftoken/exptime")
-
     @Validated
     public void setConfirmationTokenExpirationTime  (
 
@@ -59,15 +59,31 @@ public class UserController {
 
     // hasRole ('ROLE_') hasAnyRole ('ROLE_') hasAuthority('permission') hasAnyAuthority('permission')
     @PutMapping("/conftoken/resettime")
-
     public int resetConfirmationTokenExpirationTime (){
         return userService.resetExpirationTimeOfToken();
     }
 
     @GetMapping ("/conftoken/exptime")
-
+    @PreAuthorize(" hasAnyAuthority('management:read')")
     public int getConfirmationTokenExpirationTime () {
         return userService.getTokenExpiration();
+    }
+
+
+    @PostMapping("/lock")
+    @PreAuthorize("hasAuthority('management:register')")
+    public ResponseEntity<?> lockUser(@RequestParam(value="reason",required = false, defaultValue = "unknown") String reason,
+                                      @RequestParam(value="email") String email){
+        userService.lockUser(reason, email);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/unlock")
+    @PreAuthorize("hasAuthority('management:register')")
+    public ResponseEntity<?> unlockUser(@RequestParam(value="reason",required = false, defaultValue = "unknown") String reason,
+                                        @RequestParam(value="email") String email){
+        userService.unlockUser(reason, email);
+        return ResponseEntity.ok().build();
     }
 
     @ExceptionHandler (MethodArgumentTypeMismatchException.class)
@@ -75,4 +91,5 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Bad type of param: "+ ex.getValue()
                 +" .Expiration time should be given in Minutes. Min value = 1.");
     }
+
 }

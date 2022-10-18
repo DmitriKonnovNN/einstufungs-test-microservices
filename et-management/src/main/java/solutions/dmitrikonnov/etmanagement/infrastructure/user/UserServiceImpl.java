@@ -18,6 +18,7 @@ import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.BlockingQueue;
 
 @Service ("userServiceImpl")
 @Transactional
@@ -33,6 +34,7 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     private final UserRepository userRepository;
     private final SignUpUserAndGetToken<String, ETManagementUser> signUpUserAndGetUUIDTokenImpl;
+
 
     @Override
     public boolean checkIfExist(Long id) {
@@ -90,12 +92,32 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void notifyAdminAboutNewUserRequest(RegistrationRequest request) {
+    public void notifyAdminAboutNewUserRequest(ETManagementUser user) {
         Optional.ofNullable(userRepository.findAllByRoleAsc(UserRole.SUPERADMIN))
                 .orElseGet(()->userRepository.findAllByRoleAsc(UserRole.ROOT))
                 .stream()
-                .peek(u->log.info("{} was notified about request {}.",u.getFullnameAndRoles(),request))
+                .peek(u->log.info("{} was notified about request {}.",u.getFullnameAndRoles(),u))
                 .forEach(System.out::println); // should be notify
 
+    }
+
+    @Override
+    public Optional<ETManagementUser> findUserByEmail(String email) {
+        return userRepository.findUserEntityByEmail(email);
+    }
+
+    @Override
+    public void addDisabledUserUntilConfirmed(ETManagementUser etManagementUser) {
+        userRepository.save(etManagementUser);
+    }
+
+    @Override
+    public void unlockUser(String reason, String email) {
+        userRepository.setLockForUserByEmail(false,reason,email);
+    }
+
+    @Override
+    public void lockUser(String reason, String email) {
+        userRepository.setLockForUserByEmail(true,reason,email);
     }
 }

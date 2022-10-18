@@ -1,6 +1,7 @@
 package solutions.dmitrikonnov.etmanagement.infrastructure.registration;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
@@ -11,13 +12,13 @@ import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.Con
 import solutions.dmitrikonnov.etmanagement.infrastructure.registration.token.ConfirmationTokenService;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.ETManagementUser;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.UserServiceImpl;
-import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import java.time.LocalDateTime;
 import java.util.concurrent.Future;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserServiceImpl userServiceImpl;
@@ -39,10 +40,27 @@ public class RegistrationServiceImpl implements RegistrationService {
     }
 
 
+
     @Async
     public Future<String> registerSelf(RegistrationRequest request){
 
-        userServiceImpl.notifyAdminAboutNewUserRequest(request);
+        userServiceImpl.findUserByEmail(request.getEmail())
+                .stream()
+                .findAny()
+                .filter(ETManagementUser::isAccountNonLocked)
+                .ifPresentOrElse(u->{
+                    String token = userServiceImpl.signUpUserAndGetToken(u);
+                    String link = "http://localhost:8087/api/v2.0.0/registration/confirm?token=" + token;
+                    mailgunService.send(u.getEmail(),buildEmail(u.getFirstName(),link));
+                },()->{ ETManagementUser u = new ETManagementUser(
+                        request.getFirstName(),
+                        request.getLastName(),
+                        request.getPassword(),
+                        request.getEmail(),
+                        null );
+
+                    userServiceImpl.addDisabledUserUntilConfirmed(u);
+                    userServiceImpl.notifyAdminAboutNewUserRequest(u); });
 
         return new AsyncResult<>(REQ_PROCCESSED_MSG);
     }

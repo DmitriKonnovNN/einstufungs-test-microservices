@@ -47,6 +47,12 @@ public interface UserRepository extends JpaRepository <ETManagementUser, Long> {
     void enableUserEntityByEmail(String email);
 
 
+    @Transactional
+    @Modifying
+    @Query("update ETManagementUser u set u.locked=?1, u.reasonForLock = ?2 where u.email = ?3")
+    void setLockForUserByEmail(boolean lock,String reasonForLock ,String email);
+
+
 
     @Transactional
     @Modifying

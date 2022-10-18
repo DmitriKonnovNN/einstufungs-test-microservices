@@ -53,6 +53,7 @@ public class ETManagementUser implements UserDetails {
     private Boolean enabled = false;
     @Enumerated (EnumType.STRING)
     private UserRole role;
+    private String reasonForLock;
 
     public ETManagementUser(String firstName,
                             String lastName,

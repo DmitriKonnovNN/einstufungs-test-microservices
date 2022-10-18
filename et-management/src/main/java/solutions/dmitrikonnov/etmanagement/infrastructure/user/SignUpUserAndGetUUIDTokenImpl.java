@@ -26,6 +26,8 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
     @Value("${app.userService.tokenExpirationTime}") private int TOKEN_EXPIRATION_MINUTES;
     private final static String TOKEN_HAS_NOT_EXPIRED_MSG = "token hasn't expired yet";
     private final static String EMAIL_ALREADY_OCCUPIED_MSG = "email %s already occupied";
+    private final static String EMAIL_IS_BLOCKED_MSG = "email %s was blocked because of suspicious behaviour. If you still would like to" +
+            " register user with this email, unlock it first!";
 
     /**
      * If email {
@@ -51,6 +53,9 @@ public class SignUpUserAndGetUUIDTokenImpl implements SignUpUserAndGetToken <Str
 
         userRepository.findUserEntityByEmail(ETManagementUser.getEmail())
                 .ifPresentOrElse((persistedUser)-> {
+                    if(!persistedUser.isAccountNonLocked()){
+                        throw new IllegalStateException(String.format(EMAIL_IS_BLOCKED_MSG,ETManagementUser.getEmail()));
+                    }
                     if(persistedUser.isEnabled()){
                         throw new IllegalStateException(String.format(EMAIL_ALREADY_OCCUPIED_MSG, ETManagementUser.getEmail()));}
                     if(!persistedUser.isEnabled()){
