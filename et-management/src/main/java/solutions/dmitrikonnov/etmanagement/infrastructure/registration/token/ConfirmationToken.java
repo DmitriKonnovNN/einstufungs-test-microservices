@@ -30,7 +30,7 @@ public class ConfirmationToken {
     private LocalDateTime confirmedAt;
 
     @ManyToOne (fetch = FetchType.EAGER)
-    @JoinColumn (nullable = false, name = "et_verwaltungs_user_id")
+    @JoinColumn (nullable = false, name = "et_management_user_id")
     private ETManagementUser etManagementUser;
 
     public ConfirmationToken(String token,
