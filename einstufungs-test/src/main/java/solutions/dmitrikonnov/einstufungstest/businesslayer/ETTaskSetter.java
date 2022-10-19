@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class ETTaskSetter {
 
     private final ETTaskRepo taskRepo;
-    private final ETTaskRestricter aufgabenRestricter;
+    private final ETTaskRestricter taskRestricter;
     private final EtLimitsRepo limitsRepo;
 
     //TODO: try out parallstream() instead of just stream()
@@ -32,18 +32,18 @@ public class ETTaskSetter {
         if(maxLimitMap.isEmpty()){
             log.warn("LimitsRepo is empty!");
         return Collections.emptyList();}
-        var allAufgaben = taskRepo.findAllByOrderByTaskLevelAsc();
-        if(allAufgaben.isEmpty()){
+        var allTasks = taskRepo.findAllByOrderByTaskLevelAsc();
+        if(allTasks.isEmpty()){
             log.error("No Aufgaben found!");
             return Collections.emptyList();
         }
-        return allAufgaben
+        return allTasks
                 .stream()
                 .collect(Collectors.groupingBy(ETTask::getTaskLevel, TreeMap::new, Collectors.toList()))
                 .values()
                 .parallelStream()
                 .peek(Collections::shuffle)
-                .map(tasks->aufgabenRestricter.restrict(tasks,maxLimitMap))
+                .map(tasks-> taskRestricter.restrict(tasks,maxLimitMap))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());
 
