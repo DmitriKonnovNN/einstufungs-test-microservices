@@ -26,38 +26,38 @@ public class ETExerciseSheetSetter {
         return ETTaskSheet.builder()
                 .taskSheetHash(exerciseSetHash)
                 .itemToSolutions(extractItems(exercises))
-                .itemToLevel(extractNiveaus(exercises))
+                .itemToLevel(extractLevels(exercises))
                 .taskList(shuffeled)
                 .build();
     }
 
-    private Map<Integer, List<String>> extractItems (List<ETTask> aufgaben) {
-        Map<Integer, List<String>> itemIdZuLoesungen = new HashMap<>();
+    private Map<Integer, List<String>> extractItems (List<ETTask> tasks) {
+        Map<Integer, List<String>> itemIdToSolutions = new HashMap<>();
 
-        for (ETTask aufgabe: aufgaben) {
-            aufgabe.getItems().forEach(item -> {
-                itemIdZuLoesungen.put(item.getItemId(), item.getSolutions());
+        for (ETTask task: tasks) {
+            task.getItems().forEach(item -> {
+                itemIdToSolutions.put(item.getItemId(), item.getSolutions());
 
             });
         }
-        return itemIdZuLoesungen;
+        return itemIdToSolutions;
     }
 
-    private Map<Integer, ETTaskLevel> extractNiveaus (List<ETTask> aufgaben){
+    private Map<Integer, ETTaskLevel> extractLevels(List<ETTask> tasks){
 
-        Map<Integer, ETTaskLevel> itemIdZuNiveau = new HashMap<>();
-        for (ETTask aufgabe: aufgaben) {
-            ETTaskLevel niveau = aufgabe.getTaskLevel();
-            aufgabe.getItems().forEach(item -> {
-                itemIdZuNiveau.put(item.getItemId(), niveau);
+        Map<Integer, ETTaskLevel> itemIdToLevel = new HashMap<>();
+        for (ETTask task: tasks) {
+            ETTaskLevel level = task.getTaskLevel();
+            task.getItems().forEach(item -> {
+                itemIdToLevel.put(item.getItemId(), level);
             });
         }
-        return itemIdZuNiveau;
+        return itemIdToLevel;
     }
 
     private List<ETTaskDto> shuffleItems(List<ETTaskDto> dtos) {
         return dtos.stream()
-                .peek(aufgdto -> Collections.shuffle(aufgdto.getItems()))
+                .peek(taskdto -> Collections.shuffle(taskdto.getItems()))
                 .collect(Collectors.groupingBy(ETTaskDto::getLevel, TreeMap::new, Collectors.toList()))
                 .values()
                 .stream()
