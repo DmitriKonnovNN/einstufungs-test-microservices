@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -20,10 +21,23 @@ public class ConfirmationTokenService {
     }
 
     public Optional <ConfirmationToken> findTokenByUserId (Long userId) {
-        return confirmationTokenRepository.findFirstByEtVerwaltungsUserIdOrderByIdDesc(userId);}
+        return confirmationTokenRepository.findFirstByEtManagementUserIdOrderByIdDesc(userId);}
 
 
     public int setConfirmedAt (String token) {
         return confirmationTokenRepository.updateConfirmedAt(token, LocalDateTime.now());
+    }
+
+    public void deleteAllWhereUserEnableAfterCreated (LocalDateTime createdAt) {
+        confirmationTokenRepository.deleteAllWhereUserEnableAfterCreated(createdAt);
+
+    }
+
+    public void deleteTokenById (Long id) {
+        confirmationTokenRepository.deleteById(id);
+    }
+
+    public List<ConfirmationToken> getAllTokensOfDisabledUsers() {
+        return confirmationTokenRepository.findAllTokensOfDisabledUsers();
     }
 }
