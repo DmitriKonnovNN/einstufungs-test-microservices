@@ -22,12 +22,12 @@ import java.util.List;
 
 @Component
 @AllArgsConstructor
-public class NonConfirmedUserJob {
+public class ExpiredTokenJob {
 
     private final UserService userService;
     private final ConfirmationTokenService confirmationTokenService;
 
-    private final static Logger log = LoggerFactory.getLogger(NonConfirmedUserJob.class);
+    private final static Logger log = LoggerFactory.getLogger(ExpiredTokenJob.class);
     private final static SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final static String SCHEDULED_JOB_REGISTRATION_MGS = "Scheduled registration job started at {}";
     private final static String DELETION_STARTED_MSG = "Scheduled deletion started at {} : Delete tokens of confirmed users.";
