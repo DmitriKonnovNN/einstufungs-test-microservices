@@ -105,11 +105,13 @@ eureka:
       defaultZone: http://localhost:8761/eureka/
     fetch-registry: true
     register-with-eureka: true
-    enabled: true
+    enabled: false
   instance:
     hostname: einstufungstest
 
 management:
+  server:
+    port: 9002
   endpoints:
     web:
       exposure:
@@ -124,6 +126,19 @@ management:
       show-components: always
       status:
         order: out-of-service, down, up
+  metrics:
+    enable:
+      http:
+        client:
+          requests: true
+        server:
+          requests: true
+    export:
+      prometheus:
+        enabled: true
+    distribution:
+      percentiles-histogram:
+        "[http.server.requests]": true
 
 ---
 
@@ -164,9 +179,9 @@ spring:
             non_contextual_creation: true
         search:
           version: 5.11.7.Final
-sentry:
-  dsn: https://572fc37d0c98457293eedeabfceb7612@o1319089.ingest.sentry.io/6574242
-  in-app-includes: solutions.dmitrikonnov.einstufungstest
+#sentry:
+#  dsn: https://572fc37d0c98457293eedeabfceb7612@o1319089.ingest.sentry.io/6574242
+#  in-app-includes: solutions.dmitrikonnov.einstufungstest
 
 
 ---

@@ -6,8 +6,7 @@
     <groupId>solutions.dmitrikonnov</groupId>
     <version>1.1-SNAPSHOT</version>
   </parent>
-
-  <groupId>solutions.dmitrikonnov</groupId>
+  
   <artifactId>einstufungs-test</artifactId>
   <version>2.0-SNAPSHOT</version>
 
@@ -33,6 +32,12 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.micrometer</groupId>
+      <artifactId>micrometer-registry-prometheus</artifactId>
+      <version>1.9.5</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>solutions.dmitrikonnov</groupId>
@@ -112,10 +117,6 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-sleuth-zipkin</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.springframework.boot</groupId>
-      <artifactId>spring-boot-starter-actuator</artifactId>
     </dependency>
     <dependency>
       <groupId>com.github.ben-manes.caffeine</groupId>

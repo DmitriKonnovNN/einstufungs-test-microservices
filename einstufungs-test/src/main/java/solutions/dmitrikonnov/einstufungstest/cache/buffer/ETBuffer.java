@@ -1,6 +1,7 @@
 package solutions.dmitrikonnov.einstufungstest.cache.buffer;
 
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -19,9 +20,10 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
-@AllArgsConstructor (onConstructor_ = {@Autowired})
+@RequiredArgsConstructor(onConstructor_ = {@Autowired})
 public class ETBuffer {
-    private final int bufferAllocSize = 12;
+    private  int bufferAllocSize = 12;
+    private float useUpFactor = 0.25f;
     private final Queue<Optional<ETTaskSheet>> toServeBuffer = new LinkedBlockingQueue<>(bufferAllocSize);
     private final ETTaskService service;
 
@@ -60,7 +62,7 @@ public class ETBuffer {
     private boolean isAlmostEmpty (){
         int currentSize = toServeBuffer.size();
         log.debug("Size of Aufg-Cache : {}", currentSize);
-        return currentSize < bufferAllocSize /3;
+        return currentSize <  (int)(bufferAllocSize * useUpFactor);
     }
     private ETTaskSheet getSetForced(){
         var bogen = service.getTaskSet();
@@ -76,5 +78,25 @@ public class ETBuffer {
     public void warmUp(){
         log.debug("Buffer warm-up started");
         fillUpBuffer();
+    }
+
+    public int getBufferedTaskNumber(){
+        return toServeBuffer.size()==1?(toServeBuffer.peek().isEmpty()? 0: 1) : toServeBuffer.size();
+    }
+
+    protected int getBufferAllocSize() {
+        return bufferAllocSize;
+    }
+
+    protected void setBufferAllocSize(int bufferAllocSize) {
+        this.bufferAllocSize = bufferAllocSize;
+    }
+
+    public float getUseUpFactor() {
+        return useUpFactor;
+    }
+
+    public void setUseUpFactor(float useUpFactor) {
+        this.useUpFactor = useUpFactor;
     }
 }
