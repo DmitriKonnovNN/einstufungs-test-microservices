@@ -18,11 +18,11 @@ spring:
         - id: einstufungstest
           uri: lb://einstufungstest
           predicates:
-            - Path=/api/v2.0.0/et_ufzgi
+            - Path=/api/v2.0.0/et_ufzgi/**
         - id: et-management
           uri: lb://et-management
           predicates:
-            - Path=/api/v2.1.0/constructor
+            - Path=/api/v2.1.0/constructor/**
 
 eureka:
   client:
@@ -32,4 +32,4 @@ eureka:
     register-with-eureka: true
   instance:
     preferIpAddress: true
-    hostname: api-gateaway
+    hostname: api-gateway

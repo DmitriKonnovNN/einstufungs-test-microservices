@@ -26,17 +26,18 @@ services:
     networks:
       - et-ntwk
     ports:
-      - 9411:9411
+      - "9411:9411"
 
   et-api-gateway:
     image: dmitriikonnovnn/et-apigateway:1.1-SNAPSHOT
     container_name: et-api-gateway
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=docker-eureka
     networks:
       - et-ntwk
+      - et-management
     depends_on:
       - zipkin
       - et-eureka-server
@@ -67,6 +68,9 @@ services:
     restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: docker-eureka
+      JVM_OPTS: >
+        -Xmx250M
+        -Xms180M
     networks:
       - et-ntwk
     depends_on:
@@ -76,13 +80,16 @@ services:
       - et-api-gateway
 
   et-management:
-    image: dmitriikonnovnn/et-managment:1.0-SNAPSHOT
+    image: dmitriikonnovnn/et-management:1.0-SNAPSHOT
     container_name: et-management
     ports:
       - "8087:8087"
-#    restart: unless-stopped
+    restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: docker-eureka
+      JVM_OPTS: >
+        -Xmx250M
+        -Xms180M
     networks:
       - et-management
       - et-ntwk
