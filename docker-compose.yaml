@@ -16,6 +16,7 @@ services:
       - "5433:5432"
     networks:
       - et-ntwk
+      - et-management
     restart: unless-stopped
 
 
@@ -79,11 +80,12 @@ services:
     container_name: et-management
     ports:
       - "8087:8087"
-    restart: unless-stopped
+#    restart: unless-stopped
     environment:
       SPRING_PROFILES_ACTIVE: docker-eureka
     networks:
       - et-management
+      - et-ntwk
     depends_on:
       - et-db
       - zipkin

@@ -6,7 +6,7 @@ info:
     description: @project.description@
     version: @project.name@
 app:
-  userServiceImpl:
+  userService:
     tokenExpirationTime: 5
     maxTokenExpirationTime:
       min: 60
@@ -32,7 +32,7 @@ spring:
     name: et-management
   datasource:
     password: P@ssw0rd
-    url: jdbc:postgresql://localhost:5433/einstufungstest
+    url: jdbc:postgresql://et-db:5432/einstufungstest
     username: dmitri
     driver-class-name: org.postgresql.Driver
   #  second-datasource:
@@ -67,10 +67,14 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://et-eureka-server:8761/eureka/
+      defaultZone: http://et-eureka-server:8761/eureka
     fetch-registry: true
     register-with-eureka: true
     enabled: true
 mailgun:
   api:
     privatekey:
+aws:
+  s3:
+    region:
+      name: us-east-1

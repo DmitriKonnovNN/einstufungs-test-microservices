@@ -104,6 +104,16 @@
           <version>3.2.0</version>
           <configuration>
             <from>
+<!--              <platforms>-->
+<!--                <platform>-->
+<!--                  <achitecture>-->
+<!--                    amd64-->
+<!--                  </achitecture>-->
+<!--                  <os>-->
+<!--                    linux-->
+<!--                  </os>-->
+<!--                </platform>-->
+<!--              </platforms>-->
               <image>${docker.jdk.image}</image>
             </from>
             <to>
