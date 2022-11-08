@@ -32,7 +32,7 @@ spring:
     name: et-management
   datasource:
     password: P@ssw0rd
-    url: jdbc:postgresql://einstufungstest-db:5432/einstufungstest
+    url: jdbc:postgresql://localhost:5433/einstufungstest
     username: dmitri
     driver-class-name: org.postgresql.Driver
   #  second-datasource:

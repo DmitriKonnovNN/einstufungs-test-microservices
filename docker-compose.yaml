@@ -13,7 +13,7 @@ services:
       - ./init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
       - postgres-et-db:/var/lib/data/postgres
     ports:
-      - "5432:5432"
+      - "5433:5432"
     networks:
       - et-ntwk
     restart: unless-stopped
@@ -75,7 +75,7 @@ services:
       - et-api-gateway
 
   et-management:
-    image: dmitriikonnovnn/et-management:1.1-SNAPSHOT
+    image: dmitriikonnovnn/et-managment:1.0-SNAPSHOT
     container_name: et-management
     ports:
       - "8087:8087"
@@ -83,7 +83,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: docker-eureka
     networks:
-      - et-mamagement
+      - et-management
     depends_on:
       - et-db
       - zipkin
@@ -93,7 +93,7 @@ services:
 networks:
   et-ntwk:
     driver: bridge
-  et-mamagement:
+  et-management:
     driver: bridge
 
 volumes:

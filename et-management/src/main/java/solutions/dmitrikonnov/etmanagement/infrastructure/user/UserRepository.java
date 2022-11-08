@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository <ETManagementUser, Long> {
 
     Optional<ETManagementUser> findUserEntityByEmail (String email);
 
-    List<ETManagementUser>findAllByRoleAsc(UserRole role);
+    List<ETManagementUser> findAllByRoleOrderByRoleAsc(UserRole role);
 
     boolean existsById (@NotNull Long id);
 

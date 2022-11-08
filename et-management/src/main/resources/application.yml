@@ -37,7 +37,7 @@ spring:
       on-profile: local
   datasource:
     password: P@ssw0rd
-    url: jdbc:mysql://localhost:3306/einstufungs-test?createDatabaseIfNotExist=true&Unicode=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/et-neu?createDatabaseIfNotExist=true&Unicode=true&serverTimezone=UTC
     username: root
     driver-class-name: com.mysql.cj.jdbc.Driver
   #  second-datasource:

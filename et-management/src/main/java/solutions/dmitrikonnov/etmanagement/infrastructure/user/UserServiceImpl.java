@@ -10,15 +10,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import solutions.dmitrikonnov.etmanagement.infrastructure.registration.RegistrationRequest;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoGetDetails;
 import solutions.dmitrikonnov.etmanagement.infrastructure.user.userDto.UserDtoUpdateRole;
 import solutions.dmitrikonnov.etmanagement.security.sUtils.UserRole;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-import java.util.concurrent.BlockingQueue;
 
 @Service ("userServiceImpl")
 @Transactional
@@ -93,8 +90,8 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public void notifyAdminAboutNewUserRequest(ETManagementUser user) {
-        Optional.ofNullable(userRepository.findAllByRoleAsc(UserRole.SUPERADMIN))
-                .orElseGet(()->userRepository.findAllByRoleAsc(UserRole.ROOT))
+        Optional.ofNullable(userRepository.findAllByRoleOrderByRoleAsc(UserRole.SUPERADMIN))
+                .orElseGet(()->userRepository.findAllByRoleOrderByRoleAsc(UserRole.ROOT))
                 .stream()
                 .peek(u->log.info("{} was notified about request {}.",u.getFullnameAndRoles(),u))
                 .forEach(System.out::println); // should be notify
