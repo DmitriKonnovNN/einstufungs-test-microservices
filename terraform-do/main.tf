@@ -18,8 +18,8 @@ resource "digitalocean_droplet" "my_droplets" {
   name      = each.value
   region    = var.region
   size      = var.droplet_size
-  user_data = templatefile("init-data.sh.tpl", { droplet_name = "${each.value}" })
-  tags      = ["dev"]
+  user_data = templatefile("../init-data-cloud.sh.tpl", { instance_name = "${each.value}" })
+  tags      = [terraform.workspace]
 }
 resource "digitalocean_project_resources" "einstufungstest" {
   for_each  = digitalocean_droplet.my_droplets

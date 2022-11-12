@@ -7,23 +7,22 @@ resource "digitalocean_firewall" "et-fw" {
   ]
 
   dynamic "inbound_rule" {
-    for_each = ["22","80","9411","8761"]
+    for_each = ["22", "80", "9411", "8761"]
     content {
-      protocol = "tcp"
-      port_range = inbound_rule.value
+      protocol         = "tcp"
+      port_range       = inbound_rule.value
       source_addresses = ["${local.my_public_ip.ip}/32"]
     }
   }
 
   dynamic "outbound_rule" {
-    for_each = ["tcp","udp","icmp"]
+    for_each = ["tcp", "udp", "icmp"]
     content {
-      protocol = outbound_rule.value
+      protocol              = outbound_rule.value
       port_range            = "1-65535"
       destination_addresses = ["0.0.0.0/0", "::/0"]
     }
   }
-
 
 }
 locals {
