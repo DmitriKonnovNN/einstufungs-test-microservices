@@ -21,20 +21,23 @@ resource "aws_eip" "static_ip" {
 
 resource "aws_instance" "app_web" {
   ami           = data.aws_ami.ubuntu_latest.id
-  instance_type = terraform.workspace == "default" ? "t2.micro" : (terraform.workspace == "test" ? "t2.small" : (terraform.workspace == "dev" ? "t2.medium" : "t2.large"))
-
-  subnet_id = aws_subnet.subnet1.id
+  instance_type = var.environment_instance_settings[var.current_environment].instance_type
+  //instance_type = terraform.workspace == "default" ? "t2.micro" : (terraform.workspace == "test" ? "t2.small" : (terraform.workspace == "dev" ? "t2.medium" : "t2.large"))
+  monitoring             = var.environment_instance_settings[var.current_environment].monitoring
+  subnet_id              = aws_subnet.subnet1.id
   vpc_security_group_ids = [aws_security_group.sg-web.id]
   key_name               = aws_key_pair.ec2-key-pair.key_name
-  user_data              = templatefile("../init-data-cloud.sh.tpl", { instance_name = "${var.app_tag_name}" })
+  user_data              = templatefile("../init-data-cloud.sh.tpl", { instance_name = var.app_tag_name })
 
   root_block_device {
-    volume_size = terraform.workspace == "prod" ? 50 : 30
+   // volume_size = terraform.workspace == "prod" ? 50 : 30
+    volume_size = var.environment_instance_settings[var.current_environment].ebs_volume_size
     volume_type = "gp2"
   }
   tags = {
     Name  = "ec2-${var.app_tag_name}"
     Owner = "ec2-${var.owner}"
+    Env   = var.current_environment
   }
 
   lifecycle {
@@ -64,8 +67,9 @@ resource "aws_subnet" "subnet1" {
   map_public_ip_on_launch = "true"
   availability_zone       = var.current_azs[0]
   tags = {
-    Name  = "ec2-${var.app_tag_name}"
-    Owner = "ec2-${var.owner}"
+    Name  = "subnet1-${var.app_tag_name}"
+    Owner = "subnet1-${var.owner}"
+    Env   = var.current_environment
   }
 }
 
@@ -83,16 +87,18 @@ resource "aws_vpc" "exam-micro-vpc" {
   cidr_block           = var.cidr
   enable_dns_hostnames = "true"
   tags = {
-    Name  = "ec2-${var.app_tag_name}"
-    Owner = "ec2-${var.owner}"
+    Name  = "vpc-${var.app_tag_name}"
+    Owner = "vpc-${var.owner}"
+    Env   = var.current_environment
   }
 }
 
 resource "aws_internet_gateway" "gateway1" {
   vpc_id = aws_vpc.exam-micro-vpc.id
   tags = {
-    Name  = "ec2-${var.app_tag_name}"
-    Owner = "ec2-${var.owner}"
+    Name  = "gw1-${var.app_tag_name}"
+    Owner = "gw1-${var.owner}"
+    Env   = var.current_environment
   }
 }
 
@@ -103,24 +109,21 @@ resource "aws_route_table" "route_table1" {
     gateway_id = aws_internet_gateway.gateway1.id
   }
   tags = {
-    Name  = "ec2-${var.app_tag_name}"
-    Owner = "ec2-${var.owner}"
+    Name  = "rt1-${var.app_tag_name}"
+    Owner = "rt1-${var.owner}"
+    Env   = var.current_environment
   }
 }
 
 resource "aws_route_table_association" "route_subnet1" {
-  subnet_id = aws_subnet.subnet1.id
+  subnet_id      = aws_subnet.subnet1.id
   route_table_id = aws_route_table.route_table1.id
-  tags = {
-    Name  = "ec2-${var.app_tag_name}"
-    Owner = "ec2-${var.owner}"
   }
-}
 
 resource "aws_security_group" "sg-web" {
   name        = "${terraform.workspace}-${var.app_tag_name}"
   description = "sg-web_${var.app_tag_name} inbound traffic"
-  vpc_id = aws_vpc.exam-micro-vpc.id
+  vpc_id      = aws_vpc.exam-micro-vpc.id
 
   ingress {
     cidr_blocks      = ["0.0.0.0/0"]
@@ -172,7 +175,7 @@ resource "aws_security_group" "sg-web" {
   tags = {
     Name  = "sg-${var.app_tag_name}"
     Owner = var.owner
-
+    Env   = var.current_environment
   }
 }
 
