@@ -1,0 +1,8 @@
+owner               = ""
+app_main_port       =
+aws_region          = "us-east-1"
+local_profile       = ""
+current_azs         = ["us-east-1a", "us-east-1b", "us-east-1c"]
+cidr                = "10.16.0.0/16"
+subnets             = ["10.16.16.0/20", "10.16.32.0/20", "10.16.48.0/20"]
+current_environment = "DEFAULT"
