@@ -25,3 +25,11 @@ variable "current_azs" {
   description = "AZs to be used"
   type        = list(string)
 }
+
+variable "subnets" {
+  type = list(string)
+}
+
+variable "cidr" {
+  type = string
+}
