@@ -1,20 +1,22 @@
-output "public_ec_ip" {
-  value       = aws_eip.static_ip.public_ip
-  description = "public ip value of ec2 instance"
-  sensitive   = false
-}
-output "public_ec2_dns" {
-  value       = aws_eip.static_ip.public_dns
-  description = "public dns of ec2 instance"
-}
+#output "public_ec_ip" {
+#  value       = aws_eip.static_ip.public_ip
+#  description = "public ip value of ec2 instance"
+#  sensitive   = false
+#}
+#output "public_ec2_dns" {
+#  value       = aws_eip.static_ip.public_dns
+#  description = "public dns of ec2 instance"
+#}
 output "private_dns" {
-  value = aws_instance.app_web.private_dns
+
+  value = aws_instance.app_web[*].private_dns
 }
 
 output "ec2-ami-info" {
+
   value = ({
-    ami_id = aws_instance.app_web.ami
-  volume_size = aws_instance.app_web.root_block_device[0].volume_size })
+    ami_id = aws_instance.app_web[*].ami
+  volume_size = aws_instance.app_web[*].root_block_device[*].volume_size })
 
 }
 

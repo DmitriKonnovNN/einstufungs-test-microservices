@@ -26,7 +26,11 @@ variable "current_azs" {
   type        = list(string)
 }
 
-variable "subnets" {
+variable "private_subnets" {
+  type = list(string)
+}
+
+variable "public_subnets" {
   type = list(string)
 }
 
@@ -59,39 +63,39 @@ variable "environment_instance_type" {
 
 variable "environment_instance_settings" {
   type = map(object({
-    instance_type = string,
-    monitoring = bool,
+    instance_type   = string,
+    monitoring      = bool,
     ebs_volume_size = number
   }))
   default = {
     "DEFAULT" = {
-      instance_type = "t2.micro",
-      monitoring    = false,
+      instance_type   = "t2.micro",
+      monitoring      = false,
       ebs_volume_size = 10
     },
     "TEST" = {
-      instance_type = "t2.micro",
-      monitoring    = false,
+      instance_type   = "t2.micro",
+      monitoring      = false,
       ebs_volume_size = 20
     },
     "QA" = {
-      instance_type = "t2.small",
-      monitoring    = false,
+      instance_type   = "t2.small",
+      monitoring      = false,
       ebs_volume_size = 30
     },
     "DEV" = {
-      instance_type = "t2.medium",
-      monitoring    = true,
+      instance_type   = "t2.medium",
+      monitoring      = true,
       ebs_volume_size = 50
     },
     "STAGE" = {
-      instance_type = "t2.large",
-      monitoring    = true,
+      instance_type   = "t2.large",
+      monitoring      = true,
       ebs_volume_size = 80
     },
     "PROD" = {
-      instance_type = "t2.large",
-      monitoring    = true,
+      instance_type   = "t2.large",
+      monitoring      = true,
       ebs_volume_size = 80
     },
   }

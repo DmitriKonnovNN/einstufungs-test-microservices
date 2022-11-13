@@ -6,7 +6,7 @@ terraform {
       version = "~> 3.27"
     }
   }
-  #   required_version = "~>0.12.0"
+  required_version = ">= 0.13.1"
 }
 
 
@@ -15,22 +15,19 @@ provider "aws" {
   region  = var.aws_region
 }
 
-resource "aws_eip" "static_ip" {
-  instance = aws_instance.app_web.id
-}
 
 resource "aws_instance" "app_web" {
+  count         = 2
   ami           = data.aws_ami.ubuntu_latest.id
   instance_type = var.environment_instance_settings[var.current_environment].instance_type
   //instance_type = terraform.workspace == "default" ? "t2.micro" : (terraform.workspace == "test" ? "t2.small" : (terraform.workspace == "dev" ? "t2.medium" : "t2.large"))
   monitoring             = var.environment_instance_settings[var.current_environment].monitoring
-  subnet_id              = aws_subnet.subnet1.id
+  subnet_id              = module.vpc.public_subnets[count.index]
   vpc_security_group_ids = [aws_security_group.sg-web.id]
   key_name               = aws_key_pair.ec2-key-pair.key_name
   user_data              = templatefile("../init-data-cloud.sh.tpl", { instance_name = var.app_tag_name })
 
   root_block_device {
-   // volume_size = terraform.workspace == "prod" ? 50 : 30
     volume_size = var.environment_instance_settings[var.current_environment].ebs_volume_size
     volume_type = "gp2"
   }
@@ -60,70 +57,38 @@ resource "local_file" "ec2-rsa-keys" {
   file_permission = 400
   filename        = "${var.app_tag_name}.pem"
 }
+module "vpc" {
+  source = "terraform-aws-modules/vpc/aws"
+  name   = "exams-vpc"
+  cidr   = var.cidr
 
-resource "aws_subnet" "subnet1" {
-  cidr_block              = "10.16.16.0/20"
-  vpc_id                  = aws_vpc.exam-micro-vpc.id
-  map_public_ip_on_launch = "true"
-  availability_zone       = var.current_azs[0]
+
+  azs             = var.current_azs
+  private_subnets = var.private_subnets
+  public_subnets  = var.public_subnets
+  putin_khuylo    = true
+
+  enable_nat_gateway = false
+  enable_vpn_gateway = true
+
+
   tags = {
-    Name  = "subnet1-${var.app_tag_name}"
-    Owner = "subnet1-${var.owner}"
-    Env   = var.current_environment
+    Terraform   = "true"
+    Environment = var.current_environment
+    Name        = "sg-${var.app_tag_name}"
+    Owner       = var.owner
   }
 }
 
-#resource "aws_subnet" "subnet" {
-#
-#  for_each          = toset(var.current_azs)
-#  vpc_id            = aws_vpc.exam-micro-vpc.id
-#  availability_zone = each.value
-#  map_public_ip_on_launch = "true"
-#
-#
-#}
 
-resource "aws_vpc" "exam-micro-vpc" {
-  cidr_block           = var.cidr
-  enable_dns_hostnames = "true"
-  tags = {
-    Name  = "vpc-${var.app_tag_name}"
-    Owner = "vpc-${var.owner}"
-    Env   = var.current_environment
-  }
-}
 
-resource "aws_internet_gateway" "gateway1" {
-  vpc_id = aws_vpc.exam-micro-vpc.id
-  tags = {
-    Name  = "gw1-${var.app_tag_name}"
-    Owner = "gw1-${var.owner}"
-    Env   = var.current_environment
-  }
-}
 
-resource "aws_route_table" "route_table1" {
-  vpc_id = aws_vpc.exam-micro-vpc.id
-  route {
-    cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.gateway1.id
-  }
-  tags = {
-    Name  = "rt1-${var.app_tag_name}"
-    Owner = "rt1-${var.owner}"
-    Env   = var.current_environment
-  }
-}
-
-resource "aws_route_table_association" "route_subnet1" {
-  subnet_id      = aws_subnet.subnet1.id
-  route_table_id = aws_route_table.route_table1.id
-  }
 
 resource "aws_security_group" "sg-web" {
-  name        = "${terraform.workspace}-${var.app_tag_name}"
+  name        = "${var.current_environment}-${var.app_tag_name}"
   description = "sg-web_${var.app_tag_name} inbound traffic"
-  vpc_id      = aws_vpc.exam-micro-vpc.id
+  //vpc_id      = aws_vpc.exam-micro-vpc.id
+  vpc_id = module.vpc.vpc_id
 
   ingress {
     cidr_blocks      = ["0.0.0.0/0"]
