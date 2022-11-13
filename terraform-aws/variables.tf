@@ -100,3 +100,10 @@ variable "environment_instance_settings" {
     },
   }
 }
+variable "remote_backend_bucket_name" {
+  type = string
+}
+
+variable "remote_backend_bucket_region" {
+  type = string
+}

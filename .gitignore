@@ -429,3 +429,4 @@ terraform.rc
 
 # End of https://www.toptal.com/developers/gitignore/api/maven,java,jetbrains,intellij,node,react
 
+S3ConnectionConfig.java
