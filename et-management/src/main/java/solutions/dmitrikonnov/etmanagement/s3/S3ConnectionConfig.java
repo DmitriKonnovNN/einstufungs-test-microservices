@@ -35,8 +35,8 @@ public class S3ConnectionConfig {
     public List<String> credentials (){
 
         List<String> keyIdandSecret = new ArrayList<>();
-        keyIdandSecret.add("AKD");
-        keyIdandSecret.add("R/PGQp");
+        keyIdandSecret.add("A1");
+        keyIdandSecret.add("1");
       /*  try {
             CSVReader reader = new CSVReader(new FileReader(fileName));
               keyIdandSecret = reader.readAll().stream()
