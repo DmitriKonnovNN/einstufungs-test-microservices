@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
 
-    private final String  key;
+    private final String SecretKey;
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -41,7 +41,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
             String token = authorizationHeader.replace("Bearer ", "");
             Jws<Claims> claimsJws = Jwts.parser()
-                    .setSigningKey(key)
+                    .setSigningKey(SigningKeyUtils.formatAndGetSigningKey(SecretKey))
                     .parseClaimsJws(token);
             Claims body = claimsJws.getBody();
             String username = body.getSubject();

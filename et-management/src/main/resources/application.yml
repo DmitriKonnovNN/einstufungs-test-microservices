@@ -18,7 +18,7 @@ app:
       days: 30
   jwt:
     token:
-      secretKey: P@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rdP@s$w0rDP@ssw0rd
+      secretKey: 4CF62551E1E6B769BFEFAF7A3799F30B01F610743F4B18686D1DBB1B06077A0D08C613F57295AEB46790678A072C0BED
   security:
     webSecurityAdapterQualifier: permitAll
     daoAuthenticationProvider: inDataBase

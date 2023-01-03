@@ -60,7 +60,7 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
                 .claim("authorities", authResult.getAuthorities())// body (payload) ?? getPrincipal().getRole
                 .setIssuedAt(new Date())
                 .setExpiration(java.sql.Date.valueOf(LocalDate.now().plusWeeks(2)))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
+                .signWith(SignatureAlgorithm.HS256, SigningKeyUtils.formatAndGetSigningKey(secretKey))
                 .compact();
 
         response.addHeader("Authorization", "Bearer " + token);
