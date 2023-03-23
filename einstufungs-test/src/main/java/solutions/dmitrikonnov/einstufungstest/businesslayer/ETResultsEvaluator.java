@@ -42,7 +42,7 @@ public class ETResultsEvaluator {
     }
 
 
-    protected ETResultsDto evaluate2 (ETResultsDto resultsDto, List<ETLimit> minLimits){
+    ETResultsDto evaluate2 (ETResultsDto resultsDto, List<ETLimit> minLimits){
 
         var entrySetResults = resultsDto.getLevelToNumberOfCorrect().entrySet();
 

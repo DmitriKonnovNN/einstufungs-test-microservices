@@ -17,9 +17,6 @@ import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
 
-/**
- * this class should be persistent
- * */
 
 @Getter
 @Setter
@@ -67,11 +64,12 @@ public class ETTask {
         item.setTask(null);
         numberItems--;
     }
+    private short numberItems;
+
     /**
      * Either a link to media content or simple text.
      * */
 
-    private short numberItems;
     private String taskContent;
 
     @Enumerated(EnumType.STRING)
